@@ -1,0 +1,15 @@
+id,category,name,description,price,image_url,max_quantity
+101,evenementiel,Table de Réception Pliante,"Table de réception en plastique pliante. Peut accueillir jusqu'à 8 personnes. Dimensions : 180x75cm.",10 € / jour,images/table.jpg,10
+102,evenementiel,Tente de Réception 3x6m,"Tente professionnelle blanche idéale pour les événements extérieurs. Facile à monter.",50 € / jour,images/tente.jpg,3
+103,evenementiel,Groupe Électrogène 3000W,"Groupe électrogène puissant pour alimenter lumières et musique lors de vos événements en extérieur.",35 € / jour,images/groupe.jpg,5
+104,evenementiel,Guirlande Lumineuse Guinguette (70m),"70 mètres d'éclairage blanc chaud. Parfait pour créer une ambiance festive et chaleureuse.",45 € / jour,images/guirlande.jpg,8
+105,evenementiel,Canon à Confettis Professionnel,"Canon à confettis à air comprimé pour un effet spectaculaire (confettis non inclus).",20 € / jour,images/canon.jpg,2
+106,evenementiel,Kit Vaisselle (Assiettes, Verres, Couverts),"Set complet de vaisselle de qualité (par 12). Comprend assiettes, verres à pied et couverts.",1.50 € / personne,images/vaisselle.jpg,100
+107,evenementiel,Vidéo-projecteur 4K et Écran,"Idéal pour diffuser photos, vidéos ou présentations. Écran de 100 pouces inclus.",30 € / jour,images/videoprojecteur.jpg,4
+108,outillage,Bétonnière Électrique 160L,"Bétonnière de grande capacité (160 litres) pour travaux de maçonnerie. Moteur 650W.",25 € / jour,images/betonniere.jpg,5
+109,outillage,Échafaudage Roulant (4m),"Échafaudage sécurisé et mobile, hauteur de travail jusqu'à 4 mètres.",35 € / jour,images/echafaudage.jpg,2
+110,outillage,Ponceuse Excentrique Professionnelle,"Ponceuse puissante avec aspiration pour travaux de finition sur bois ou plâtre.",15 € / jour,images/ponceuse.jpg,10
+111,outillage,Scie Sauteuse sans Fil 18V,"Scie légère et maniable, vendue avec batteries et lames de rechange.",12 € / jour,images/sciesauteuse.jpg,10
+112,outillage,Perceuse-Visseuse à Percussion,"Outil multifonction pour percer et visser dans tous types de matériaux (béton, bois, acier).",18 € / jour,images/perceuse.jpg,10
+113,evenementiel,Machine à Popcorn Professionnelle,"Faites le délice de vos invités avec cette machine à popcorn facile d'utilisation.",25 € / jour,images/popcorn.jpg,3
+114,evenementiel,Chaises Pliantes de Jardin,"Chaises blanches robustes et confortables. Idéales pour l'extérieur.",1 € / jour,images/chaise.jpg,150
