@@ -2,17 +2,18 @@
         /* === STYLES MODERNISÉS (Nouveau Visuel)=== */
         /* ========================================= */
 
-        /* Variables de couleur modernisées */
+        /* Variables de couleur modernisées (CHALEUREUX / TERRACOTTA / MOUTARDE) */
         :root {
-            --primary-color: #0A3F5C; /* Bleu Nuit Élégant (Marque) */
-            --secondary-color: #F26C4F; /* Orange Corail (Action / CTA) */
-            --success-color: #28a745; /* Vert pour succès/validation */
-            --background-light: #F8F9FA; /* Fond très clair */
-            --text-dark: #212529; /* Texte très sombre */
-            --shadow-subtle: 0 8px 16px rgba(0, 0, 0, 0.1); /* Ombre douce et plus grande */
-            --radius-default: 12px; /* Rayon légèrement augmenté pour la douceur */
-            --button-hover-darken: #d65f46; /* Version plus foncée de secondary-color */
+            --primary-color: #A44C3A; /* Terracotta Profond */
+            --secondary-color: #E8AE4D; /* Jaune Moutarde */
+            --success-color: #5cb85c; 
+            --background-light: #FAF8F5; /* Fond très clair et chaud */
+            --text-dark: #3A3A3A; /* Texte brun foncé */
+            --shadow-subtle: 0 8px 16px rgba(0, 0, 0, 0.1);
+            --radius-default: 12px;
+            --button-hover-darken: #c99342; /* Version plus foncée de secondary-color */
             --button-border-light: #e0e0e0;
+            --carousel-background-color: #EFEBE5; /* Couleur de fond pour les bords */
         }
 
         /* Styles généraux */
@@ -40,17 +41,17 @@
 
         /* Bouton Panier/Dark Mode */
         .header-actions {
-            position: static; /* Supprimer l'absolu */
+            position: static; 
             transform: none;
             display: flex;
             gap: 15px;
         }
         .header-action-btn {
-            background-color: var(--secondary-color); /* Nouvelle couleur d'action */
-            color: white;
+            background-color: var(--secondary-color); 
+            color: var(--text-dark); /* Texte sombre sur le bouton Moutarde */
             border: none;
             padding: 10px 20px;
-            border-radius: 50px; /* Boutons plus arrondis (pill-shaped) */
+            border-radius: 50px; 
             cursor: pointer;
             font-weight: 600;
             display: flex;
@@ -72,28 +73,28 @@
         }
 
         /* Navigation Principale */
-        nav.main-nav { background-color: #343a40; /* Gris foncé moderne */ overflow: hidden; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
+        nav.main-nav { background-color: #555; /* Gris foncé */ overflow: hidden; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
         nav.main-nav a {
             float: left;
             display: block;
             color: white;
             text-align: center;
-            padding: 15px 20px; /* Espacement ajusté */
+            padding: 15px 20px; 
             text-decoration: none;
             font-size: 0.95em;
             font-weight: 500;
             transition: background-color 0.3s;
         }
-        nav.main-nav a:hover { background-color: #495057; }
-        nav.main-nav a.active { background-color: var(--secondary-color); color: white; }
+        nav.main-nav a:hover { background-color: #6c757d; }
+        nav.main-nav a.active { background-color: var(--secondary-color); color: var(--text-dark); }
 
         /* Navigation Catégories (Améliorée) */
         nav.cat-nav {
             background-color: white;
             text-align: center;
-            padding: 20px 0; /* Plus d'espace */
+            padding: 20px 0; 
             border-bottom: none;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Ombre légère */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); 
             display: none;
         }
         nav.cat-nav button {
@@ -104,7 +105,7 @@
             cursor: pointer;
             margin: 0 10px;
             font-size: 0.9em;
-            border-radius: 50px; /* Style "pill" */
+            border-radius: 50px; 
             transition: all 0.3s ease;
             font-weight: 500;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -113,7 +114,7 @@
             background-color: var(--primary-color);
             color: white;
             border-color: var(--primary-color);
-            box-shadow: 0 3px 8px rgba(10, 63, 92, 0.3);
+            box-shadow: 0 3px 8px rgba(164, 76, 58, 0.3);
             transform: none;
         }
         nav.cat-nav button:hover:not(.active) {
@@ -133,7 +134,7 @@
         #accueil-section p { color: #555; max-width: 800px; margin: 20px auto; line-height: 1.6; }
         #accueil-section button {
             background-color: var(--secondary-color);
-            color: white;
+            color: var(--text-dark);
             padding: 15px 35px;
             font-size: 1.1em;
             border: none;
@@ -150,7 +151,7 @@
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
 
-        /* Styles Carrousel */
+        /* Styles Carrousel (CORRECTION: object-fit: contain et aspect-ratio) */
         .carousel-container {
             max-width: 1000px;
             margin: 50px auto;
@@ -158,14 +159,16 @@
             border-radius: var(--radius-default);
             box-shadow: var(--shadow-subtle);
             position: relative;
+            background-color: var(--carousel-background-color); /* Couleur de fond pour les bords */
+            aspect-ratio: 16 / 9; /* Contrainte de proportion pour la hauteur */
         }
-        .carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
-        .carousel-slide { min-width: 100%; box-sizing: border-box; }
+        .carousel-track { display: flex; transition: transform 0.5s ease-in-out; height: 100%; }
+        .carousel-slide { min-width: 100%; box-sizing: border-box; height: 100%; }
         .carousel-slide img {
             width: 100%;
-            height: 450px; /* Hauteur légèrement augmentée */
-            object-fit: cover;
-            background-color: #ccc;
+            height: 100%; /* Occuper toute la hauteur du slide */
+            object-fit: contain; /* Garder les proportions (avec bords si nécessaire) */
+            background-color: transparent; 
         }
 
         /* Flèches et Indicateurs Carrousel */
@@ -173,7 +176,7 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.6); /* Fond plus opaque pour la visibilité */
+            background-color: rgba(0, 0, 0, 0.6); 
             color: white;
             border: none;
             cursor: pointer;
@@ -201,15 +204,15 @@
         /* Catalogue */
         .search-container { text-align: center; padding-bottom: 25px; }
         .search-container input {
-            padding: 14px; /* Plus d'espace */
-            width: 450px; /* Plus large */
+            padding: 14px; 
+            width: 450px; 
             border: 1px solid #ccc;
-            border-radius: 50px; /* Plus arrondi */
+            border-radius: 50px; 
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
         .product-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Grille moderne */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
             justify-items: center;
             gap: 30px;
             padding: 20px 0;
@@ -229,12 +232,12 @@
             justify-content: space-between;
         }
         .product-card:hover {
-            transform: translateY(-5px); /* Effet de soulèvement plus prononcé */
+            transform: translateY(-5px); 
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
         }
         .product-card img {
             width: 100%;
-            height: 250px; /* Image plus grande */
+            height: 250px; 
             object-fit: cover;
             border-top-left-radius: var(--radius-default);
             border-top-right-radius: var(--radius-default);
@@ -248,7 +251,7 @@
         /* Bouton "Détails / Ajouter" */
         .product-card button {
             background-color: var(--secondary-color);
-            color: white;
+            color: var(--text-dark);
             border: none;
             padding: 12px 25px;
             border-radius: 50px;
@@ -267,22 +270,22 @@
 
         /* Modale */
         .modal {
-            display: none; /* Masqué par défaut */
-            position: fixed; /* Reste en place */
-            z-index: 100; /* Se place au-dessus de tout */
+            display: none; 
+            position: fixed; 
+            z-index: 100; 
             left: 0; top: 0;
             width: 100%; height: 100%;
-            overflow: auto; /* Active le défilement si nécessaire */
-            background-color: rgba(0,0,0,0.6); /* Fond semi-transparent */
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.6); 
         }
 
         .modal-content {
             background-color: #fefefe;
-            margin: 3% auto; /* Modale plus haute */
+            margin: 3% auto; 
             padding: 20px;
             border: 1px solid #888;
-            width: 90%; /* Prend 90% de la largeur */
-            max-width: 600px; /* Limite la largeur maximale */
+            width: 90%; 
+            max-width: 600px; 
             border-radius: var(--radius-default);
             box-shadow: var(--shadow-subtle);
             animation-name: animatetop;
@@ -306,7 +309,7 @@
 
         .modal-content button#add-to-cart-btn {
             background-color: var(--secondary-color);
-            color: white;
+            color: var(--text-dark);
             font-weight: 600;
             padding: 15px 30px;
             border: none;
@@ -403,7 +406,7 @@
         .cart-confirmation textarea { resize: vertical; }
 
         .validate-btn {
-            background-color: var(--secondary-color); color: white;
+            background-color: var(--secondary-color); color: var(--text-dark);
             border: none; padding: 15px 30px; border-radius: 50px;
             cursor: pointer; font-size: 1.1em; font-weight: 600;
             width: 100%; margin-top: 20px;
@@ -430,29 +433,33 @@
         }
 
 
-        /* Dark Mode */
+        /* Dark Mode (ajusté pour le nouveau thème) */
         .dark-mode {
-            --background-light: #121212; /* Noir très sombre */
-            --text-dark: #e0e0e0;
-            --primary-color: #4A90E2; /* Bleu clair pour le contraste */
-            --button-border-light: #333;
+            --background-light: #2c2c2c; /* Gris foncé */
+            --text-dark: #f0f0f0;
+            --primary-color: #E8AE4D; /* Inverser : Moutarde en couleur principale */
+            --secondary-color: #A44C3A; /* Terracotta en couleur d'action */
+            --button-hover-darken: #8c3b2e;
+            --button-border-light: #555;
+            --carousel-background-color: #444; 
         }
         .dark-mode header { background-color: #000; }
-        .dark-mode nav.cat-nav, .dark-mode .product-card, .dark-mode .modal-content, .dark-mode #contact-section, .dark-mode .cart-item, .dark-mode .cart-summary { background-color: #2a2a2a; border-color: #444; color: var(--text-dark); }
-        .dark-mode nav.cat-nav button { background-color: #3a3a3a; border-color: #555; color: var(--text-dark); }
+        .dark-mode nav.cat-nav, .dark-mode .product-card, .dark-mode .modal-content, .dark-mode #contact-section, .dark-mode .cart-item, .dark-mode .cart-summary { background-color: #3a3a3a; border-color: #555; color: var(--text-dark); }
+        .dark-mode nav.cat-nav button { background-color: #444; border-color: #666; color: var(--text-dark); }
         .dark-mode .search-container input, .dark-mode .cart-confirmation input, .dark-mode .cart-confirmation textarea, .dark-mode .item-controls input[type="date"], .dark-mode .item-controls input[type="number"] {
-            background-color: #3a3a3a; color: var(--text-dark); border-color: #555;
+            background-color: #444; color: var(--text-dark); border-color: #666;
+        }
+        .dark-mode .header-action-btn, .dark-mode .product-card button, .dark-mode #accueil-section button, .dark-mode .modal-content button#add-to-cart-btn, .dark-mode .validate-btn {
+            color: white; /* Texte blanc sur bouton sombre */
         }
         .dark-mode .item-details h4 { color: var(--primary-color); }
         .dark-mode #contact-section a { color: var(--primary-color); }
         .dark-mode .important-note { background-color: #4e442c; color: #f0c36b; border-color: #5e543c; }
 
 
-        /* Media Queries (conservées pour le responsive) */
+        /* Media Queries (ajusté pour le carrousel) */
         @media (max-width: 900px) {
-            .carousel-slide img {
-                height: 350px;
-            }
+            .carousel-container { aspect-ratio: 4 / 3; }
         }
         @media (max-width: 600px) {
             .header-actions {
@@ -471,9 +478,7 @@
             .search-container input {
                 width: 80%;
             }
-            .carousel-slide img {
-                height: 250px;
-            }
+            .carousel-container { aspect-ratio: 1; }
             .cart-item {
                 flex-direction: column;
                 align-items: flex-start;

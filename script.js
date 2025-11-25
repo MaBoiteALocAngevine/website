@@ -6,7 +6,7 @@
             'images/carrousel/location-sono.jpg',
             'images/carrousel/location-echafaudage.jpg',
             'images/carrousel/materiel-evenementiel.jpg'
-            // ⚠️ IMPORTANT : Remplacez ces noms par ceux de vos images réelles dans images/carrousel/
+            //⚠️ IMPORTANT : Remplacez ces noms par ceux de vos images réelles dans images/carrousel/
         ];
         let slideIndex = 0;
         let totalSlides = 0;
@@ -30,7 +30,7 @@
                     document.body.classList.toggle("dark-mode");
                 });
             }
-            // MISE À JOUR 3 : Initialisation du carrousel au chargement de la page
+            // Initialisation du carrousel au chargement de la page
             initCarousel();
         });
 
@@ -70,7 +70,6 @@
         }
 
         // --- MODALE PRODUIT ---
-        // MODIFICATION : Accepte l'ID du produit
         function showProductDetails(productId) {
             const modal = document.getElementById('product-modal');
             const product = allProductsData.find(p => p.id == productId);
@@ -106,16 +105,13 @@
 
         // --- LOGIQUE PANIER ---
         function getPriceValue(priceString) {
-            // Extrait le premier nombre valide (avec décimales . ou ,) de la chaîne de prix
             const match = priceString.match(/([\d\.,]+)/);
             if (match) {
-                // Remplace la virgule par un point pour le parseFloat si elle est utilisée comme séparateur décimal
                 return parseFloat(match[1].replace(',', '.'));
             }
             return 0;
         }
 
-        // MODIFICATION : Les dates sont désormais optionnelles
         function addToCartFromModal() {
             if (selectedProductForModal) {
                 const qtyInput = document.getElementById('modal-quantity');
@@ -123,17 +119,16 @@
                 const endDate = document.getElementById('modal-end-date').value;
                 const quantity = parseInt(qtyInput.value) || 1;
 
-                // Validation UNIQUEMENT si les deux dates sont renseignées, on vérifie l'ordre.
                 if (startDate && endDate && (new Date(startDate) > new Date(endDate))) {
                     alert("La date de début ne peut pas être postérieure à la date de fin.");
                     return;
                 }
 
                 const item = {
-                    id: Date.now(), // ID unique pour cet item du panier
+                    id: Date.now(), 
                     product: selectedProductForModal,
-                    startDate: startDate, // Date de début (peut être vide)
-                    endDate: endDate, // Date de fin (peut être vide)
+                    startDate: startDate, 
+                    endDate: endDate, 
                     quantity: quantity
                 };
 
@@ -149,7 +144,6 @@
             const validateBtn = document.querySelector('#panier-section .validate-btn');
             const userEmailInput = document.getElementById('user-email');
             
-            // Le bouton est activé si le panier n'est pas vide ET si un email est saisi
             const isValid = panier.length > 0 && userEmailInput.value.trim() !== '';
             validateBtn.disabled = !isValid;
         }
@@ -195,7 +189,6 @@
                 
                 const product = item.product;
                 
-                // Formatage des dates pour l'affichage (vide si non sélectionné)
                 const startDate = item.startDate ? `Du: <strong>${item.startDate}</strong>` : 'Date de début: Non spécifiée';
                 const endDate = item.endDate ? `Au: <strong>${item.endDate}</strong>` : 'Date de fin: Non spécifiée';
 
@@ -237,7 +230,6 @@
                     item.quantity = qty;
                 }
                 
-                // Re-render pour s'assurer que l'affichage est à jour (et corrige la valeur si max dépassée)
                 renderCart();
             }
         }
@@ -248,6 +240,7 @@
             updateCartCount();
         }
 
+        // CORRECTION: Suppression de l'alerte de succès après le mailto
         function validateCart() {
             if (panier.length === 0) {
                 alert("Votre panier est vide. Veuillez ajouter des articles avant de valider.");
@@ -290,6 +283,8 @@ Sous-total articles : ${panier.length} article(s)
 Merci de bien vouloir me recontacter pour confirmer la disponibilité, le tarif total, et finaliser la réservation.
 
 Cordialement,
+Nom/Prénom : (À compléter dans l'e-mail)
+Téléphone : (À compléter dans l'e-mail)
 `;
 
             const mailtoLink = `mailto:maboitealocangevine@gmail.com?subject=Demande de Réservation Matériel (${panier.length} articles)&body=${encodeURIComponent(emailBody)}`;
@@ -297,14 +292,13 @@ Cordialement,
             // Ouvre le client mail de l'utilisateur
             window.location.href = mailtoLink;
             
-            // Réinitialise le panier après l'envoi de l'email (même si l'utilisateur doit confirmer l'envoi)
+            // Réinitialise le panier après le lancement du mailto
             panier = [];
             document.getElementById('user-email').value = '';
             document.getElementById('reservation-message').value = '';
             document.getElementById('delivery-checkbox').checked = false;
-            handleDeliveryChange(); // Cache le champ d'adresse
+            handleDeliveryChange(); 
             renderCart();
-            alert("Votre demande de réservation a été préparée dans votre client de messagerie. N'oubliez pas de l'envoyer !");
         }
 
 
@@ -363,7 +357,7 @@ Cordialement,
         }
 
         // --- LOGIQUE CATALOGUE ---
-        // Fonction pour charger et traiter le contenu du fichier data.csv (qui est dans le txt compilé)
+        // Fonction pour charger et traiter le contenu du fichier data.csv (hardcodé dans le JS)
         function loadProductsFromText() {
             const compiledText = `id,category,name,description,price,image_url,max_quantity
 101,evenementiel,Table de Réception Pliante,"Table de réception en plastique pliante. Peut accueillir jusqu'à 8 personnes. Dimensions : 180x75cm.",10 € / jour,images/table.jpg,10
@@ -497,7 +491,6 @@ Cordialement,
             products.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
-                // MODIFICATION: Ajout de la classe "product-price" pour le style
                 card.innerHTML = `
                     <img src="${product.image_url}" alt="${product.name}">
                     <div class="product-card-body">
