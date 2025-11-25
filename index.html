@@ -1,574 +1,579 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ma boîte à loc' Angevine - Catalogue</title>
-    <style>
-        /* Variables de couleur pour un thème facile à maintenir  */
-        :root {
-            --primary-color: #004c7d; /* Bleu Marine Élégant */
-            --secondary-color: #28a745; /* Vert Succès/Action */
-            --background-light: #f9f9f9;
-            --text-dark: #333;
-            --shadow-subtle: 0 4px 8px rgba(0, 0, 0, 0.08);
-            --radius-default: 8px;
-            --button-hover-darken: #1e8438; /* Version plus foncée de secondary-color */
-            --button-border-light: #d1e7dd; /* Bordure légère pour boutons de catégorie */
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma boîte à loc' Angevine - Catalogue</title>
+    <style>
+        /* Variables de couleur pour un thème facile à maintenir */
+        :root {
+            --primary-color: #004c7d; /* Bleu Marine Élégant */
+            --secondary-color: #28a745; /* Vert Succès/Action */
+            --background-light: #f9f9f9;
+            --text-dark: #333;
+            --shadow-subtle: 0 4px 8px rgba(0, 0, 0, 0.08);
+            --radius-default: 8px;
+            --button-hover-darken: #1e8438; /* Version plus foncée de secondary-color */
+            --button-border-light: #d1e7dd; /* Bordure légère pour boutons de catégorie */
+        }
 
-        /* Styles généraux */
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Typo moderne */
-            margin: 0; 
-            padding: 0; 
-            background-color: var(--background-light); 
-            color: var(--text-dark);
-            transition: background-color 0.3s, color 0.3s;
-        }
-        
-        /* En-tête */
-        header { 
-            background-color: var(--primary-color); 
-            color: white; 
-            padding: 1.5em 0; 
-            text-align: center; 
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-        header h1 { margin: 0; font-weight: 400; font-size: 2em; }
-        
-        /* Bouton Panier/Dark Mode */
-        .header-actions {
-            position: absolute;
-            top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
-            display: flex;
-            gap: 10px;
-        }
-        .header-action-btn {
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: var(--radius-default);
-            cursor: pointer;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            transition: background-color 0.3s;
-        }
-        .header-action-btn:hover { background-color: var(--button-hover-darken); }
-        #cart-count {
-            background-color: white;
-            color: var(--secondary-color);
-            border-radius: 50%;
-            padding: 2px 7px;
-            margin-left: 5px;
-            font-size: 0.8em;
-            font-weight: 700;
-        }
-        
-        /* Navigation Principale */
-        nav.main-nav { background-color: #444; overflow: hidden; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
-        nav.main-nav a { 
-            float: left; 
-            display: block; 
-            color: white; 
-            text-align: center; 
-            padding: 18px 25px; 
-            text-decoration: none; 
-            font-size: 1em;
-            font-weight: 500;
-            transition: background-color 0.3s;
-        }
-        nav.main-nav a:hover { background-color: #555; }
-        nav.main-nav a.active { background-color: var(--secondary-color); color: white; }
+        /* Styles généraux */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Typo moderne */
+            margin: 0; 
+            padding: 0; 
+            background-color: var(--background-light); 
+            color: var(--text-dark);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* En-tête */
+        header { 
+            background-color: var(--primary-color); 
+            color: white; 
+            padding: 1.5em 0; 
+            text-align: center; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        header h1 { margin: 0; font-weight: 400; font-size: 2em; }
+        
+        /* Bouton Panier/Dark Mode */
+        .header-actions {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        .header-action-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--radius-default);
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        .header-action-btn:hover { background-color: var(--button-hover-darken); }
+        #cart-count {
+            background-color: white;
+            color: var(--secondary-color);
+            border-radius: 50%;
+            padding: 2px 7px;
+            margin-left: 5px;
+            font-size: 0.8em;
+            font-weight: 700;
+        }
+        
+        /* Navigation Principale */
+        nav.main-nav { background-color: #444; overflow: hidden; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
+        nav.main-nav a { 
+            float: left; 
+            display: block; 
+            color: white; 
+            text-align: center; 
+            padding: 18px 25px; 
+            text-decoration: none; 
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        nav.main-nav a:hover { background-color: #555; }
+        nav.main-nav a.active { background-color: var(--secondary-color); color: white; }
 
-        /* Navigation Catégories (Améliorée) */
-        nav.cat-nav { background-color: white; text-align: center; padding: 15px 0; border-bottom: 1px solid #eee; display: none; box-shadow: var(--shadow-subtle); }
-        nav.cat-nav button { 
-            background-color: var(--background-light); 
-            border: 1px solid var(--button-border-light); 
-            color: var(--primary-color); 
-            padding: 12px 20px; 
-            cursor: pointer; 
-            margin: 0 8px; 
-            font-size: 0.9em; 
-            border-radius: 25px; 
-            transition: all 0.3s ease; 
-            font-weight: 600;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
-        }
-        nav.cat-nav button.active { 
-            background-color: var(--primary-color); 
-            color: white; 
-            border-color: var(--primary-color); 
-            box-shadow: 0 3px 6px rgba(0, 76, 125, 0.3); 
-            transform: translateY(-2px); 
-        }
-        nav.cat-nav button:hover:not(.active) { 
-            background-color: #eaf5ee; 
-            border-color: var(--secondary-color); 
-            color: var(--secondary-color); 
-            transform: translateY(-1px);
-        }
+        /* Navigation Catégories (Améliorée) */
+        nav.cat-nav { background-color: white; text-align: center; padding: 15px 0; border-bottom: 1px solid #eee; display: none; box-shadow: var(--shadow-subtle); }
+        nav.cat-nav button { 
+            background-color: var(--background-light); 
+            border: 1px solid var(--button-border-light); 
+            color: var(--primary-color); 
+            padding: 12px 20px; 
+            cursor: pointer; 
+            margin: 0 8px; 
+            font-size: 0.9em; 
+            border-radius: 25px; 
+            transition: all 0.3s ease; 
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+        }
+        nav.cat-nav button.active { 
+            background-color: var(--primary-color); 
+            color: white; 
+            border-color: var(--primary-color); 
+            box-shadow: 0 3px 6px rgba(0, 76, 125, 0.3); 
+            transform: translateY(-2px); 
+        }
+        nav.cat-nav button:hover:not(.active) { 
+            background-color: #eaf5ee; 
+            border-color: var(--secondary-color); 
+            color: var(--secondary-color); 
+            transform: translateY(-1px);
+        }
 
-        /* Contenu principal */
-        .content-section { padding: 30px; display: none; max-width: 1200px; margin: 0 auto; }
-        .content-section.active { display: block; }
-        
-        /* Accueil */
-        #accueil-section { text-align: center; padding: 60px 20px; }
-        #accueil-section h2 { color: var(--primary-color); margin-bottom: 15px; font-weight: 600; }
-        #accueil-section p { color: #555; max-width: 800px; margin: 20px auto; line-height: 1.6; }
-        #accueil-section button { 
-            background-color: var(--secondary-color); 
-            color: white; 
-            padding: 15px 35px; 
-            font-size: 1.1em; 
-            border: none; 
-            border-radius: var(--radius-default); 
-            cursor: pointer; 
-            margin-top: 25px; 
-            transition: background-color 0.3s, transform 0.2s; 
-            box-shadow: var(--shadow-subtle);
-        }
-        
-        /* Styles Carrousel */
-        .carousel-container { 
-            max-width: 900px; 
-            margin: 50px auto; 
-            overflow: hidden; 
-            border-radius: var(--radius-default); 
-            box-shadow: var(--shadow-subtle); 
-            position: relative; 
-        }
-        .carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
-        .carousel-slide { min-width: 100%; box-sizing: border-box; }
-        .carousel-slide img { width: 100%; height: 400px; object-fit: contain; background-color: #ccc; }
+        /* Contenu principal */
+        .content-section { padding: 30px; display: none; max-width: 1200px; margin: 0 auto; }
+        .content-section.active { display: block; }
+        
+        /* Accueil */
+        #accueil-section { text-align: center; padding: 60px 20px; }
+        #accueil-section h2 { color: var(--primary-color); margin-bottom: 15px; font-weight: 600; }
+        #accueil-section p { color: #555; max-width: 800px; margin: 20px auto; line-height: 1.6; }
+        #accueil-section button { 
+            background-color: var(--secondary-color); 
+            color: white; 
+            padding: 15px 35px; 
+            font-size: 1.1em; 
+            border: none; 
+            border-radius: var(--radius-default); 
+            cursor: pointer; 
+            margin-top: 25px; 
+            transition: background-color 0.3s, transform 0.2s; 
+            box-shadow: var(--shadow-subtle);
+        }
+        
+        /* Styles Carrousel */
+        .carousel-container { 
+            max-width: 900px; 
+            margin: 50px auto; 
+            overflow: hidden; 
+            border-radius: var(--radius-default); 
+            box-shadow: var(--shadow-subtle); 
+            position: relative; 
+        }
+        .carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
+        .carousel-slide { min-width: 100%; box-sizing: border-box; }
+        /* MODIFICATION ICI : 'cover' au lieu de 'contain' */
+        .carousel-slide img { 
+            width: 100%; 
+            height: 400px; 
+            object-fit: cover; /* CHANGEMENT ICI */
+            background-color: #ccc; 
+        }
 
-        /* Flèches et Indicateurs */
-        .carousel-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.4); 
-            color: white;
-            border: none;
-            padding: 15px 20px; 
-            cursor: pointer;
-            z-index: 10; 
-            font-size: 30px;
-            transition: background-color 0.3s;
-        }
-        .carousel-nav.prev { left: 0; border-radius: 0 var(--radius-default) var(--radius-default) 0; }
-        .carousel-nav.next { right: 0; border-radius: var(--radius-default) 0 0 var(--radius-default); }
+        /* Flèches et Indicateurs */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.4); 
+            color: white;
+            border: none;
+            padding: 15px 20px; 
+            cursor: pointer;
+            z-index: 10; 
+            font-size: 30px;
+            transition: background-color 0.3s;
+        }
+        .carousel-nav.prev { left: 0; border-radius: 0 var(--radius-default) var(--radius-default) 0; }
+        .carousel-nav.next { right: 0; border-radius: var(--radius-default) 0 0 var(--radius-default); }
 
-        #carousel-indicators {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-        }
-        #carousel-indicators span {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            margin: 0 5px;
-            background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s; 
-        }
-        #carousel-indicators span.active {
-            background-color: var(--secondary-color);
-            transform: scale(1.2); 
-        }
-        #carousel-indicators span:hover {
-            background-color: var(--secondary-color);
-            transform: scale(1.1);
-        }
-        
-        /* Catalogue */
-        .search-container { text-align: center; padding-bottom: 25px; }
-        .search-container input { 
-            padding: 12px; 
-            width: 400px; 
-            border: 1px solid #ccc; 
-            border-radius: var(--radius-default); 
-            transition: box-shadow 0.3s;
-        }
-        .product-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; padding: 20px 0; }
-        .product-card { 
-            background-color: white; 
-            border: 1px solid #e0e0e0; 
-            border-radius: var(--radius-default); 
-            box-shadow: var(--shadow-subtle); 
-            width: 300px; 
-            text-align: center;
-            overflow: hidden; 
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .product-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-        .product-card img { 
-            width: 100%; 
-            height: 220px; 
-            object-fit: cover; 
-            margin-bottom: 0; 
-        }
-        .product-card-body { padding: 15px; }
-        .product-card h4 { margin: 10px 0; color: var(--primary-color); font-weight: 600; font-size: 1.2em; }
-        
-        /* Bouton "Détails / Ajouter" */
-        .product-card button { 
-            background-color: white; 
-            color: var(--primary-color); 
-            border: 2px solid var(--primary-color); 
-            padding: 10px 20px; 
-            border-radius: 25px; 
-            cursor: pointer; 
-            margin-top: 5px;
-            margin-bottom: 10px;
-            font-weight: bold;
-            transition: all 0.3s ease; 
-        }
-        .product-card button:hover { 
-            background-color: var(--primary-color); 
-            color: white; 
-            transform: translateY(-2px); 
-            box-shadow: 0 4px 8px rgba(0, 76, 125, 0.3); 
-        }
+        #carousel-indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        #carousel-indicators span {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s; 
+        }
+        #carousel-indicators span.active {
+            background-color: var(--secondary-color);
+            transform: scale(1.2); 
+        }
+        #carousel-indicators span:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.1);
+        }
+        
+        /* Catalogue */
+        .search-container { text-align: center; padding-bottom: 25px; }
+        .search-container input { 
+            padding: 12px; 
+            width: 400px; 
+            border: 1px solid #ccc; 
+            border-radius: var(--radius-default); 
+            transition: box-shadow 0.3s;
+        }
+        .product-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; padding: 20px 0; }
+        .product-card { 
+            background-color: white; 
+            border: 1px solid #e0e0e0; 
+            border-radius: var(--radius-default); 
+            box-shadow: var(--shadow-subtle); 
+            width: 300px; 
+            text-align: center;
+            overflow: hidden; 
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .product-card img { 
+            width: 100%; 
+            height: 220px; 
+            object-fit: cover; 
+            margin-bottom: 0; 
+        }
+        .product-card-body { padding: 15px; }
+        .product-card h4 { margin: 10px 0; color: var(--primary-color); font-weight: 600; font-size: 1.2em; }
+        
+        /* Bouton "Détails / Ajouter" */
+        .product-card button { 
+            background-color: white; 
+            color: var(--primary-color); 
+            border: 2px solid var(--primary-color); 
+            padding: 10px 20px; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            margin-top: 5px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            transition: all 0.3s ease; 
+        }
+        .product-card button:hover { 
+            background-color: var(--primary-color); 
+            color: white; 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 8px rgba(0, 76, 125, 0.3); 
+        }
 
-        /* Modale */
-        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); }
-        .modal-content { 
-            background-color: white; 
-            margin: 5% auto; 
-            padding: 30px; 
-            width: 90%; 
-            max-width: 700px; 
-            border-radius: var(--radius-default); 
-            position: relative; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            max-height: 90vh; 
-            overflow-y: auto; 
-        }
-        .modal-content button#add-to-cart-btn {
-            background-color: var(--secondary-color); 
-            color: white;
-            font-weight: bold;
-            padding: 12px 25px;
-            border-radius: var(--radius-default);
-            margin-top: 15px;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .modal-content button#add-to-cart-btn:hover {
-            background-color: var(--button-hover-darken);
-        }
-        .close { color: #aaa; float: right; font-size: 36px; font-weight: normal; line-height: 1; position: absolute; top: 10px; right: 20px; }
-        .close:hover, .close:focus { color: var(--primary-color); text-decoration: none; cursor: pointer; }
+        /* Modale */
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); }
+        .modal-content { 
+            background-color: white; 
+            margin: 5% auto; 
+            padding: 30px; 
+            width: 90%; 
+            max-width: 700px; 
+            border-radius: var(--radius-default); 
+            position: relative; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            max-height: 90vh; 
+            overflow-y: auto; 
+        }
+        .modal-content button#add-to-cart-btn {
+            background-color: var(--secondary-color); 
+            color: white;
+            font-weight: bold;
+            padding: 12px 25px;
+            border-radius: var(--radius-default);
+            margin-top: 15px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .modal-content button#add-to-cart-btn:hover {
+            background-color: var(--button-hover-darken);
+        }
+        .close { color: #aaa; float: right; font-size: 36px; font-weight: normal; line-height: 1; position: absolute; top: 10px; right: 20px; }
+        .close:hover, .close:focus { color: var(--primary-color); text-decoration: none; cursor: pointer; }
 
-        /* Image dans la modale */
-        #modal-image {
-            max-width: 100%; 
-            height: auto; 
-            display: block; 
-            margin: 0 auto 20px auto; 
-            border-radius: 5px;
-        }
-        
-        /* Contact */
-        #contact-section { max-width: 700px; margin: 50px auto; text-align: center; padding: 40px; background-color: white; border-radius: var(--radius-default); box-shadow: var(--shadow-subtle); }
-        
-        /* Dark Mode */
-        .dark-mode {
-            --background-light: #1e1e1e;
-            --text-dark: #f0f0f0;
-            background-color: var(--background-light);
-            color: var(--text-dark);
-        }
-        .dark-mode header { background-color: #003350; }
-        .dark-mode nav.cat-nav, .dark-mode .product-card, .dark-mode .modal-content, .dark-mode #contact-section, .dark-mode .cart-item, .dark-mode .cart-summary { background-color: #2a2a2a; border-color: #444; color: var(--text-dark); }
-        .dark-mode nav.cat-nav button { background-color: #3a3a3a; border-color: #555; color: var(--text-dark); }
-        .dark-mode nav.cat-nav button.active { background-color: var(--primary-color); }
-        .dark-mode .carousel-slide img { background-color: #333; }
-        .dark-mode .search-container input { background-color: #3a3a3a; color: var(--text-dark); border-color: #555; }
-        .dark-mode .cart-confirmation textarea { background-color: #3a3a3a; color: var(--text-dark); border-color: #555; }
-        
-        /* Panier */
-        #panier-section { max-width: 900px; margin: 0 auto; padding: 30px; }
-        #panier-section h2 { color: var(--primary-color); margin-bottom: 20px; }
-        
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            margin-bottom: 10px;
-            background-color: white;
-            border-radius: var(--radius-default);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        .dark-mode .cart-item { background-color: #2a2a2a; }
+        /* Image dans la modale */
+        #modal-image {
+            max-width: 100%; 
+            height: auto; 
+            display: block; 
+            margin: 0 auto 20px auto; 
+            border-radius: 5px;
+        }
+        
+        /* Contact */
+        #contact-section { max-width: 700px; margin: 50px auto; text-align: center; padding: 40px; background-color: white; border-radius: var(--radius-default); box-shadow: var(--shadow-subtle); }
+        
+        /* Dark Mode */
+        .dark-mode {
+            --background-light: #1e1e1e;
+            --text-dark: #f0f0f0;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+        }
+        .dark-mode header { background-color: #003350; }
+        .dark-mode nav.cat-nav, .dark-mode .product-card, .dark-mode .modal-content, .dark-mode #contact-section, .dark-mode .cart-item, .dark-mode .cart-summary { background-color: #2a2a2a; border-color: #444; color: var(--text-dark); }
+        .dark-mode nav.cat-nav button { background-color: #3a3a3a; border-color: #555; color: var(--text-dark); }
+        .dark-mode nav.cat-nav button.active { background-color: var(--primary-color); }
+        .dark-mode .carousel-slide img { background-color: #333; }
+        .dark-mode .search-container input { background-color: #3a3a3a; color: var(--text-dark); border-color: #555; }
+        .dark-mode .cart-confirmation textarea { background-color: #3a3a3a; color: var(--text-dark); border-color: #555; }
+        
+        /* Panier */
+        #panier-section { max-width: 900px; margin: 0 auto; padding: 30px; }
+        #panier-section h2 { color: var(--primary-color); margin-bottom: 20px; }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: white;
+            border-radius: var(--radius-default);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .dark-mode .cart-item { background-color: #2a2a2a; }
 
-        .item-details { flex-grow: 1; }
-        .item-details h4 { margin: 0 0 5px 0; color: var(--primary-color); }
-        
-        /* Contrôles d'article: dates et quantité */
-        .item-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .item-controls input[type="date"], .item-controls input[type="number"] { 
-            padding: 5px; 
-            border-radius: 4px; 
-            border: 1px solid #ccc;
-            width: 70px; /* Taille fixe pour les inputs */
-        }
-        
-        .remove-btn { 
-            background-color: #dc3545; 
-            color: white; 
-            border: none; 
-            padding: 5px 10px; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            margin-left: 15px;
-        }
-        .cart-summary {
-            margin-top: 30px;
-            padding: 20px;
-            border-top: 2px solid var(--primary-color);
-            text-align: right;
-            background-color: white;
-            border-radius: var(--radius-default);
-        }
-        .dark-mode .cart-summary { background-color: #2a2a2a; }
-        
-        /* Styles spécifiques au total et à la livraison */
-        .cart-total-line {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-top: 5px;
-        }
-        .cart-total-line label { margin-right: 15px; font-weight: normal; }
-        .cart-total-line strong { min-width: 100px; text-align: right; }
-        #total-final-price { font-size: 1.2em; font-weight: bold; color: var(--secondary-color); }
+        .item-details { flex-grow: 1; }
+        .item-details h4 { margin: 0 0 5px 0; color: var(--primary-color); }
+        
+        /* Contrôles d'article: dates et quantité */
+        .item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .item-controls input[type="date"], .item-controls input[type="number"] { 
+            padding: 5px; 
+            border-radius: 4px; 
+            border: 1px solid #ccc;
+            width: 70px; /* Taille fixe pour les inputs */
+        }
+        
+        .remove-btn { 
+            background-color: #dc3545; 
+            color: white; 
+            border: none; 
+            padding: 5px 10px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            margin-left: 15px;
+        }
+        .cart-summary {
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 2px solid var(--primary-color);
+            text-align: right;
+            background-color: white;
+            border-radius: var(--radius-default);
+        }
+        .dark-mode .cart-summary { background-color: #2a2a2a; }
+        
+        /* Styles spécifiques au total et à la livraison */
+        .cart-total-line {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-top: 5px;
+        }
+        .cart-total-line label { margin-right: 15px; font-weight: normal; }
+        .cart-total-line strong { min-width: 100px; text-align: right; }
+        #total-final-price { font-size: 1.2em; font-weight: bold; color: var(--secondary-color); }
 
-        .cart-confirmation {
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: var(--radius-default);
-            text-align: left;
-        }
+        .cart-confirmation {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: var(--radius-default);
+            text-align: left;
+        }
 
-        /* Champs de saisie */
-        .cart-confirmation input[type="email"],
-        .cart-confirmation textarea {
-            width: 98%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-        .cart-confirmation textarea {
-            min-height: 100px;
-            margin-top: 10px;
-        }
+        /* Champs de saisie */
+        .cart-confirmation input[type="email"],
+        .cart-confirmation textarea {
+            width: 98%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .cart-confirmation textarea {
+            min-height: 100px;
+            margin-top: 10px;
+        }
 
-        /* Champ d'adresse de livraison (masqué par défaut) */
-        #delivery-address-group {
-            display: none; /* Caché par défaut */
-            margin-top: 15px;
-            padding: 10px;
-            border: 1px dashed #ccc;
-            border-radius: 4px;
-        }
+        /* Champ d'adresse de livraison (masqué par défaut) */
+        #delivery-address-group {
+            display: none; /* Caché par défaut */
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px dashed #ccc;
+            border-radius: 4px;
+        }
 
-        .validate-btn {
-            background-color: var(--secondary-color);
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: var(--radius-default);
-            cursor: pointer;
-            margin-top: 15px;
-            font-size: 1.1em;
-            width: 100%;
-            transition: background-color 0.3s;
-        }
-        .validate-btn:hover { background-color: var(--button-hover-darken); }
+        .validate-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: var(--radius-default);
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 1.1em;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        .validate-btn:hover { background-color: var(--button-hover-darken); }
 
-        .empty-cart-message {
-            text-align: center;
-            padding: 50px;
-            border: 1px dashed #ccc;
-            border-radius: var(--radius-default);
-            color: #777;
-        }
-        @media (max-width: 768px) {
-            .header-actions {
-                flex-direction: column;
-                position: static;
-                transform: none;
-                padding: 10px;
-                text-align: center;
-                gap: 5px;
-            }
-            header { padding-bottom: 10px; }
-            .cart-item { flex-direction: column; align-items: flex-start; }
-            .item-controls { margin-top: 10px; width: 100%; text-align: left; display: block; }
-            .item-controls label, .item-controls input { margin-right: 5px; }
-            .remove-btn { margin-left: 0; margin-top: 10px; }
-            .header-action-btn { font-size: 0.9em; padding: 8px 12px; }
-            .modal-content {
-                margin: 5% auto;
-                width: 95%;
-                padding: 15px;
-            }
-            .search-container input {
-                width: 90%;
-            }
-            .carousel-slide img {
-                height: 250px; 
-            }
-        }
-    </style>
+        .empty-cart-message {
+            text-align: center;
+            padding: 50px;
+            border: 1px dashed #ccc;
+            border-radius: var(--radius-default);
+            color: #777;
+        }
+        @media (max-width: 768px) {
+            .header-actions {
+                flex-direction: column;
+                position: static;
+                transform: none;
+                padding: 10px;
+                text-align: center;
+                gap: 5px;
+            }
+            header { padding-bottom: 10px; }
+            .cart-item { flex-direction: column; align-items: flex-start; }
+            .item-controls { margin-top: 10px; width: 100%; text-align: left; display: block; }
+            .item-controls label, .item-controls input { margin-right: 5px; }
+            .remove-btn { margin-left: 0; margin-top: 10px; }
+            .header-action-btn { font-size: 0.9em; padding: 8px 12px; }
+            .modal-content {
+                margin: 5% auto;
+                width: 95%;
+                padding: 15px;
+            }
+            .search-container input {
+                width: 90%;
+            }
+            .carousel-slide img {
+                height: 250px; 
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <header>
-        <h1>Ma boîte à loc' Angevine</h1>
-        <div class="header-actions">
-            <button class="header-action-btn" id="dark-mode-toggle">🌓 Mode Sombre</button>
-            <button class="header-action-btn" onclick="showSection('panier')">
-                🛒 Panier (<span id="cart-count">0</span>)
-            </button>
-        </div>
-    </header>
+    <header>
+        <h1>Ma boîte à loc' Angevine</h1>
+        <div class="header-actions">
+            <button class="header-action-btn" id="dark-mode-toggle">🌓 Mode Sombre</button>
+            <button class="header-action-btn" onclick="showSection('panier')">
+                🛒 Panier (<span id="cart-count">0</span>)
+            </button>
+        </div>
+    </header>
 
-    <nav class="main-nav">
-        <a href="#" onclick="showSection('accueil')">Accueil</a>
-        <a href="#" onclick="showSection('catalogue')">Catalogue</a>
-        <a href="#" onclick="showSection('contact')">Contact</a>
-    </nav>
-    
-    <nav class="cat-nav" id="catalogue-nav"></nav>
+    <nav class="main-nav">
+        <a href="#" onclick="showSection('accueil')">Accueil</a>
+        <a href="#" onclick="showSection('catalogue')">Catalogue</a>
+        <a href="#" onclick="showSection('contact')">Contact</a>
+    </nav>
+    
+    <nav class="cat-nav" id="catalogue-nav"></nav>
 
-    <div id="accueil-section" class="content-section active">
-        <h2>Bienvenue chez Ma boîte à loc' Angevine ! 🏡</h2>
-        <p>Nous sommes votre partenaire de confiance pour la location de matériel en Anjou. Que vous prépariez un grand événement festif ou que vous ayez besoin d'outils professionnels pour un chantier, nous avons l'équipement qu'il vous faut, disponible et bien entretenu.</p>
-        
-        <div class="carousel-container">
-            <div class="carousel-track" id="carousel-track">
-                </div>
-            
-            <button class="carousel-nav prev" onclick="moveCarousel(-1)">❮</button>
-            <button class="carousel-nav next" onclick="moveCarousel(1)">❯</button>
-            <div id="carousel-indicators"></div>
-        </div>
+    <div id="accueil-section" class="content-section active">
+        <h2>Bienvenue chez Ma boîte à loc' Angevine ! 🏡</h2>
+        <p>Nous sommes votre partenaire de confiance pour la location de matériel en Anjou. Que vous prépariez un grand événement festif ou que vous ayez besoin d'outils professionnels pour un chantier, nous avons l'équipement qu'il vous faut, disponible et bien entretenu.</p>
+        
+        <div class="carousel-container">
+            <div class="carousel-track" id="carousel-track">
+                            </div>
+            
+            <button class="carousel-nav prev" onclick="moveCarousel(-1)">❮</button>
+            <button class="carousel-nav next" onclick="moveCarousel(1)">❯</button>
+            <div id="carousel-indicators"></div>
+        </div>
 
-        <p>Parcourez notre catalogue pour découvrir nos tables, tentes, projecteurs, groupes électrogènes, échafaudages, et bien plus encore.</p>
-        <button onclick="showSection('catalogue')">Voir le Catalogue Complet</button>
-    </div>
+        <p>Parcourez notre catalogue pour découvrir nos tables, tentes, projecteurs, groupes électrogènes, échafaudages, et bien plus encore.</p>
+        <button onclick="showSection('catalogue')">Voir le Catalogue Complet</button>
+    </div>
 
-    <div id="catalogue-section" class="content-section">
-        <div class="search-container">
-            <input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Rechercher un produit...">
-        </div>
-        
-        <div id="product-list-container" class="product-list">
-        </div>
-    </div>
+    <div id="catalogue-section" class="content-section">
+        <div class="search-container">
+            <input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Rechercher un produit...">
+        </div>
+        
+        <div id="product-list-container" class="product-list">
+        </div>
+    </div>
 
-    <div id="panier-section" class="content-section">
-        <h2>🛒 Votre Demande de Réservation</h2>
-        <div id="cart-items-container">
-            </div>
+    <div id="panier-section" class="content-section">
+        <h2>🛒 Votre Demande de Réservation</h2>
+        <div id="cart-items-container">
+            </div>
 
-        <div class="cart-summary">
-            <div class="cart-total-line">
-                <label for="delivery-checkbox">
-                    <input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()"> Livraison demandée
-                </label>
-                <strong><span id="delivery-info">Coût à déterminer</span></strong>
-            </div>
-            
-            <div class="cart-total-line" style="border-top: 1px solid #ccc; padding-top: 10px;">
-                <label>Sous-total produits :</label>
-                <strong><span id="cart-total-price">0.00 €</span></strong>
-            </div>
+        <div class="cart-summary">
+            <div class="cart-total-line">
+                <label for="delivery-checkbox">
+                    <input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()"> Livraison demandée
+                </label>
+                <strong><span id="delivery-info">Coût à déterminer</span></strong>
+            </div>
+            
+            <div class="cart-total-line" style="border-top: 1px solid #ccc; padding-top: 10px;">
+                <label>Sous-total produits :</label>
+                <strong><span id="cart-total-price">0.00 €</span></strong>
+            </div>
 
-            <div class="cart-total-line">
-                <label>Total estimé (Hors Livraison) :</label>
-                <strong id="total-final-price">0.00 €</strong>
-            </div>
-            
-            <div class="cart-confirmation">
-                <p>Vos coordonnées (pour la réponse) :</p>
-                <input type="email" id="user-email" placeholder="Votre adresse email (obligatoire)">
-                
-                <div id="delivery-address-group">
-                    <p>Adresse complète de livraison (obligatoire si livraison cochée) :</p>
-                    <textarea id="delivery-address" placeholder="N°, Rue, Code Postal, Ville."></textarea>
-                </div>
+            <div class="cart-total-line">
+                <label>Total estimé (Hors Livraison) :</label>
+                <strong id="total-final-price">0.00 €</strong>
+            </div>
+            
+            <div class="cart-confirmation">
+                <p>Vos coordonnées (pour la réponse) :</p>
+                <input type="email" id="user-email" placeholder="Votre adresse email (obligatoire)">
+                
+                <div id="delivery-address-group">
+                    <p>Adresse complète de livraison (obligatoire si livraison cochée) :</p>
+                    <textarea id="delivery-address" placeholder="N°, Rue, Code Postal, Ville."></textarea>
+                </div>
 
-                <p>Ajouter un message pour votre demande de devis/réservation (détails, etc.) :</p>
-                <textarea id="reservation-message" placeholder="Ex: J'aurais besoin d'une livraison le vendredi 10 mai et de la reprise le lundi 13 mai."></textarea>
-                
-                <button class="validate-btn" onclick="sendReservationEmail()">Valider la Demande de Réservation</button>
-            </div>
-        </div>
-    </div>
+                <p>Ajouter un message pour votre demande de devis/réservation (détails, etc.) :</p>
+                <textarea id="reservation-message" placeholder="Ex: J'aurais besoin d'une livraison le vendredi 10 mai et de la reprise le lundi 13 mai."></textarea>
+                
+                <button class="validate-btn" onclick="sendReservationEmail()">Valider la Demande de Réservation</button>
+            </div>
+        </div>
+    </div>
 
-    <div id="contact-section" class="content-section">
-        <h2>Nous Contacter et Venir Nous Voir</h2>
-        <p>Pour toute demande de réservation ou information sur un produit, nous vous répondons rapidement :</p>
-        <p>📧 Email : <a href="mailto:maboitealocangevine@gmail.com">maboitealocangevine@gmail.com</a></p>
-        <p>📞 Téléphone : <strong><a href="tel:0652982348">06.52.98.23.48</a></strong></p>
-        <p>📍 Adresse : <strong>5 impasse les Rochebruyeres 49140 Rives du Loir en Anjou</strong></p>
-        
-        <div class="important-note">
-            ⚠️ <strong>IMPORTANT :</strong> Notre local n'est pas un magasin. Toute visite et récupération de matériel doit se faire <strong>uniquement sur rendez-vous</strong> (réservation préalable par téléphone ou email).
-        </div>
-    </div>
+    <div id="contact-section" class="content-section">
+        <h2>Nous Contacter et Venir Nous Voir</h2>
+        <p>Pour toute demande de réservation ou information sur un produit, nous vous répondons rapidement :</p>
+        <p>📧 Email : <a href="mailto:maboitealocangevine@gmail.com">maboitealocangevine@gmail.com</a></p>
+        <p>📞 Téléphone : <strong><a href="tel:0652982348">06.52.98.23.48</a></strong></p>
+        <p>📍 Adresse : <strong>5 impasse les Rochebruyeres 49140 Rives du Loir en Anjou</strong></p>
+        
+        <div class="important-note">
+            ⚠️ <strong>IMPORTANT :</strong> Notre local n'est pas un magasin. Toute visite et récupération de matériel doit se faire <strong>uniquement sur rendez-vous</strong> (réservation préalable par téléphone ou email).
+        </div>
+    </div>
 
-    <div id="product-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">×</span>
-            <h3 id="modal-title"></h3>
-            <img id="modal-image" src="" alt="Image produit">
-            <p id="modal-description"></p>
-            <p id="modal-price"></p>
-            
-            <div id="modal-dates-group" style="margin-bottom: 20px;">
-                <label for="modal-start-date">🗓️ Date de début :</label>
-                <input type="date" id="modal-start-date" required>
-                
-                <label for="modal-end-date" style="margin-left: 20px;">🗓️ Date de fin :</label>
-                <input type="date" id="modal-end-date" required>
-            </div>
-            
-            <div id="modal-quantity-group">
-                <label for="modal-quantity">Quantité souhaitée (Max: <span id="modal-max-qty">1</span>) :</label>
-                <input type="number" id="modal-quantity" value="1" min="1" max="1" style="width: 70px;">
-            </div>
-            <button id="add-to-cart-btn" onclick="addToCartFromModal()">Ajouter au Panier</button>
-        </div>
-    </div>
-    
-    <script src="script.js"></script>
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">×</span>
+            <h3 id="modal-title"></h3>
+            <img id="modal-image" src="" alt="Image produit">
+            <p id="modal-description"></p>
+            <p id="modal-price"></p>
+            
+            <div id="modal-dates-group" style="margin-bottom: 20px;">
+                <label for="modal-start-date">🗓️ Date de début :</label>
+                <input type="date" id="modal-start-date" required>
+                
+                <label for="modal-end-date" style="margin-left: 20px;">🗓️ Date de fin :</label>
+                <input type="date" id="modal-end-date" required>
+            </div>
+            
+            <div id="modal-quantity-group">
+                <label for="modal-quantity">Quantité souhaitée (Max: <span id="modal-max-qty">1</span>) :</label>
+                <input type="number" id="modal-quantity" value="1" min="1" max="1" style="width: 70px;">
+            </div>
+            <button id="add-to-cart-btn" onclick="addToCartFromModal()">Ajouter au Panier</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
 </body>
-
 </html>

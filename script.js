@@ -1,13 +1,20 @@
 // --- VARIABLES GLOBALES ---
 let allProductsData = [];
-let carouselImages = [];
+// MISE À JOUR 1 : Initialisation du tableau avec des chemins vers images/carrousel
+let carouselImages = [
+    'images/carrousel/location-tente.jpg',
+    'images/carrousel/location-sono.jpg',
+    'images/carrousel/location-echafaudage.jpg',
+    'images/carrousel/materiel-evenementiel.jpg'
+    // ⚠️ IMPORTANT : Remplacez ces noms par ceux de vos images réelles dans images/carrousel/
+];
 let slideIndex = 0;
 let totalSlides = 0;
 let carouselInterval;
 let selectedProductForModal = null; // Stocke l'objet produit pour l'ajout au panier
 
 // Le tableau qui stocke les articles du panier
-let panier = []; 
+let panier = [];
 
 // Message informatif de livraison
 const DELIVERY_INFO_MESSAGE = "Coût à déterminer (sur devis)";
@@ -26,6 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
             document.body.classList.toggle("dark-mode");
         });
     }
+
+    // MISE À JOUR 3 : Initialisation du carrousel au chargement de la page
+    initCarousel();
 });
 
 // --- NAVIGATION ---
@@ -35,7 +45,7 @@ function showSection(sectionId) {
     } else {
         startCarousel();
     }
-    
+
     if (sectionId === 'panier') {
         renderCart();
     }
@@ -69,10 +79,10 @@ function showSection(sectionId) {
 // MODIFICATION : Accepte l'ID du produit
 function showProductDetails(productId) {
     const modal = document.getElementById('product-modal');
-    
+
     // On trouve le produit dans notre tableau global de données
     selectedProductForModal = allProductsData.find(p => p.id === productId);
-    
+
     if (!selectedProductForModal) {
         console.error("Produit introuvable avec l'ID:", productId);
         alert("Désolé, les détails de ce produit sont momentanément indisponibles.");
@@ -85,7 +95,7 @@ function showProductDetails(productId) {
     document.getElementById('modal-image').src = selectedProductForModal.image_url;
     document.getElementById('modal-description').textContent = selectedProductForModal.description;
     document.getElementById('modal-price').textContent = 'Prix : ' + selectedProductForModal.price;
-    
+
     // Mettre à jour la quantité max dans la modale
     document.getElementById('modal-max-qty').textContent = maxQty;
     const qtyInput = document.getElementById('modal-quantity');
@@ -95,7 +105,7 @@ function showProductDetails(productId) {
     // Réinitialiser les champs de date
     document.getElementById('modal-start-date').value = '';
     document.getElementById('modal-end-date').value = '';
-    
+
     modal.style.display = 'block';
 }
 
@@ -134,25 +144,25 @@ function addToCartFromModal() {
 
         // Validation UNIQUEMENT si les deux dates sont renseignées, on vérifie l'ordre.
         if (startDate && endDate && (new Date(startDate) > new Date(endDate))) {
-             alert("La date de début ne peut pas être postérieure à la date de fin.");
+            alert("La date de début ne peut pas être postérieure à la date de fin.");
             return;
         }
-        
+
         const item = {
             id: Date.now(), // ID unique pour cet item du panier
             product: selectedProductForModal,
             startDate: startDate, // Date de début (peut être vide)
             endDate: endDate,     // Date de fin (peut être vide)
-            quantity: quantity 
+            quantity: quantity
         };
-        
+
         panier.push(item);
         closeModal();
         updateCartUI();
-        
+
         // Amélioration du message d'alerte pour tenir compte des dates manquantes
-        const dateMessage = (startDate && endDate) 
-            ? ` pour la période du ${startDate} au ${endDate}` 
+        const dateMessage = (startDate && endDate)
+            ? ` pour la période du ${startDate} au ${endDate}`
             : ` sans date de réservation spécifiée (vous pouvez les ajouter dans le Panier).`;
 
         alert(`${quantity} x ${selectedProductForModal.name} a été ajouté à votre panier de réservation${dateMessage}`);
@@ -164,7 +174,7 @@ function handleDeliveryChange() {
     const isDeliveryChecked = document.getElementById('delivery-checkbox').checked;
     const addressGroup = document.getElementById('delivery-address-group');
     const deliveryInfoElement = document.getElementById('delivery-info');
-    
+
     if (isDeliveryChecked) {
         addressGroup.style.display = 'block';
         deliveryInfoElement.textContent = DELIVERY_INFO_MESSAGE;
@@ -178,332 +188,388 @@ function handleDeliveryChange() {
 function updateCartUI() {
     // 1. Mise à jour du compteur
     document.getElementById('cart-count').textContent = panier.length;
-    
+
     // 2. Calcul du sous-total produits
     let productSubtotal = 0;
     panier.forEach(item => {
         // Multiplie le prix par la quantité
         productSubtotal += getPriceValue(item.product.price) * item.quantity;
     });
-    
+
     // Affiche le sous-total produits
     document.getElementById('cart-total-price').textContent = productSubtotal.toFixed(2) + ' €';
-
-    // Le total final est le sous-total produits (car la livraison est sur devis)
     document.getElementById('total-final-price').textContent = productSubtotal.toFixed(2) + ' €';
-}
 
+    // 3. Affichage des items dans le panier
+    renderCart();
+
+    // 4. Affichage du message Panier vide si nécessaire
+    const container = document.getElementById('cart-items-container');
+    const validateBtn = document.querySelector('.validate-btn');
+    const summary = document.querySelector('.cart-summary');
+
+    if (panier.length === 0) {
+        container.innerHTML = '<div class="empty-cart-message">Votre panier de réservation est vide. Ajoutez des articles depuis le catalogue !</div>';
+        summary.style.display = 'none';
+        validateBtn.disabled = true;
+    } else {
+        summary.style.display = 'block';
+        validateBtn.disabled = false;
+    }
+}
 
 function renderCart() {
     const container = document.getElementById('cart-items-container');
-    
+    container.innerHTML = '';
+
     if (panier.length === 0) {
-        container.innerHTML = '<div class="empty-cart-message">Votre panier est vide. Ajoutez des articles depuis le Catalogue.</div>';
-        const summary = document.querySelector('.cart-summary');
-        if (summary) summary.style.display = 'none';
+        // Sera géré par updateCartUI
         return;
     }
 
-    const summary = document.querySelector('.cart-summary');
-    if (summary) summary.style.display = 'block';
-    
-    // Mise à jour de l'état de la livraison
-    handleDeliveryChange(); 
-
-    container.innerHTML = panier.map(item => {
-        const itemId = item.id;
-        const maxQty = parseInt(item.product.max_quantity) || 1;
-        
-        return `
-            <div class="cart-item" data-id="${itemId}">
-                <div class="item-details">
-                    <h4>${item.product.name} (Max: ${maxQty})</h4>
-                    <p>Prix unitaire : ${item.product.price}</p>
-                </div>
-                <div class="item-controls">
-                    <label for="qty-${itemId}">Qté:</label>
-                    <input type="number" id="qty-${itemId}" onchange="updateItemQuantity(${itemId}, this.value)" value="${item.quantity}" min="1" max="${maxQty}">
-                    
-                    <label for="start-${itemId}">Début:</label>
-                    <input type="date" id="start-${itemId}" onchange="updateItemDate(${itemId}, 'start', this.value)" value="${item.startDate}">
-                    
-                    <label for="end-${itemId}" style="margin-left: 10px;">Fin:</label>
-                    <input type="date" id="end-${itemId}" onchange="updateItemDate(${itemId}, 'end', this.value)" value="${item.endDate}">
-                    
-                    <button class="remove-btn" onclick="removeItemFromCart(${itemId})">Supprimer</button>
-                </div>
+    panier.forEach(item => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'cart-item';
+        itemDiv.innerHTML = `
+            <div class="item-details">
+                <h4>${item.quantity} x ${item.product.name} (${item.product.price})</h4>
+            </div>
+            <div class="item-controls">
+                <label for="start-date-${item.id}">Début :</label>
+                <input type="date" id="start-date-${item.id}" value="${item.startDate}" onchange="updateCartItemDate(${item.id}, 'start', this.value)">
+                
+                <label for="end-date-${item.id}">Fin :</label>
+                <input type="date" id="end-date-${item.id}" value="${item.endDate}" onchange="updateCartItemDate(${item.id}, 'end', this.value)">
+                
+                <label for="qty-${item.id}">Qté :</label>
+                <input type="number" id="qty-${item.id}" value="${item.quantity}" min="1" max="${item.product.max_quantity}" onchange="updateCartItemQuantity(${item.id}, this.value)">
+                
+                <button class="remove-btn" onclick="removeFromCart(${item.id})">Supprimer</button>
             </div>
         `;
-    }).join('');
-    
-    updateCartUI();
+        container.appendChild(itemDiv);
+    });
 }
 
-function updateItemQuantity(itemId, value) {
-    const item = panier.find(i => i.id === itemId);
-    const newQty = parseInt(value) || 1;
-    const maxQty = parseInt(item.product.max_quantity) || 1;
-    
-    if (item) {
-        // S'assure que la quantité est dans les limites [1, maxQty]
-        item.quantity = Math.max(1, Math.min(newQty, maxQty));
-        
-        // Corrige la valeur affichée dans le champ si elle était invalide
-        document.getElementById(`qty-${itemId}`).value = item.quantity;
-    }
-    updateCartUI();
-}
-
-function updateItemDate(itemId, type, value) {
-    const item = panier.find(i => i.id === itemId);
-    if (item) {
+function updateCartItemDate(itemId, type, dateValue) {
+    const itemIndex = panier.findIndex(item => item.id === itemId);
+    if (itemIndex > -1) {
         if (type === 'start') {
-            item.startDate = value;
+            panier[itemIndex].startDate = dateValue;
         } else {
-            item.endDate = value;
+            panier[itemIndex].endDate = dateValue;
         }
+        // Validation de la date après la mise à jour
+        const item = panier[itemIndex];
+        if (item.startDate && item.endDate && (new Date(item.startDate) > new Date(item.endDate))) {
+            alert("La date de début ne peut pas être postérieure à la date de fin. Veuillez corriger.");
+            // Optionnel : Réinitialiser la date invalide
+        }
+        updateCartUI();
     }
 }
 
-function removeItemFromCart(itemId) {
+function updateCartItemQuantity(itemId, newQuantity) {
+    const itemIndex = panier.findIndex(item => item.id === itemId);
+    const quantity = parseInt(newQuantity) || 1;
+    
+    if (itemIndex > -1) {
+        const maxQty = parseInt(panier[itemIndex].product.max_quantity) || 1;
+        if (quantity > maxQty) {
+            alert(`La quantité maximale pour ${panier[itemIndex].product.name} est de ${maxQty}.`);
+            // Réinitialiser la valeur de l'input à max_quantity
+            document.getElementById(`qty-${itemId}`).value = maxQty;
+            panier[itemIndex].quantity = maxQty;
+        } else if (quantity < 1) {
+            alert("La quantité doit être au moins de 1.");
+            document.getElementById(`qty-${itemId}`).value = 1;
+            panier[itemIndex].quantity = 1;
+        } else {
+            panier[itemIndex].quantity = quantity;
+        }
+        updateCartUI();
+    }
+}
+
+function removeFromCart(itemId) {
     panier = panier.filter(item => item.id !== itemId);
-    renderCart();
+    updateCartUI();
 }
 
 function sendReservationEmail() {
-    // 1. Validation de base
     if (panier.length === 0) {
-        alert("Votre panier est vide. Veuillez ajouter des articles avant de valider votre demande.");
-        return;
-    }
-    
-    // 2. Validation Email
-    const userEmail = document.getElementById('user-email').value.trim();
-    if (!userEmail || !userEmail.includes('@') || !userEmail.includes('.')) {
-        alert("Veuillez renseigner une adresse email valide pour que nous puissions vous répondre.");
-        document.getElementById('user-email').focus();
+        alert("Votre panier est vide.");
         return;
     }
 
-    // 3. Validation Adresse de Livraison
+    const userEmail = document.getElementById('user-email').value;
+    const reservationMessage = document.getElementById('reservation-message').value;
     const isDeliveryChecked = document.getElementById('delivery-checkbox').checked;
-    const deliveryAddress = document.getElementById('delivery-address').value.trim();
-    if (isDeliveryChecked && deliveryAddress.length < 10) {
-        alert("Vous avez coché 'Livraison'. Veuillez renseigner une adresse complète pour le devis.");
-        document.getElementById('delivery-address').focus();
+    const deliveryAddress = document.getElementById('delivery-address').value;
+
+    if (!userEmail || !userEmail.includes('@')) {
+        alert("Veuillez saisir une adresse email valide.");
+        return;
+    }
+    if (isDeliveryChecked && !deliveryAddress.trim()) {
+        alert("Vous avez coché la livraison. Veuillez saisir une adresse complète.");
         return;
     }
 
-    // 4. Collecte des données pour l'Email
-    const message = document.getElementById('reservation-message').value;
-    const subtotal = document.getElementById('total-final-price').textContent;
-    
-    const deliveryStatus = isDeliveryChecked 
-        ? `OUI (Adresse : ${deliveryAddress})\n\nATTENTION: Le coût de la livraison est à déterminer.` 
-        : 'NON (Retrait au local)';
-
-    let emailBody = "--- DEMANDE DE RÉSERVATION ---\n\n";
-    emailBody += `Email du client : ${userEmail}\n`;
-    emailBody += `Livraison demandée : ${deliveryStatus}\n`;
-    emailBody += "--------------------------------------\n";
+    let bodyContent = `Demande de Réservation de Matériel\n\n`;
+    bodyContent += `Email de contact : ${userEmail}\n`;
+    bodyContent += `Livraison demandée : ${isDeliveryChecked ? 'OUI' : 'NON'}\n`;
+    if (isDeliveryChecked) {
+        bodyContent += `Adresse de livraison : ${deliveryAddress}\n`;
+    }
+    bodyContent += `\n--- Détails de la Commande ---\n`;
 
     panier.forEach(item => {
-        const start = item.startDate ? ` du ${item.startDate}` : ' (date début non spécifiée)';
-        const end = item.endDate ? ` au ${item.endDate}` : ' (date fin non spécifiée)';
-        
-        emailBody += `Article : ${item.product.name}\n`;
-        emailBody += `Quantité : ${item.quantity}\n`;
-        emailBody += `Période : ${start}${end}\n`;
-        emailBody += `Prix unitaire : ${item.product.price}\n`;
-        emailBody += "--------------------------------------\n";
+        const priceValue = getPriceValue(item.product.price);
+        const subtotal = (priceValue * item.quantity).toFixed(2);
+        const dates = (item.startDate && item.endDate) 
+            ? ` du ${item.startDate} au ${item.endDate}` 
+            : ` (Dates non spécifiées)`;
+
+        bodyContent += `\nID: ${item.product.id} - ${item.product.name}\n`;
+        bodyContent += `Prix Unitaire: ${item.product.price}\n`;
+        bodyContent += `Quantité: ${item.quantity}\n`;
+        bodyContent += `Période: ${dates}\n`;
+        bodyContent += `Sous-total estimé: ${subtotal} €\n`;
     });
 
-    emailBody += `\nSous-total (Hors livraison) : ${subtotal}\n`;
-    emailBody += `\nMessage du client : \n${message || 'Aucun message supplémentaire.'}\n`;
-    emailBody += "\nMerci de répondre à cette demande par email.\n";
+    const subtotalPrice = panier.reduce((acc, item) => acc + getPriceValue(item.product.price) * item.quantity, 0).toFixed(2);
+    bodyContent += `\n----------------------------\n`;
+    bodyContent += `TOTAL PRODUITS ESTIMÉ: ${subtotalPrice} €\n`;
+    bodyContent += `Coût Livraison: ${isDeliveryChecked ? DELIVERY_INFO_MESSAGE : 'Non demandée'}\n`;
+    bodyContent += `\n--- Message Client ---\n`;
+    bodyContent += reservationMessage || "Pas de message supplémentaire.";
 
-    // 5. Envoi (Toujours mailto pour le front-end simple)
-    const subject = "Nouvelle demande de réservation Ma boîte à loc' Angevine";
-    const mailtoLink = `mailto:maboitealocangevine@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+    const mailtoLink = `mailto:maboitealocangevine@gmail.com?subject=DEMANDE DE RÉSERVATION - ${userEmail}&body=${encodeURIComponent(bodyContent)}`;
     
+    // Ouvre le client de messagerie
     window.location.href = mailtoLink;
+
+    alert("Votre demande de réservation est en cours de création dans votre application de messagerie. Veuillez vérifier et envoyer l'email généré.");
     
-    alert("Votre demande a été préparée ! Veuillez confirmer l'envoi dans la fenêtre de votre boîte mail qui vient de s'ouvrir.");
+    // Optionnel : Réinitialiser le panier après la soumission réussie
+    // panier = [];
+    // updateCartUI();
 }
 
+// --- CATALOGUE ---
 
-// --- CARROUSEL ---
-function loadCarouselImages() {
-    // Liste des images réelles à afficher dans le carrousel
-    carouselImages = [
-        "images/carrousel/giraffe.jpg",
-        "images/carrousel/guirlande.jpg",
-        "images/carrousel/table.jpg",
-        "images/carrousel/tente.jpg"
-    ];
-    totalSlides = carouselImages.length;
+function parseCSV(csvText) {
+    const lines = csvText.trim().split('\n');
+    const headers = lines[0].split(',');
+    const products = [];
 
-    const track = document.getElementById('carousel-track');
-    if (!track) return;
-
-    track.innerHTML = carouselImages.map(src => `
-        <div class="carousel-slide">
-            <img src="${src}" alt="Image carrousel">
-        </div>
-    `).join('');
-
-    slideIndex = 0;
-    track.style.transform = 'translateX(0%)';
-    updateIndicators();
-
-    clearInterval(carouselInterval);
-    if (totalSlides > 1) {
-        carouselInterval = setInterval(moveToNextSlide, 4000);
+    for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',');
+        let product = {};
+        headers.forEach((header, index) => {
+            product[header.trim()] = values[index].trim();
+        });
+        // Convertir l'ID en nombre pour faciliter la recherche
+        product.id = parseInt(product.id); 
+        products.push(product);
     }
+    return products;
 }
 
-function moveCarousel(n) {
-    const track = document.getElementById('carousel-track');
-    if (!track || totalSlides < 2) return;
+function loadProducts() {
+    // Le chemin d'accès à votre fichier CSV
+    const csvFilePath = 'data.csv'; 
 
-    clearInterval(carouselInterval);
-    slideIndex += n;
-    if (slideIndex >= totalSlides) slideIndex = 0;
-    if (slideIndex < 0) slideIndex = totalSlides - 1;
-    track.style.transform = `translateX(-${slideIndex * 100}%)`;
-    updateIndicators();
-    carouselInterval = setInterval(moveToNextSlide, 4000);
-}
-
-function moveToNextSlide() {
-    moveCarousel(1);
-}
-
-function updateIndicators() {
-    const indicators = document.getElementById("carousel-indicators");
-    if (!indicators) return;
-    
-    indicators.innerHTML = "";
-    for (let i = 0; i < totalSlides; i++) {
-        const dot = document.createElement("span");
-        if (i === slideIndex) dot.classList.add("active");
-        
-        dot.onclick = () => {
-            const diff = i - slideIndex;
-            moveCarousel(diff);
-        };
-        indicators.appendChild(dot);
-    }
-}
-
-function startCarousel() {
-    if (document.getElementById('carousel-track') && document.getElementById('carousel-track').children.length === 0) {
-        loadCarouselImages();
-    } else {
-        clearInterval(carouselInterval);
-        if (totalSlides > 1) {
-            carouselInterval = setInterval(moveToNextSlide, 4000);
-        }
-    }
-}
-
-// --- CATEGORIES et CATALOGUE --- 
-
-function generateCategoryButtons() {
-    const catNav = document.getElementById('catalogue-nav');
-    catNav.innerHTML = '';
-    for (const key in CATEGORIES) {
-        const button = document.createElement('button');
-        button.textContent = CATEGORIES[key];
-        button.setAttribute('data-category', key);
-        button.onclick = () => filterProducts(key);
-        catNav.appendChild(button);
-    }
-}
-
-function filterProducts(category) {
-    const container = document.getElementById('product-list-container');
-    const filteredProducts = allProductsData.filter(product =>
-        category === 'all' || product.category === category
-    );
-    container.innerHTML = generateProductHTML(filteredProducts);
-    document.querySelectorAll('.cat-nav button').forEach(button => {
-        button.classList.remove('active');
-        if (button.getAttribute('data-category') === category) {
-            button.classList.add('active');
-        }
-    });
-    document.getElementById('product-search').value = '';
-}
-
-function loadAndDisplayProducts() {
-    fetch('data.csv')
+    fetch(csvFilePath)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Erreur de chargement du fichier data.csv (code: ' + response.status + ')');
+                throw new Error('Erreur de chargement du fichier CSV : ' + response.statusText);
             }
             return response.text();
         })
         .then(csvText => {
-            const rows = csvText.split('\n').filter(r => r.trim() !== '');
-            const headers = rows[0].split(',');
-            allProductsData = rows.slice(1).map(row => {
-                const values = row.split(',');
-                const product = {};
-                headers.forEach((header, i) => {
-                    let value = values[i] ? values[i].trim().replace(/^"|"$/g, '') : '';
-                    product[header.trim()] = value;
-                });
-                // S'assure que max_quantity est un nombre
-                product.max_quantity = parseInt(product.max_quantity) || 1;
-                return product;
-            });
-            generateCategoryButtons();
-            showSection('accueil'); 
+            allProductsData = parseCSV(csvText);
+            
+            // Création de la navigation par catégories
+            createCategoryNav(); 
+            
+            // Affichage initial
+            if (document.querySelector('#catalogue-section').classList.contains('active')) {
+                filterProducts('all'); 
+            }
         })
         .catch(error => {
-            console.error('Erreur lors du chargement des produits:', error);
-            const container = document.getElementById('product-list-container');
-            if (container) {
-                container.innerHTML = `<p style="color: red; text-align: center;">Catalogue indisponible.<br>Veuillez vérifier votre fichier <b>data.csv</b> et sa structure.</p>`;
-            }
-            showSection('accueil');
+            console.error('Erreur:', error);
+            document.getElementById('product-list-container').innerHTML = `<p style="text-align: center; color: red;">Erreur de chargement du catalogue : ${error.message}</p>`;
         });
 }
 
-// CORRECTION DÉFINITIVE : Passe uniquement l'ID pour éviter les erreurs de syntaxe
-function generateProductHTML(products) {
-    return products.map(product => {
-        // Seul l'ID est passé comme chaîne
-        const productId = product.id; 
-        
-        return `
-            <div class="product-card" data-category="${product.category}" data-name="${product.name}">
-                <img src="${product.image_url}" alt="${product.name}">
-                <div class="product-card-body">
-                    <h4>${product.name}</h4>
-                    <button onclick="showProductDetails('${productId}')">Détails / Ajouter</button>
-                </div>
-            </div>
-        `;
-    }).join('');
-}
+function createCategoryNav() {
+    const navContainer = document.getElementById('catalogue-nav');
+    navContainer.innerHTML = '';
 
+    // Bouton "Tous les produits"
+    const allBtn = document.createElement('button');
+    allBtn.textContent = CATEGORIES['all'];
+    allBtn.onclick = () => filterProducts('all');
+    allBtn.className = 'active'; // Actif par défaut
+    navContainer.appendChild(allBtn);
 
-// --- RECHERCHE ---
-function searchProducts() {
-    const input = document.getElementById('product-search');
-    const filterText = input.value.toUpperCase();
-    const productCards = document.querySelectorAll('.product-card');
-    productCards.forEach(card => {
-        const name = card.querySelector('h4').textContent.toUpperCase();
-        card.style.display = name.includes(filterText) ? "" : "none";
+    // Boutons par catégories
+    Object.keys(CATEGORIES).filter(key => key !== 'all').forEach(categoryKey => {
+        const btn = document.createElement('button');
+        btn.textContent = CATEGORIES[categoryKey];
+        btn.onclick = () => filterProducts(categoryKey);
+        navContainer.appendChild(btn);
     });
 }
 
-// --- INITIALISATION GLOBALE ---
-window.onload = () => {
-    loadCarouselImages(); 
-    loadAndDisplayProducts(); 
-    updateCartUI(); 
-};
+function filterProducts(category) {
+    // Gestion de la classe active des boutons de catégorie
+    document.querySelectorAll('.cat-nav button').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent === CATEGORIES[category] || (category === 'all' && btn.textContent === CATEGORIES['all'])) {
+            btn.classList.add('active');
+        }
+    });
+
+    const searchTerm = document.getElementById('product-search').value.toLowerCase();
+    
+    // Filtrage des produits
+    const filteredProducts = allProductsData.filter(product => {
+        const matchesCategory = (category === 'all' || product.category === category);
+        const matchesSearch = product.name.toLowerCase().includes(searchTerm) || 
+                              product.description.toLowerCase().includes(searchTerm);
+        return matchesCategory && matchesSearch;
+    });
+
+    renderProductList(filteredProducts);
+}
+
+function searchProducts() {
+    // Récupère la catégorie active pour que la recherche s'applique au filtre actuel
+    const activeCategoryBtn = document.querySelector('.cat-nav button.active');
+    let activeCategory = 'all'; 
+
+    if (activeCategoryBtn) {
+        // Recherche la clé de catégorie à partir du texte du bouton
+        activeCategory = Object.keys(CATEGORIES).find(key => CATEGORIES[key] === activeCategoryBtn.textContent) || 'all';
+    }
+
+    filterProducts(activeCategory);
+}
+
+function renderProductList(products) {
+    const listContainer = document.getElementById('product-list-container');
+    listContainer.innerHTML = ''; // Vide le conteneur
+
+    if (products.length === 0) {
+        listContainer.innerHTML = '<p style="width: 100%; text-align: center; padding: 50px;">Aucun produit ne correspond à votre sélection ou recherche.</p>';
+        return;
+    }
+
+    products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+            <img src="${product.image_url}" alt="${product.name}">
+            <div class="product-card-body">
+                <h4>${product.name}</h4>
+                <p>${product.price}</p>
+                <button onclick="showProductDetails(${product.id})">Détails et Réservation</button>
+            </div>
+        `;
+        listContainer.appendChild(card);
+    });
+}
+
+// --- CARROUSEL ---
+// MISE À JOUR 2 : Implémentation des fonctions de gestion du carrousel
+
+function initCarousel() {
+    const track = document.getElementById('carousel-track');
+    const indicatorsContainer = document.getElementById('carousel-indicators');
+
+    if (!track || !indicatorsContainer || carouselImages.length === 0) {
+        // Le carrousel ne s'initialise pas s'il n'y a pas d'images
+        return;
+    }
+
+    // Réinitialisation
+    track.innerHTML = '';
+    indicatorsContainer.innerHTML = '';
+    slideIndex = 0;
+    totalSlides = carouselImages.length;
+
+    // Création des slides et des indicateurs
+    carouselImages.forEach((imageUrl, index) => {
+        // Crée la slide (div avec l'image)
+        const slide = document.createElement('div');
+        slide.className = 'carousel-slide';
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.alt = `Photo de matériel de location ${index + 1}`;
+        slide.appendChild(img);
+        track.appendChild(slide);
+
+        // Crée l'indicateur (point)
+        const indicator = document.createElement('span');
+        indicator.onclick = () => showSlide(index);
+        indicatorsContainer.appendChild(indicator);
+    });
+
+    // Affiche la première slide et active le premier indicateur
+    showSlide(slideIndex);
+    startCarousel(); // Démarre l'intervalle après l'initialisation
+}
+
+function showSlide(index) {
+    const track = document.getElementById('carousel-track');
+    const indicators = document.querySelectorAll('#carousel-indicators span');
+    
+    if (index >= totalSlides) {
+        slideIndex = 0;
+    } else if (index < 0) {
+        slideIndex = totalSlides - 1;
+    } else {
+        slideIndex = index;
+    }
+
+    if (track) {
+        const offset = -slideIndex * 100;
+        track.style.transform = `translateX(${offset}%)`;
+    }
+
+    indicators.forEach((indicator, i) => {
+        indicator.classList.remove('active');
+        if (i === slideIndex) {
+            indicator.classList.add('active');
+        }
+    });
+}
+
+function moveCarousel(direction) {
+    showSlide(slideIndex + direction);
+    clearInterval(carouselInterval);
+    startCarousel(); // Redémarre l'autoplay après une interaction manuelle
+}
+
+function startCarousel() {
+    const accueilSection = document.getElementById('accueil-section');
+    // Démarre l'autoplay uniquement si nous sommes sur la section d'accueil
+    if (accueilSection && accueilSection.classList.contains('active')) {
+        clearInterval(carouselInterval); // Assurer qu'il n'y a qu'un seul intervalle
+        carouselInterval = setInterval(() => {
+            moveCarousel(1); // Passe à la slide suivante
+        }, 5000); // Change toutes les 5 secondes
+    }
+}
+
+
+// --- INITIALISATION FINALE ---
+document.addEventListener('DOMContentLoaded', () => {
+    loadProducts();
+    // showSection('accueil') est appelé implicitement par la classe 'active'
+    // initCarousel() est appelé dans le bloc DOMContentLoaded ci-dessus
+});
