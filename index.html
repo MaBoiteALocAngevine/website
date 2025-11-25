@@ -62,9 +62,14 @@
                 <strong><span id="delivery-info">Coût à déterminer</span></strong>
             </div>
 
-            <div class="cart-total-line" style="border-top: 1px solid #ccc; padding-top: 10px;">
-                <label>Sous-total articles :</label>
+            <div class="cart-total-line estimate" style="border-top: 1px solid #eee; padding-top: 10px;">
+                <label>Articles dans le panier :</label>
                 <strong><span id="cart-total-price">0 article(s)</span></strong>
+            </div>
+
+            <div class="cart-total-line estimate">
+                <label>ESTIMATION DU TOTAL ARTICLES :</label>
+                <strong><span id="cart-total-estimate">0.00 €</span></strong>
             </div>
 
             <div id="delivery-address-group" style="display: none; padding: 10px 0;">
@@ -114,6 +119,8 @@
             <button id="add-to-cart-btn" onclick="addToCartFromModal()">Ajouter à la réservation</button>
         </div>
     </div>
+
+    <div id="toast-notification" class="toast"></div>
 
     <script src="script.js"></script>
 </body>

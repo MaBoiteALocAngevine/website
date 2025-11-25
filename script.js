@@ -6,7 +6,7 @@
             'images/carrousel/location-sono.jpg',
             'images/carrousel/location-echafaudage.jpg',
             'images/carrousel/materiel-evenementiel.jpg'
-            //⚠️ IMPORTANT : Remplacez ces noms par ceux de vos images réelles dans images/carrousel/
+            // ⚠️ IMPORTANT : Remplacez ces noms par ceux de vos images réelles dans images/carrousel/
         ];
         let slideIndex = 0;
         let totalSlides = 0;
@@ -69,6 +69,18 @@
             }
         }
 
+        // --- NOTIFICATION TOAST (REMPLACE LE POP-UP GOOGLE/ALERT) ---
+        function showToast(message) {
+            const toast = document.getElementById("toast-notification");
+            toast.textContent = message;
+            toast.classList.add("show");
+            
+            // Masquer le toast après 3 secondes
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
+        }
+
         // --- MODALE PRODUIT ---
         function showProductDetails(productId) {
             const modal = document.getElementById('product-modal');
@@ -103,13 +115,58 @@
             }
         };
 
-        // --- LOGIQUE PANIER ---
-        function getPriceValue(priceString) {
-            const match = priceString.match(/([\d\.,]+)/);
-            if (match) {
-                return parseFloat(match[1].replace(',', '.'));
+        // --- LOGIQUE PANIER ET CALCUL DE PRIX ---
+
+        function extractPriceDetails(priceString) {
+            const priceMatch = priceString.match(/([\d\.,]+)/);
+            const unitMatch = priceString.toLowerCase().includes('jour') ? 'per_day' : 
+                              priceString.toLowerCase().includes('personne') ? 'per_person' :
+                              'flat_rate'; // Taux fixe par défaut
+
+            let priceValue = 0;
+            if (priceMatch) {
+                priceValue = parseFloat(priceMatch[1].replace(',', '.'));
             }
-            return 0;
+            return { value: priceValue, unit: unitMatch, unitString: priceString.match(/€\s*(\/.+)?/)?.[1]?.trim() || '' };
+        }
+
+        function calculateItemPrice(item) {
+            const { product, quantity, startDate, endDate } = item;
+            const { value, unit } = extractPriceDetails(product.price);
+            
+            let basePrice = value;
+            let multiplier = 1;
+            let warning = null;
+            let isDaily = unit === 'per_day';
+
+            if (isDaily) {
+                if (startDate && endDate) {
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+                    // Calcule la différence en jours et ajoute 1 pour inclure les deux dates
+                    const diffTime = Math.abs(end - start);
+                    // Arrondi au jour supérieur pour éviter les problèmes d'heure, puis +1
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; 
+                    multiplier = diffDays;
+                } else {
+                    // Si les dates sont manquantes, on utilise 1 jour pour l'estimation
+                    warning = " (Est. 1 jour. Veuillez spécifier les dates pour le calcul réel)";
+                    multiplier = 1; 
+                }
+            } else {
+                // Pour 'per_person' ou 'flat_rate', le multiplicateur est 1 car la quantité est déjà dans le calcul
+                multiplier = 1;
+            }
+            
+            const totalPrice = basePrice * multiplier * quantity;
+            
+            return {
+                total: totalPrice,
+                unit: unit,
+                multiplier: multiplier,
+                warning: warning,
+                isDaily: isDaily
+            };
         }
 
         function addToCartFromModal() {
@@ -120,7 +177,7 @@
                 const quantity = parseInt(qtyInput.value) || 1;
 
                 if (startDate && endDate && (new Date(startDate) > new Date(endDate))) {
-                    alert("La date de début ne peut pas être postérieure à la date de fin.");
+                    showToast("Erreur: La date de début ne peut pas être postérieure à la date de fin.");
                     return;
                 }
 
@@ -135,7 +192,8 @@
                 panier.push(item);
                 closeModal();
                 updateCartCount();
-                alert(`${item.product.name} (x${quantity}) ajouté à la demande de réservation.`);
+                // Remplacement de l'alerte par le toast harmonieux
+                showToast(`✅ ${item.product.name} (x${quantity}) ajouté à la demande de réservation.`);
             }
         }
 
@@ -146,6 +204,7 @@
             
             const isValid = panier.length > 0 && userEmailInput.value.trim() !== '';
             validateBtn.disabled = !isValid;
+            renderCartSummary(); // S'assure que le résumé est mis à jour
         }
 
         // Ajout de la fonction pour mettre à jour l'état du bouton si l'email change
@@ -167,8 +226,25 @@
         }
 
         function renderCartSummary() {
-            // Recalcul du total (qui n'est pas vraiment un total en € mais un décompte d'items)
-            document.getElementById('cart-total-price').textContent = `${panier.length} article(s)`;
+            let totalEstimate = 0;
+            let totalItems = 0;
+
+            panier.forEach(item => {
+                const itemPriceCalc = calculateItemPrice(item);
+                totalEstimate += itemPriceCalc.total;
+                totalItems += item.quantity;
+            });
+
+            document.getElementById('cart-total-price').textContent = `${totalItems} article(s)`;
+            
+            const totalElement = document.getElementById('cart-total-estimate');
+            if (totalEstimate > 0) {
+                totalElement.textContent = `${totalEstimate.toFixed(2)} € (Est. TTC)`;
+                totalElement.style.color = 'var(--primary-color)';
+            } else {
+                totalElement.textContent = "0.00 €";
+                totalElement.style.color = 'var(--text-dark)';
+            }
         }
 
 
@@ -184,25 +260,29 @@
             }
 
             panier.forEach(item => {
+                const itemPriceCalc = calculateItemPrice(item);
+                
+                const itemTotalPrice = itemPriceCalc.total.toFixed(2);
+                const itemWarning = itemPriceCalc.warning ? `<br><small style="color: #A44C3A; font-weight: 600;">${itemPriceCalc.warning}</small>` : '';
+                
+                const datesDisplay = (item.startDate && item.endDate) ? 
+                    `Du: <strong>${item.startDate}</strong> au: <strong>${item.endDate}</strong> (${itemPriceCalc.multiplier}j)` : 
+                    `Période: Non spécifiée`;
+
                 const itemElement = document.createElement('div');
                 itemElement.className = 'cart-item';
-                
-                const product = item.product;
-                
-                const startDate = item.startDate ? `Du: <strong>${item.startDate}</strong>` : 'Date de début: Non spécifiée';
-                const endDate = item.endDate ? `Au: <strong>${item.endDate}</strong>` : 'Date de fin: Non spécifiée';
 
                 itemElement.innerHTML = `
-                    <img src="${product.image_url}" alt="${product.name}">
+                    <img src="${item.product.image_url}" alt="${item.product.name}">
                     <div class="item-details">
-                        <h4>${product.name}</h4>
-                        <p>Prix: ${product.price}</p>
-                        <p>${startDate}</p>
-                        <p>${endDate}</p>
+                        <h4>${item.product.name}</h4>
+                        <p>${datesDisplay}</p>
+                        <p>Prix unitaire: ${item.product.price}</p>
+                        <p><strong>Est. Coût : ${itemTotalPrice} €</strong> ${itemWarning}</p>
                     </div>
                     <div class="item-controls">
                         <label>Qté: 
-                            <input type="number" value="${item.quantity}" min="1" max="${product.max_quantity}" 
+                            <input type="number" value="${item.quantity}" min="1" max="${item.product.max_quantity}" 
                                 onchange="updateCartQuantity(${item.id}, this.value)">
                         </label>
                         <button class="remove-btn" onclick="removeFromCart(${item.id})">Supprimer</button>
@@ -222,7 +302,7 @@
                 const max = parseInt(item.product.max_quantity);
                 
                 if (qty > max) {
-                    alert(`Attention : Seules ${max} unités sont disponibles pour ${item.product.name}.`);
+                    showToast(`⚠️ Max disponible : ${max} unités pour ${item.product.name}.`);
                     item.quantity = max;
                 } else if (qty < 1 || isNaN(qty)) {
                     item.quantity = 1;
@@ -240,61 +320,87 @@
             updateCartCount();
         }
 
-        // CORRECTION: Suppression de l'alerte de succès après le mailto
+        // MISE À JOUR : Envoi à l'email souhaité et récapitulatif détaillé pour l'utilisateur
         function validateCart() {
             if (panier.length === 0) {
-                alert("Votre panier est vide. Veuillez ajouter des articles avant de valider.");
+                showToast("Votre panier est vide. Veuillez ajouter des articles avant de valider.");
                 return;
             }
 
             const userEmail = document.getElementById('user-email').value.trim();
             if (!userEmail || !userEmail.includes('@')) {
-                alert("Veuillez entrer une adresse email valide pour la réservation.");
+                showToast("Veuillez entrer une adresse email valide pour la réservation.");
                 document.getElementById('user-email').focus();
                 return;
             }
 
             const isDelivery = document.getElementById('delivery-checkbox').checked;
-            const deliveryAddress = isDelivery ? document.getElementById('delivery-address').value.trim() : 'Non demandée';
+            const deliveryAddress = isDelivery ? document.getElementById('delivery-address').value.trim() : 'Non demandée (Retrait sur place)';
             const reservationMessage = document.getElementById('reservation-message').value.trim() || 'Aucun message supplémentaire.';
 
-            let emailBody = `Bonjour,
+            let priceDetails = '';
+            let totalEstimate = 0;
+            let totalItems = 0;
+
+            panier.forEach(item => {
+                const itemPriceCalc = calculateItemPrice(item);
+                totalEstimate += itemPriceCalc.total;
+                totalItems += item.quantity;
+                
+                const dates = (item.startDate && item.endDate) ? 
+                    `Du ${item.startDate} au ${item.endDate} (${itemPriceCalc.multiplier} jour(s))` : 
+                    `Non spécifiée.`;
+                
+                const unitCost = extractPriceDetails(item.product.price).value;
+                const calculatedPriceLine = itemPriceCalc.isDaily ? 
+                    `Est. Coût Article : ${itemPriceCalc.total.toFixed(2)} € (Basé sur ${itemPriceCalc.multiplier}j)` : 
+                    `Est. Coût Article : ${itemPriceCalc.total.toFixed(2)} €`;
+
+                priceDetails += `
+* ${item.product.name} (x${item.quantity})
+  - Prix unitaire : ${item.product.price} (${unitCost} €)
+  - Période souhaitée : ${dates}
+  - ${calculatedPriceLine}
+`;
+            });
+
+            const emailBody = `Bonjour,
 
 Je souhaite effectuer une demande de réservation pour le matériel suivant :
 
---- ARTICLES DEMANDÉS ---\n`;
+--- RÉCAPITULATIF DE LA DEMANDE ---\n
+${priceDetails}
 
-            panier.forEach(item => {
-                const dates = (item.startDate && item.endDate) ? 
-                    ` (Période souhaitée : du ${item.startDate} au ${item.endDate})` : 
-                    ` (Période souhaitée : Non spécifiée)`;
-                
-                emailBody += `
-- ${item.product.name} (x${item.quantity})
-  Tarif unitaire : ${item.product.price}${dates}\n`;
-            });
-
-            emailBody += `\n--- INFORMATIONS SUPPLÉMENTAIRES ---\n
+--- INFORMATIONS SUPPLÉMENTAIRES ---\n
+Demandeur (Email) : ${userEmail}
 Demande de livraison : ${isDelivery ? 'OUI' : 'NON'}
 Adresse de livraison (si demandée) : ${deliveryAddress}
 Message : ${reservationMessage}
-Sous-total articles : ${panier.length} article(s)
+
+--- ESTIMATION GLOBALE (HORS FRAIS DE LIVRAISON) ---
+Nombre total d'articles : ${totalItems}
+Estimation du Total TTC des articles : ${totalEstimate.toFixed(2)} €
+(⚠️ Ce montant est une estimation. Il sera confirmé par devis après vérification des disponibilités et ajout des frais de livraison éventuels.)
 
 Merci de bien vouloir me recontacter pour confirmer la disponibilité, le tarif total, et finaliser la réservation.
 
 Cordialement,
-Nom/Prénom : (À compléter dans l'e-mail)
-Téléphone : (À compléter dans l'e-mail)
+Nom/Prénom : (À compléter dans l'e-mail avant envoi)
+Téléphone : (À compléter dans l'e-mail avant envoi)
 `;
 
-            const mailtoLink = `mailto:maboitealocangevine@gmail.com?subject=Demande de Réservation Matériel (${panier.length} articles)&body=${encodeURIComponent(emailBody)}`;
+            // Envoi à l'adresse spécifiée par l'utilisateur
+            const mailtoLink = `mailto:maboitealocangevine@gmail.com?subject=Demande de Réservation Matériel (${totalItems} articles) - Est. ${totalEstimate.toFixed(2)} €&body=${encodeURIComponent(emailBody)}`;
             
             // Ouvre le client mail de l'utilisateur
             window.location.href = mailtoLink;
             
+            // Notification toast à la place de l'ancienne alerte Google
+            showToast("📧 Votre demande a été préparée dans votre client de messagerie. N'oubliez pas de l'envoyer !");
+
             // Réinitialise le panier après le lancement du mailto
             panier = [];
-            document.getElementById('user-email').value = '';
+            document.getElementById('user-email').value = userEmail; // Garde l'email renseigné
             document.getElementById('reservation-message').value = '';
             document.getElementById('delivery-checkbox').checked = false;
             handleDeliveryChange(); 

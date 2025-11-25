@@ -13,12 +13,12 @@
             --radius-default: 12px;
             --button-hover-darken: #c99342; /* Version plus foncée de secondary-color */
             --button-border-light: #e0e0e0;
-            --carousel-background-color: #EFEBE5; /* Couleur de fond pour les bords */
+            --carousel-background-color: #EFEBE5; /* Couleur de fond pour les bords (chaud/neutre) */
         }
 
         /* Styles généraux */
         body {
-            font-family: 'Poppins', sans-serif; /* Typo moderne */
+            font-family: 'Poppins', sans-serif; 
             margin: 0;
             padding: 0;
             background-color: var(--background-light);
@@ -28,12 +28,12 @@
 
         /* En-tête */
         header {
-            background-color: var(--primary-color);
+            background-color: var(--primary-color); /* Terracotta */
             color: white;
             padding: 1.5em 20px;
             text-align: left;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-            display: flex; /* Utilisation de Flexbox */
+            display: flex; 
             justify-content: space-between;
             align-items: center;
         }
@@ -47,8 +47,8 @@
             gap: 15px;
         }
         .header-action-btn {
-            background-color: var(--secondary-color); 
-            color: var(--text-dark); /* Texte sombre sur le bouton Moutarde */
+            background-color: var(--secondary-color); /* Moutarde */
+            color: var(--text-dark); 
             border: none;
             padding: 10px 20px;
             border-radius: 50px; 
@@ -86,7 +86,7 @@
             transition: background-color 0.3s;
         }
         nav.main-nav a:hover { background-color: #6c757d; }
-        nav.main-nav a.active { background-color: var(--secondary-color); color: var(--text-dark); }
+        nav.main-nav a.active { background-color: var(--secondary-color); color: var(--text-dark); } /* Moutarde actif */
 
         /* Navigation Catégories (Améliorée) */
         nav.cat-nav {
@@ -111,7 +111,7 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         nav.cat-nav button.active {
-            background-color: var(--primary-color);
+            background-color: var(--primary-color); /* Terracotta actif */
             color: white;
             border-color: var(--primary-color);
             box-shadow: 0 3px 8px rgba(164, 76, 58, 0.3);
@@ -133,7 +133,7 @@
         #accueil-section h2 { color: var(--primary-color); margin-bottom: 20px; font-weight: 700; font-size: 2.2em; }
         #accueil-section p { color: #555; max-width: 800px; margin: 20px auto; line-height: 1.6; }
         #accueil-section button {
-            background-color: var(--secondary-color);
+            background-color: var(--secondary-color); /* Moutarde */
             color: var(--text-dark);
             padding: 15px 35px;
             font-size: 1.1em;
@@ -250,7 +250,7 @@
 
         /* Bouton "Détails / Ajouter" */
         .product-card button {
-            background-color: var(--secondary-color);
+            background-color: var(--secondary-color); /* Moutarde */
             color: var(--text-dark);
             border: none;
             padding: 12px 25px;
@@ -308,7 +308,7 @@
         }
 
         .modal-content button#add-to-cart-btn {
-            background-color: var(--secondary-color);
+            background-color: var(--secondary-color); /* Moutarde */
             color: var(--text-dark);
             font-weight: 600;
             padding: 15px 30px;
@@ -389,7 +389,12 @@
             display: flex; justify-content: space-between;
             align-items: center; margin-bottom: 10px;
         }
-        .cart-total-line strong { font-size: 1.2em; color: var(--primary-color); }
+        /* Mettre en évidence le total estimé */
+        .cart-total-line.estimate strong { 
+            font-size: 1.5em; 
+            color: var(--primary-color); 
+            font-weight: 700;
+        }
         .cart-total-line input[type="checkbox"] { margin-right: 10px; }
 
         .cart-confirmation { padding-top: 20px; border-top: 1px solid #eee; margin-top: 15px; }
@@ -406,7 +411,7 @@
         .cart-confirmation textarea { resize: vertical; }
 
         .validate-btn {
-            background-color: var(--secondary-color); color: var(--text-dark);
+            background-color: var(--secondary-color); color: var(--text-dark); /* Moutarde */
             border: none; padding: 15px 30px; border-radius: 50px;
             cursor: pointer; font-size: 1.1em; font-weight: 600;
             width: 100%; margin-top: 20px;
@@ -432,10 +437,35 @@
             font-size: 0.95em;
         }
 
+        /* Custom Toast Notification */
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: var(--secondary-color); /* Moutarde */
+            color: var(--text-dark);
+            text-align: center;
+            border-radius: var(--radius-default);
+            padding: 16px;
+            position: fixed;
+            z-index: 101;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.5s linear;
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
 
         /* Dark Mode (ajusté pour le nouveau thème) */
         .dark-mode {
-            --background-light: #2c2c2c; /* Gris foncé */
+            --background-light: #2c2c2c; 
             --text-dark: #f0f0f0;
             --primary-color: #E8AE4D; /* Inverser : Moutarde en couleur principale */
             --secondary-color: #A44C3A; /* Terracotta en couleur d'action */
@@ -450,11 +480,12 @@
             background-color: #444; color: var(--text-dark); border-color: #666;
         }
         .dark-mode .header-action-btn, .dark-mode .product-card button, .dark-mode #accueil-section button, .dark-mode .modal-content button#add-to-cart-btn, .dark-mode .validate-btn {
-            color: white; /* Texte blanc sur bouton sombre */
+            color: white; 
         }
         .dark-mode .item-details h4 { color: var(--primary-color); }
         .dark-mode #contact-section a { color: var(--primary-color); }
         .dark-mode .important-note { background-color: #4e442c; color: #f0c36b; border-color: #5e543c; }
+        .dark-mode .toast { background-color: var(--secondary-color); color: white; } /* Terracotta en dark mode */
 
 
         /* Media Queries (ajusté pour le carrousel) */
