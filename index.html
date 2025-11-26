@@ -55,7 +55,7 @@
         <div id="cart-items-container">
             </div>
         
-        <form id="reservation-form" method="POST" action="YOUR_FORMSUBMIT_ENDPOINT">
+        <form id="reservation-form" method="POST" action="https://formsubmit.co/maboitealocangevine@gmail.com">
             <div class="cart-summary">
                 <div class="cart-total-line">
                     <label for="delivery-checkbox">
@@ -73,59 +73,65 @@
                     <label>ESTIMATION DU TOTAL ARTICLES :</label>
                     <strong><span id="cart-total-estimate">0.00 €</span></strong>
                 </div>
+            </div>
+
+            <div class="cart-confirmation">
+                <label for="user-email">Votre Email de Contact (Obligatoire) :</label><br>
+                <input type="email" id="user-email" name="Email du Client" required placeholder="votre.email@exemple.com">
 
                 <div id="delivery-address-group" style="display: none; padding: 10px 0;">
                     <label for="delivery-address">Adresse complète pour la livraison :</label><br>
-                    <textarea id="delivery-address" name="Adresse de livraison" placeholder="Ex: 10 rue des Fleurs, 49140 Ville"></textarea>
+                    <textarea id="delivery-address" name="Adresse de livraison" placeholder="Ex: 10 rue des Fleurs, 49140 Angers"></textarea>
                 </div>
 
-                <div class="cart-confirmation">
-                    <label for="user-email">Votre Email de Contact (Obligatoire) :</label>
-                    <input type="email" id="user-email" name="Email du Client" placeholder="votre.email@exemple.com" required>
+                <label for="reservation-message">Message / Précisions supplémentaires :</label><br>
+                <textarea id="reservation-message" name="Message du Client" placeholder="Ex: Je souhaite une livraison le matin."></textarea>
 
-                    <label for="reservation-message">Message supplémentaire (dates spécifiques, questions...) :</label>
-                    <textarea id="reservation-message" name="Message du Client" rows="4" placeholder="Votre message..."></textarea>
-                    
-                    <input type="hidden" name="_replyto" id="hidden-replyto"> <input type="hidden" name="_cc" id="hidden-cc"> <input type="hidden" name="_subject" id="hidden-subject"> <textarea name="Récapitulatif de la Demande" id="email-body-content" style="display: none;"></textarea>
-                    
-                    <button type="submit" class="validate-btn" disabled>Envoyer la demande de Réservation</button>
-                </div>
+                <input type="hidden" name="_next" value="https://maboitealocangevine.github.io/website/merci.html">
+                <input type="hidden" name="_replyto" id="hidden-replyto">
+                <input type="hidden" name="_cc" id="hidden-cc">
+                <input type="hidden" name="_subject" id="hidden-subject">
+                <textarea name="Récapitulatif de la Demande" id="email-body-content" style="display: none;"></textarea>
+                
+                <button type="submit" class="validate-btn" disabled>Envoyer la demande de Réservation</button>
             </div>
         </form>
-    </div>
+        </div>
 
     <div id="contact-section" class="content-section">
-        <h2>Nous Contacter et Venir Nous Voir</h2>
-        <p>Pour toute demande de réservation ou information sur un produit, nous vous répondons rapidement :</p>
-        <p>📧 Email : <a href="mailto:maboitealocangevine@gmail.com">maboitealocangevine@gmail.com</a></p>
-        <p>📞 Téléphone : <strong><a href="tel:0652982348">06.52.98.23.48</a></strong></p>
-        <p>📍 Adresse : <strong>5 impasse les Rochebruyeres 49140 Rives du Loir en Anjou</strong></p>
-
-        <div class="important-note">
-            ⚠️ <strong>IMPORTANT :</strong> Notre local n'est pas un magasin. Toute visite et récupération de matériel doit se faire <strong>uniquement sur rendez-vous</strong> (réservation préalable par téléphone ou email).
-        </div>
+        <h2>📞 Nous Contacter</h2>
+        <p>Vous pouvez nous joindre par téléphone au : <strong>06 XX XX XX XX</strong></p>
+        <p>Ou par email à : <strong>maboitealocangevine@gmail.com</strong></p>
+        <p>Adresse de retrait du matériel (sur rendez-vous) : [Adresse à ajouter ici]</p>
     </div>
 
     <div id="product-modal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">×</span>
-            <h3 id="modal-title"></h3>
-            <img id="modal-image" src="" alt="Image produit">
-            <p id="modal-description"></p>
-            <p id="modal-price"></p>
-            <p><strong>Période de location souhaitée (Optionnel) :</strong></p>
-            <label for="modal-start-date">Du :</label>
-            <input type="date" id="modal-start-date">
-            <label for="modal-end-date">Au :</label>
-            <input type="date" id="modal-end-date">
-            <label for="modal-quantity">Quantité :</label>
-            <input type="number" id="modal-quantity" value="1" min="1">
-            <small id="modal-max-quantity-info" style="display: block; margin-top: 5px; color: #777;"></small>
-            <button id="add-to-cart-btn" onclick="addToCartFromModal()">Ajouter à la réservation</button>
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3 id="modal-title">Nom du Produit</h3>
+            <img id="modal-image" src="" alt="Image Produit">
+            <p id="modal-description">Description détaillée du produit.</p>
+            <p id="modal-price">Prix: <strong>X €</strong></p>
+            <p class="max-qty-info" id="modal-max-quantity-info">Max disponible : X</p>
+            
+            <div class="modal-controls">
+                <label for="modal-quantity">Quantité:</label>
+                <input type="number" id="modal-quantity" value="1" min="1" max="10">
+                <label for="modal-start-date">Date de début:</label>
+                <input type="date" id="modal-start-date">
+                <label for="modal-end-date">Date de fin:</label>
+                <input type="date" id="modal-end-date">
+            </div>
+            
+            <button class="add-to-cart-btn" onclick="addToCartFromModal()">Ajouter à la Demande de Réservation</button>
         </div>
     </div>
 
     <div id="toast-notification" class="toast"></div>
+
+    <footer>
+        <p>&copy; 2025 Ma boîte à loc' Angevine. Tous droits réservés.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
