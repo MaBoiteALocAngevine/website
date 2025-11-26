@@ -569,7 +569,6 @@ L'équipe Ma boîte à loc' Angevine
                         });
                         products.push(product);
                     } else {
-                         // Permet de détecter les lignes mal formées si le problème persiste.
                          console.warn(`Ligne ignorée (format incorrect, ${values.length} col. vs ${headers.length} attendues): ${line}`);
                     }
                 }
@@ -579,20 +578,28 @@ L'équipe Ma boîte à loc' Angevine
                 
                 // Filtrer les images pour le carrousel (colonne 'carrousel' ou 'is_carousel')
                 carouselImagesData = allProductsData
-                    .filter(p => p.carrousel && p.carrousel.toLowerCase().trim() === 'oui') // Ajout de .trim() pour plus de sécurité
+                    // La colonne carrousel doit exister dans le CSV et contenir "oui"
+                    .filter(p => p.carrousel && p.carrousel.toLowerCase().trim() === 'oui') 
                     .map(p => p.image_url);
 
                 renderCategoryButtons();
                 renderProductList(allProductsData);
-                document.getElementById('loading-message').style.display = 'none';
+                
+                // FIX: Vérifier l'existence de l'élément avant de le manipuler
+                const loadingMessage = document.getElementById('loading-message');
+                if (loadingMessage) {
+                    loadingMessage.style.display = 'none';
+                }
 
                 initCarousel(); 
 
             } catch (error) {
                 console.error("Impossible de charger le catalogue :", error);
                 const loadingMessage = document.getElementById('loading-message');
-                loadingMessage.textContent = "Erreur: Impossible de charger le catalogue. Veuillez vérifier que le fichier data.csv existe.";
-                loadingMessage.style.color = '#A44C3A'; 
+                if (loadingMessage) {
+                     loadingMessage.textContent = "Erreur: Impossible de charger le catalogue. Vérifiez data.csv et la console.";
+                     loadingMessage.style.color = '#A44C3A'; 
+                }
             }
         }
 
