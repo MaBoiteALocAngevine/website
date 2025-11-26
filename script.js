@@ -457,7 +457,8 @@ L'équipe Ma boîte à loc' Angevine
             // Si le conteneur n'existe pas ou si la liste d'images est vide, on s'arrête
             if (!container || carouselImagesData.length === 0) {
                  if (container) {
-                     container.innerHTML = '<p style="text-align: center; color: var(--text-color);">Aucune image sélectionnée pour le carrousel.</p>';
+                     // Message d'erreur/information si aucune image n'est trouvée pour le carrousel
+                     container.innerHTML = '<p style="text-align: center; color: var(--primary-color); padding: 50px;">Aucune image sélectionnée pour le carrousel. Vérifiez la colonne "carrousel" dans data.csv.</p>';
                  }
                 totalSlides = 0;
                 return;
@@ -568,7 +569,8 @@ L'équipe Ma boîte à loc' Angevine
                         });
                         products.push(product);
                     } else {
-                         console.warn(`Ligne ignorée (format incorrect ou nombre de colonnes incohérent): ${line}`);
+                         // Permet de détecter les lignes mal formées si le problème persiste.
+                         console.warn(`Ligne ignorée (format incorrect, ${values.length} col. vs ${headers.length} attendues): ${line}`);
                     }
                 }
                 // FIN DU PARSING CSV
@@ -577,7 +579,7 @@ L'équipe Ma boîte à loc' Angevine
                 
                 // Filtrer les images pour le carrousel (colonne 'carrousel' ou 'is_carousel')
                 carouselImagesData = allProductsData
-                    .filter(p => p.carrousel && p.carrousel.toLowerCase() === 'oui')
+                    .filter(p => p.carrousel && p.carrousel.toLowerCase().trim() === 'oui') // Ajout de .trim() pour plus de sécurité
                     .map(p => p.image_url);
 
                 renderCategoryButtons();

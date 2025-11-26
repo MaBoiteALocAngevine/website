@@ -185,7 +185,7 @@ main {
     color: var(--text-color-light);
 }
 
-/* Styles spécifiques à la page Contact (NOUVEAU) */
+/* Styles spécifiques à la page Contact */
 #contact-section {
     max-width: 700px;
     margin: 0 auto;
@@ -344,7 +344,7 @@ main {
     margin: 0 auto;
 }
 
-/* Centrage du titre du catalogue (CORRIGÉ) */
+/* Centrage du titre du catalogue */
 #catalogue-section h2 {
     text-align: center; 
     margin-bottom: 20px;
