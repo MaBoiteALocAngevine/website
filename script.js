@@ -333,9 +333,9 @@
             updateCartCount();
         }
 
-        // NOUVEAU : Fonction de soumission du formulaire (appelée par l'événement 'submit' du formulaire)
+        // FONCTION DE SOUMISSION MODIFIÉE POUR FORMATAGE TEXTE BRUT SIMPLE
         function handleSubmitReservation(event) {
-            event.preventDefault(); // Empêche la soumission classique pour insérer le récapitulatif
+            event.preventDefault(); 
 
             const form = event.target;
             const userEmailInput = document.getElementById('user-email');
@@ -352,8 +352,7 @@
                 return;
             }
 
-            // 1. Mise à jour de la destination du formulaire (nécessaire si l'action n'est pas déjà définie)
-            // Pour FormSubmit (exemple), l'action doit être une URL spécifique à votre email (à remplacer)
+            // 1. Mise à jour de la destination du formulaire
             form.action = `https://formsubmit.co/${BUSINESS_EMAIL}`;
 
             // 2. Génération du corps de l'e-mail détaillé
@@ -374,43 +373,63 @@
                     `Du ${item.startDate} au ${item.endDate} (${itemPriceCalc.multiplier} jour(s))` : 
                     `Non spécifiée.`;
                 
-                const unitCost = extractPriceDetails(item.product.price).value;
                 const calculatedPriceLine = itemPriceCalc.isDaily ? 
-                    `Est. Coût Article : ${itemPriceCalc.total.toFixed(2)} € (Basé sur ${itemPriceCalc.multiplier}j)` : 
-                    `Est. Coût Article : ${itemPriceCalc.total.toFixed(2)} €`;
+                    `Est. Coût Article : ${itemPriceCalc.total.toFixed(2)} EUR (Basé sur ${itemPriceCalc.multiplier}j)` : 
+                    `Est. Coût Article : ${itemPriceCalc.total.toFixed(2)} EUR`;
 
+                // FORMATAGE SIMPLE TEXTE
                 priceDetails += `
-* ${item.product.name} (x${item.quantity})
-  - Prix unitaire : ${item.product.price} (${unitCost} €)
-  - Période souhaitée : ${dates}
-  - ${calculatedPriceLine}
+-------------------------------------------------------
+ARTICLE ${item.product.id} : ${item.product.name}
+-------------------------------------------------------
+Nom de l'article : ${item.product.name}
+Quantité : x${item.quantity}
+Prix unitaire : ${item.product.price}
+Période souhaitée : ${dates}
+Estimation Coût : ${calculatedPriceLine}
 `;
             });
 
             const emailBody = `Bonjour,
 
-Je souhaite effectuer une demande de réservation pour le matériel suivant :
+Nous vous remercions pour votre demande de réservation. Voici le récapitulatif des articles demandés.
 
---- RÉCAPITULATIF DE LA DEMANDE ---\n
-${priceDetails}
+=======================================================
+RECAPITULATIF DE LA DEMANDE
+=======================================================
+${priceDetails.trim()}
 
---- INFORMATIONS SUPPLÉMENTAIRES ---\n
+=======================================================
+INFORMATIONS COMPLEMENTAIRES
+=======================================================
 Email du client : ${userEmail}
 Demande de livraison : ${isDelivery ? 'OUI' : 'NON'}
 Adresse de livraison (si demandée) : ${deliveryAddress}
 Message du client : ${reservationMessage}
 
---- ESTIMATION GLOBALE (HORS FRAIS DE LIVRAISON) ---
+=======================================================
+ESTIMATION GLOBALE (HORS LIVRAISON)
+=======================================================
 Nombre total d'articles : ${totalItems}
-Estimation du Total TTC des articles : ${totalEstimate.toFixed(2)} €
-(⚠️ Ce montant est une estimation. Il sera confirmé par devis après vérification des disponibilités et ajout des frais de livraison éventuels.)
+Estimation du Total TTC des articles : ${totalEstimate.toFixed(2)} EUR
+(Ce montant est une estimation et sera confirmé par devis après vérification des disponibilités et ajout des frais de livraison éventuels.)
+
+=======================================================
+CONTACT RAPIDE
+=======================================================
+Si vous souhaitez apporter des modifications à cette demande ou obtenir des précisions rapides,
+vous pouvez nous envoyer un e-mail directement à : ${BUSINESS_EMAIL}
+
+Nous vous recontacterons sous 24h ouvrées pour finaliser la réservation.
+Cordialement,
+L'équipe Ma boîte à loc' Angevine
 `;
             
             // 3. Injection du corps de l'e-mail dans le champ caché
             document.getElementById('email-body-content').value = emailBody.trim();
 
-            // 4. Champs cachés pour le service de formulaire (FormSubmit/Formspree)
-            document.getElementById('hidden-subject').value = `Demande de Réservation Matériel (${totalItems} articles) - Est. ${totalEstimate.toFixed(2)} €`;
+            // 4. Champs cachés pour le service de formulaire (FormSubmit)
+            document.getElementById('hidden-subject').value = `Demande de Réservation Matériel (${totalItems} articles) - Est. ${totalEstimate.toFixed(2)} EUR`;
             // Champ _replyto pour que vous puissiez répondre directement au client
             document.getElementById('hidden-replyto').value = userEmail;
             // Champ _cc pour que le client reçoive une copie (FormSubmit)
@@ -420,10 +439,10 @@ Estimation du Total TTC des articles : ${totalEstimate.toFixed(2)} €
             // 5. Soumission effective du formulaire
             form.submit();
 
-            // 6. Affichage de la notification toast (le service de formulaire gérera la suite, redirection, etc.)
+            // 6. Affichage de la notification toast 
             showToast("📧 Votre demande de réservation est en cours d'envoi !");
 
-            // 7. Réinitialisation du panier local après la soumission (pour une nouvelle demande)
+            // 7. Réinitialisation du panier local après la soumission 
             panier = [];
             // On conserve l'email saisi pour faciliter la prochaine demande du même utilisateur
             document.getElementById('reservation-message').value = '';
