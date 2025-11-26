@@ -1,22 +1,12 @@
 // --- VARIABLES GLOBALES ---
         let allProductsData = [];
-        // MISE À JOUR 1 : Rappel des chemins d'images à vérifier
-        let carouselImages = [
-            'images/carrousel/location-tente.jpg',
-            'images/carrousel/location-sono.jpg',
-            'images/carrousel/location-echafaudage.jpg',
-            'images/carrousel/materiel-evenementiel.jpg'
-            // ⚠️ IMPORTANT : Remplacez ces noms par ceux de vos images réelles dans images/carrousel/
-        ];
+        let carouselImagesData = []; // NOUVEAU: Liste des images pour le carrousel
         let slideIndex = 0;
         let totalSlides = 0;
         let carouselInterval;
-        let selectedProductForModal = null; // Stocke l'objet produit pour l'ajout au panier
-        // Le tableau qui stocke les articles du panier
+        let selectedProductForModal = null;
         let panier = [];
-        // Message informatif de livraison
         const DELIVERY_INFO_MESSAGE = "Coût à déterminer (sur devis)";
-        // Adresse email de la société pour l'envoi du formulaire
         const BUSINESS_EMAIL = "maboitealocangevine@gmail.com"; 
 
         const CATEGORIES = {
@@ -33,14 +23,20 @@
                     document.body.classList.toggle("dark-mode");
                 });
             }
-            // Initialisation du carrousel au chargement de la page
-            initCarousel();
-            // Lier la fonction de soumission au formulaire
+            // Initialisation de l'application
+            initApp(); 
+        });
+
+        function initApp() {
+            // Le carrousel et le catalogue sont maintenant initialisés APRÈS le chargement du CSV
+            loadProductsFromCSVFile();
+
             const form = document.getElementById('reservation-form');
             if (form) {
                 form.addEventListener('submit', handleSubmitReservation);
             }
-        });
+        }
+
 
         // --- NAVIGATION ---
         function showSection(sectionId) {
@@ -96,7 +92,8 @@
             if (product) {
                 selectedProductForModal = product;
                 document.getElementById('modal-title').textContent = product.name;
-                document.getElementById('modal-image').src = product.image_url;
+                // MISE À JOUR : utilise directement l'image_url du produit
+                document.getElementById('modal-image').src = product.image_url; 
                 document.getElementById('modal-description').textContent = product.description;
                 document.getElementById('modal-price').innerHTML = `Prix: <strong>${product.price}</strong>`;
                 document.getElementById('modal-quantity').value = 1;
@@ -123,7 +120,9 @@
             }
         };
 
-        // --- LOGIQUE PANIER ET CALCUL DE PRIX ---
+        // --- LOGIQUE PANIER ET CALCUL DE PRIX (Non modifiée) ---
+        // (Les fonctions extractPriceDetails, calculateItemPrice, addToCartFromModal, updateCartCount, handleDeliveryChange, 
+        // renderCartSummary, renderCart, updateCartQuantity, removeFromCart, handleSubmitReservation restent inchangées)
 
         function extractPriceDetails(priceString) {
             const priceMatch = priceString.match(/([\d\.,]+)/);
@@ -333,7 +332,6 @@
             updateCartCount();
         }
 
-        // FONCTION DE SOUMISSION
         function handleSubmitReservation(event) {
             event.preventDefault(); 
 
@@ -452,7 +450,11 @@ L'équipe Ma boîte à loc' Angevine
         }
 
 
-        // --- LOGIQUE CAROUSEL ---
+        // --- LOGIQUE CAROUSEL (Mise à jour pour utiliser carouselImagesData) ---
+
+        /**
+         * INITIALISATION CARROUSEL : utilise la liste carouselImagesData (remplie par loadProductsFromCSVFile).
+         */
         function initCarousel() {
             const track = document.getElementById('carousel-track');
             const indicators = document.getElementById('carousel-indicators');
@@ -460,10 +462,12 @@ L'équipe Ma boîte à loc' Angevine
             track.innerHTML = '';
             indicators.innerHTML = '';
             
-            carouselImages.forEach((imgSrc, index) => {
+            // Utilisation de la variable globale remplie après le chargement du CSV
+            carouselImagesData.forEach((imgSrc, index) => {
                 // Créer la slide
                 const slide = document.createElement('div');
                 slide.className = 'carousel-slide';
+                // MISE À JOUR : imgSrc est maintenant le chemin d'image directement
                 slide.innerHTML = `<img src="${imgSrc}" alt="Slide Carrousel ${index + 1}">`;
                 track.appendChild(slide);
                 
@@ -473,9 +477,14 @@ L'équipe Ma boîte à loc' Angevine
                 indicators.appendChild(indicator);
             });
             
-            totalSlides = carouselImages.length;
-            showSlide(0);
-            startCarousel();
+            totalSlides = carouselImagesData.length;
+            if (totalSlides > 0) {
+                showSlide(0);
+                startCarousel();
+            } else {
+                // Affiche un message si aucune image n'est marquée "Oui" dans le CSV
+                document.getElementById('carousel-container').innerHTML = '<p style="text-align: center; color: var(--text-color);">Aucune image sélectionnée pour le carrousel (colonne carrousel dans data.csv).</p>';
+            }
         }
 
         function showSlide(index) {
@@ -509,7 +518,7 @@ L'équipe Ma boîte à loc' Angevine
         // --- LOGIQUE CATALOGUE ---
 
         /**
-         * NOUVEAU: Fonction pour charger les produits à partir du fichier data.csv externe.
+         * Charge les produits à partir du fichier data.csv externe et filtre les images du carrousel.
          */
         async function loadProductsFromCSVFile() {
             const csvFilePath = 'data.csv'; 
@@ -566,9 +575,18 @@ L'équipe Ma boîte à loc' Angevine
                 // FIN DU PARSING CSV
 
                 allProductsData = products;
+                
+                // NOUVEAU: Filtrer les images pour le carrousel
+                carouselImagesData = allProductsData
+                    .filter(p => p.carrousel && p.carrousel.toLowerCase() === 'oui')
+                    .map(p => p.image_url);
+
                 renderCategoryButtons();
                 renderProductList(allProductsData);
                 document.getElementById('loading-message').style.display = 'none';
+
+                // NOUVEAU: Initialiser le carrousel APRÈS avoir chargé les données
+                initCarousel(); 
 
             } catch (error) {
                 console.error("Impossible de charger le catalogue :", error);
@@ -578,7 +596,8 @@ L'équipe Ma boîte à loc' Angevine
             }
         }
 
-        // Fonction pour générer les boutons de catégorie
+        // Les fonctions renderCategoryButtons, filterProducts, searchProducts, renderProductList restent inchangées
+
         function renderCategoryButtons() {
             const nav = document.getElementById('catalogue-nav');
             nav.innerHTML = '';
@@ -601,7 +620,6 @@ L'équipe Ma boîte à loc' Angevine
             });
         }
         
-        // Fonction pour filtrer et afficher les produits
         function filterProducts(category) {
             document.querySelectorAll('#catalogue-nav button').forEach(btn => {
                 btn.classList.remove('active');
@@ -618,7 +636,6 @@ L'équipe Ma boîte à loc' Angevine
             renderProductList(filteredProducts);
         }
 
-        // Fonction pour chercher les produits (sur le dataset complet)
         function searchProducts() {
             const searchTerm = document.getElementById('product-search').value.toLowerCase();
             const filteredProducts = allProductsData.filter(product => {
@@ -636,7 +653,6 @@ L'équipe Ma boîte à loc' Angevine
             renderProductList(filteredProducts);
         }
 
-        // Fonction pour générer la liste HTML des produits
         function renderProductList(products) {
             const listContainer = document.getElementById('product-list-container');
             listContainer.innerHTML = ''; // Nettoyer la liste existante
@@ -662,5 +678,5 @@ L'équipe Ma boîte à loc' Angevine
             });
         }
 
-        // Charger les produits au démarrage en lisant le fichier CSV externe
-        window.onload = loadProductsFromCSVFile;
+        // Chargement initial au démarrage
+        window.onload = initApp;
