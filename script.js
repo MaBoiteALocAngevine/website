@@ -333,7 +333,7 @@
             updateCartCount();
         }
 
-        // FONCTION DE SOUMISSION MODIFIÉE POUR FORMATAGE TEXTE BRUT SIMPLE
+        // FONCTION DE SOUMISSION
         function handleSubmitReservation(event) {
             event.preventDefault(); 
 
@@ -507,67 +507,75 @@ L'équipe Ma boîte à loc' Angevine
         }
 
         // --- LOGIQUE CATALOGUE ---
-        // Fonction pour charger et traiter le contenu du fichier data.csv (hardcodé dans le JS)
-        function loadProductsFromText() {
-            const compiledText = `id,category,name,description,price,image_url,max_quantity
-101,evenementiel,Table de Réception Pliante,"Table de réception en plastique pliante. Peut accueillir jusqu'à 8 personnes. Dimensions : 180x75cm.",10 € / jour,images/table.jpg,10
-102,evenementiel,Tente de Réception 3x6m,"Tente professionnelle blanche idéale pour les événements extérieurs. Facile à monter.",50 € / jour,images/tente.jpg,3
-103,evenementiel,Groupe Électrogène 3000W,"Groupe électrogène puissant pour alimenter lumières et musique lors de vos événements en extérieur.",35 € / jour,images/groupe.jpg,5
-104,evenementiel,Guirlande Lumineuse Guinguette (70m),"70 mètres d'éclairage blanc chaud. Parfait pour créer une ambiance festive et chaleureuse.",45 € / jour,images/guirlande.jpg,8
-105,evenementiel,Canon à Confettis Professionnel,"Canon à confettis à air comprimé pour un effet spectaculaire (confettis non inclus).",20 € / jour,images/canon.jpg,2
-106,evenementiel,Kit Vaisselle (Assiettes, Verres, Couverts),"Set complet de vaisselle de qualité (par 12). Comprend assiettes, verres à pied et couverts.",1.50 € / personne,images/vaisselle.jpg,100
-107,evenementiel,Vidéo-projecteur 4K et Écran,"Idéal pour diffuser photos, vidéos ou présentations. Écran de 100 pouces inclus.",30 € / jour,images/videoprojecteur.jpg,4
-108,outillage,Bétonnière Électrique 160L,"Bétonnière de grande capacité (160 litres) pour travaux de maçonnerie. Moteur 650W.",25 € / jour,images/betonniere.jpg,5
-109,outillage,Échafaudage Roulant (4m),"Échafaudage sécurisé et mobile, hauteur de travail jusqu'à 4 mètres.",35 € / jour,images/echafaudage.jpg,2
-110,outillage,Ponceuse Excentrique Professionnelle,"Ponceuse puissante avec aspiration pour travaux de finition sur bois ou plâtre.",15 € / jour,images/ponceuse.jpg,10
-111,outillage,Scie Sauteuse sans Fil 18V,"Scie légère et maniable, vendue avec batteries et lames de rechange.",12 € / jour,images/sciesauteuse.jpg,10
-112,outillage,Perceuse-Visseuse à Percussion,"Outil multifonction pour percer et visser dans tous types de matériaux (béton, bois, acier).",18 € / jour,images/perceuse.jpg,10
-113,evenementiel,Machine à Popcorn Professionnelle,"Faites le délice de vos invités avec cette machine à popcorn facile d'utilisation.",25 € / jour,images/popcorn.jpg,3
-114,evenementiel,Chaises Pliantes de Jardin,"Chaises blanches robustes et confortables. Idéales pour l'extérieur.",1 € / jour,images/chaise.jpg,150`;
 
-            const lines = compiledText.trim().split('\n');
-            const headers = lines[0].split(',');
-            const products = [];
+        /**
+         * NOUVEAU: Fonction pour charger les produits à partir du fichier data.csv externe.
+         */
+        async function loadProductsFromCSVFile() {
+            const csvFilePath = 'data.csv'; 
+            
+            try {
+                const response = await fetch(csvFilePath);
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+                const compiledText = await response.text();
 
-            // Simple CSV parsing, handles quoted fields only for description.
-            for (let i = 1; i < lines.length; i++) {
-                const line = lines[i];
-                if (!line.trim()) continue;
+                // DÉBUT DU PARSING CSV (méthode existante)
+                const lines = compiledText.trim().split('\n');
+                if (lines.length === 0) {
+                     throw new Error("Le fichier CSV est vide.");
+                }
+                const headers = lines[0].split(',').map(h => h.trim());
+                const products = [];
 
-                let values = [];
-                let current = '';
-                let inQuote = false;
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i];
+                    if (!line.trim()) continue;
 
-                for (let j = 0; j < line.length; j++) {
-                    const char = line[j];
+                    let values = [];
+                    let current = '';
+                    let inQuote = false;
 
-                    if (char === '"') {
-                        inQuote = !inQuote;
-                        // Ne pas ajouter le guillemet à la valeur
-                        continue;
+                    for (let j = 0; j < line.length; j++) {
+                        const char = line[j];
+
+                        if (char === '"') {
+                            inQuote = !inQuote;
+                            continue;
+                        }
+                        if (char === ',' && !inQuote) {
+                            values.push(current.trim().replace(/^"|"$/g, ''));
+                            current = '';
+                        } else {
+                            current += char;
+                        }
                     }
-                    if (char === ',' && !inQuote) {
-                        values.push(current.trim().replace(/^"|"$/g, '')); // Nettoyage supplémentaire
-                        current = '';
+                    values.push(current.trim().replace(/^"|"$/g, '')); // Dernière valeur
+
+                    if (values.length === headers.length) {
+                        const product = {};
+                        headers.forEach((header, index) => {
+                            product[header] = values[index];
+                        });
+                        products.push(product);
                     } else {
-                        current += char;
+                         console.warn(`Ligne ignorée (format incorrect ou nombre de colonnes incohérent): ${line}`);
                     }
                 }
-                values.push(current.trim().replace(/^"|"$/g, '')); // Dernière valeur
+                // FIN DU PARSING CSV
 
-                if (values.length === headers.length) {
-                    const product = {};
-                    headers.forEach((header, index) => {
-                        product[header.trim()] = values[index];
-                    });
-                    products.push(product);
-                }
+                allProductsData = products;
+                renderCategoryButtons();
+                renderProductList(allProductsData);
+                document.getElementById('loading-message').style.display = 'none';
+
+            } catch (error) {
+                console.error("Impossible de charger le catalogue :", error);
+                const loadingMessage = document.getElementById('loading-message');
+                loadingMessage.textContent = "Erreur: Impossible de charger le catalogue. Veuillez vérifier que le fichier data.csv existe à la racine du site et qu'il est correctement formaté.";
+                loadingMessage.style.color = '#A44C3A'; // Couleur d'erreur
             }
-
-            allProductsData = products;
-            renderCategoryButtons();
-            renderProductList(allProductsData);
-            document.getElementById('loading-message').style.display = 'none';
         }
 
         // Fonction pour générer les boutons de catégorie
@@ -654,5 +662,5 @@ L'équipe Ma boîte à loc' Angevine
             });
         }
 
-        // Charger les produits au démarrage
-        window.onload = loadProductsFromText;
+        // Charger les produits au démarrage en lisant le fichier CSV externe
+        window.onload = loadProductsFromCSVFile;
