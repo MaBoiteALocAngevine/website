@@ -1,13 +1,14 @@
 /* --- Global Styles --- */
 :root {
-    --primary-color: #28a745; /* Vert vif */
-    --secondary-color: #007bff; /* Bleu */
+    /* Couleurs Chaudes (Original : Vert, Nouvelle: Orange/Chaud) */
+    --primary-color: #e67e22; /* Orange chaleureux pour les accents */
+    --secondary-color: #27ae60; /* Vert forêt pour le professionnalisme */
     --text-dark: #333;
     --text-light: #f8f9fa;
-    --bg-light: #fff;
-    --bg-dark: #343a40;
-    --card-bg-light: #f8f9fa;
-    --card-bg-dark: #495057;
+    --bg-light: #fdfcf9; /* Blanc cassé / Crème */
+    --bg-dark: #2c3e50; /* Bleu nuit élégant pour le mode sombre */
+    --card-bg-light: #ffffff;
+    --card-bg-dark: #34495e;
     --border-light: #ddd;
     --border-dark: #6c757d;
 }
@@ -52,7 +53,7 @@ a:hover {
 
 /* --- Header --- */
 header {
-    background-color: var(--bg-light);
+    background-color: var(--card-bg-light);
     color: var(--text-dark);
     padding: 1rem 2rem;
     display: flex;
@@ -66,7 +67,7 @@ header {
 }
 
 body.dark-mode header {
-    background-color: var(--bg-dark);
+    background-color: var(--card-bg-dark);
     color: var(--text-light);
     box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
 }
@@ -200,56 +201,71 @@ body.dark-mode .hero-content p {
 .carousel-container {
     position: relative;
     width: 100%;
-    max-width: 900px; /* Taille maximale du carrousel */
+    max-width: 900px; 
     margin: 20px auto;
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    aspect-ratio: 16 / 9; /* Ratio d'aspect pour éviter le "collapse" */
-    background-color: var(--bg-dark); /* Couleur de fond par défaut pour les bandes */
+    aspect-ratio: 16 / 9; 
+    background-color: #f5f5f5; /* Fond clair pour simuler une bande de couleur */
 }
 
 body.dark-mode .carousel-container {
-    background-color: var(--bg-light); 
+    background-color: var(--bg-dark); 
 }
 
 .carousel-track {
     display: flex;
     transition: transform 0.5s ease-in-out;
-    height: 100%; /* Assure que la piste prend toute la hauteur */
+    height: 100%; 
 }
 
 .carousel-slide {
     min-width: 100%;
     flex-shrink: 0;
-    display: flex; /* Utilise flexbox pour centrer l'image */
-    justify-content: center; /* Centre horizontalement */
-    align-items: center; /* Centre verticalement */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
     height: 100%;
-    position: relative; /* Pour le background flou */
-    overflow: hidden; /* Cache le débordement du background flou */
+    position: relative; 
+    overflow: hidden; 
 }
 
+/* Simulation de l'arrière-plan flou (méthode CSS uniquement) */
 .carousel-slide::before {
     content: '';
     position: absolute;
-    top: -20px; right: -20px; bottom: -20px; left: -20px; /* Déborde pour éviter les bords nets */
+    top: -20px; right: -20px; bottom: -20px; left: -20px; 
+    /* NOTE: Pour que cet effet fonctionne en CSS sans JS, nous devons utiliser une couleur de fond. 
+    L'effet flou de la même image est difficile sans JavaScript ou sans connaître les URLs d'image en CSS. 
+    Nous utilisons donc une couleur chaleureuse (Brun terre) en mode couleur harmonieuse. */
+    background-color: #a0522d; /* Couleur Marron Clair / Brun Terre */
+    z-index: 0;
+    opacity: 0.15; /* Très légère opacité */
+    transform: scale(1.1); 
+    filter: blur(10px); /* Flou conservé pour l'effet de profondeur */
+}
+
+/* Alternative: utiliser l'image pour l'arrière-plan si vous pouvez le gérer par script */
+/*
+.carousel-slide::before {
+    ...
+    background-image: url(var(--current-image-url)); // Nécessite JS pour définir la variable CSS
     background-size: cover;
     background-position: center;
-    filter: blur(10px); /* Effet flou */
-    z-index: 0;
-    opacity: 0.7; /* Légère opacité pour que l'image principale ressorte */
-    transform: scale(1.1); /* Zoom pour masquer les bords flous */
+    filter: blur(10px); 
+    ...
 }
+*/
 
 .carousel-slide img {
     max-width: 100%;
-    max-height: 100%; /* L'image s'ajuste entièrement */
-    object-fit: contain; /* Assure que l'image est entièrement visible */
+    max-height: 100%; 
+    object-fit: contain; 
     display: block;
-    position: relative; /* Au-dessus du pseudo-élément ::before */
+    position: relative; 
     z-index: 1;
-    background-color: transparent; /* S'assurer que le fond de l'image est transparent */
+    background-color: transparent; 
 }
 
 /* Les boutons de navigation du carrousel */
@@ -257,7 +273,7 @@ body.dark-mode .carousel-container {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.4);
     color: white;
     border: none;
     padding: 10px 15px;
@@ -268,7 +284,7 @@ body.dark-mode .carousel-container {
 }
 
 .carousel-nav-btn:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 #prev-btn {
@@ -299,7 +315,7 @@ body.dark-mode .carousel-container {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -325,7 +341,7 @@ body.dark-mode .carousel-container {
 }
 
 .validate-btn:hover {
-    background-color: #218838;
+    background-color: #d35400; /* Orange plus foncé */
     transform: translateY(-2px);
 }
 
@@ -336,10 +352,10 @@ body.dark-mode .carousel-container {
 
 /* --- Catalogue Navigation --- */
 .cat-nav {
-    display: flex; /* Rendre flexible pour l'alignement */
-    justify-content: center; /* Centrer les boutons */
-    flex-wrap: wrap; /* Permettre aux boutons de passer à la ligne */
-    gap: 10px; /* Espace entre les boutons */
+    display: flex; 
+    justify-content: center; 
+    flex-wrap: wrap; 
+    gap: 10px; 
     margin-bottom: 20px;
 }
 
@@ -348,7 +364,7 @@ body.dark-mode .carousel-container {
     color: var(--text-dark);
     border: 1px solid var(--border-light);
     padding: 8px 15px;
-    border-radius: 20px; /* Boutons plus arrondis */
+    border-radius: 20px; 
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     font-weight: 500;
@@ -401,7 +417,7 @@ body.dark-mode #product-search {
 
 #product-search:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2); /* Ombre basée sur la nouvelle couleur primaire */
     outline: none;
 }
 
@@ -439,7 +455,7 @@ body.dark-mode .product-card:hover {
 .product-card img {
     width: 100%;
     height: 200px;
-    object-fit: cover; /* L'image remplit la zone, mais peut être recadrée */
+    object-fit: cover; 
     display: block;
 }
 
@@ -447,7 +463,7 @@ body.dark-mode .product-card:hover {
     padding: 15px;
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* Permet au corps de prendre l'espace disponible */
+    flex-grow: 1; 
 }
 
 .product-card-body h4 {
@@ -460,7 +476,7 @@ body.dark-mode .product-card:hover {
 .product-card-body p {
     font-size: 0.95rem;
     color: var(--text-dark);
-    flex-grow: 1; /* Permet à la description de prendre l'espace */
+    flex-grow: 1; 
 }
 
 body.dark-mode .product-card-body p {
@@ -483,12 +499,12 @@ body.dark-mode .product-card-body p {
     cursor: pointer;
     font-size: 0.9rem;
     transition: background-color 0.3s ease;
-    align-self: flex-start; /* Aligne le bouton à gauche */
-    margin-top: auto; /* Pousse le bouton vers le bas */
+    align-self: flex-start; 
+    margin-top: auto; 
 }
 
 .product-card-body button:hover {
-    background-color: #218838;
+    background-color: #d35400;
 }
 
 /* --- Panier (Cart) --- */
@@ -569,7 +585,7 @@ body.dark-mode .item-controls input[type="number"] {
 }
 
 .item-controls .remove-btn {
-    background-color: #dc3545; /* Rouge */
+    background-color: #c0392b; /* Rouge terreux */
     color: white;
     border: none;
     padding: 8px 12px;
@@ -580,7 +596,7 @@ body.dark-mode .item-controls input[type="number"] {
 }
 
 .item-controls .remove-btn:hover {
-    background-color: #c82333;
+    background-color: #a93226;
 }
 
 #cart-summary {
@@ -648,12 +664,12 @@ body.dark-mode .form-group textarea {
 .form-group input:focus,
 .form-group textarea:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
+    box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.2);
     outline: none;
 }
 
 #delivery-address-group {
-    display: none; /* Caché par défaut */
+    display: none; 
     margin-top: 10px;
     padding: 10px;
     border: 1px dashed var(--border-light);
@@ -716,7 +732,7 @@ body.dark-mode .contact-item {
     border-radius: 25px;
     font-weight: 600;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    color: white; /* Texte blanc par défaut pour les boutons sociaux */
+    color: white; 
 }
 
 .social-btn.facebook {
@@ -728,7 +744,7 @@ body.dark-mode .contact-item {
 }
 
 .social-btn.instagram {
-    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background: linear-gradient(45deg, #e6683c 0%, #d53a38 50%, #c13584 100%); /* Couleurs plus chaudes */
 }
 .social-btn.instagram:hover {
     transform: translateY(-2px);
@@ -736,7 +752,7 @@ body.dark-mode .contact-item {
 }
 
 .social-btn.google {
-    background-color: #ea4335; /* Rouge Google */
+    background-color: #ea4335; 
 }
 .social-btn.google:hover {
     background-color: #d13022;
@@ -744,28 +760,28 @@ body.dark-mode .contact-item {
 }
 
 .disclaimer-box {
-    background-color: #fff3cd; /* Jaune clair pour avertissement */
-    border-left: 5px solid #ffc107; /* Bande jaune */
+    background-color: #fcf8e3; /* Jaune très clair */
+    border-left: 5px solid #e67e22; /* Bande orange chaleureuse */
     padding: 20px;
     border-radius: 8px;
     margin-top: 30px;
-    color: #664d03; /* Texte plus sombre */
+    color: #8a6d3b; /* Texte brun foncé */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 body.dark-mode .disclaimer-box {
-    background-color: #6a4f00; /* Jaune foncé pour le mode sombre */
-    border-left-color: #ffc107;
+    background-color: #4a3e2b; 
+    border-left-color: #e67e22;
     color: #fff;
 }
 
 .disclaimer-box h4 {
     margin-top: 0;
-    color: #856404; /* Couleur d'alerte spécifique */
+    color: #e67e22; 
 }
 
 body.dark-mode .disclaimer-box h4 {
-    color: #ffc107;
+    color: #e67e22;
 }
 
 .disclaimer-box p {
@@ -775,17 +791,17 @@ body.dark-mode .disclaimer-box h4 {
 
 /* --- Modal (Pop-up) --- */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1001; /* Sit on top */
+    display: none; 
+    position: fixed; 
+    z-index: 1001; 
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.6); 
+    justify-content: center; 
+    align-items: center; 
 }
 
 .modal-content {
@@ -846,11 +862,11 @@ body.dark-mode .modal-header {
 
 #modal-image {
     max-width: 100%;
-    height: 250px; /* Hauteur fixe pour les images de la modale */
-    object-fit: contain; /* L'image s'ajuste entièrement */
+    height: 250px; 
+    object-fit: contain; 
     border-radius: 5px;
     margin-bottom: 15px;
-    background-color: #eee; /* Fond gris clair pour les espaces vides */
+    background-color: #f5f5f5; 
 }
 
 body.dark-mode #modal-image {
@@ -884,7 +900,7 @@ body.dark-mode #modal-description {
     flex-direction: column;
     gap: 10px;
     margin-bottom: 20px;
-    text-align: left; /* Aligner les labels à gauche */
+    text-align: left; 
 }
 
 .modal-form label {
@@ -915,7 +931,7 @@ body.dark-mode .modal-form input {
 
 .modal-form input:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
+    box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.2);
     outline: none;
 }
 
@@ -930,4 +946,126 @@ body.dark-mode .modal-form input {
     transition: background-color 0.3s ease;
 }
 
-#modal-add
+#modal-add-to-cart:hover {
+    background-color: #d35400;
+}
+
+/* --- Notification Toast --- */
+#toast-notification {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1002;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    font-size: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#toast-notification.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;} 
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;} 
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+
+/* --- Media Queries pour la Responsivité --- */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    .logo-brand {
+        margin-bottom: 10px;
+    }
+
+    .main-nav ul {
+        width: 100%;
+        justify-content: space-around;
+        margin-bottom: 10px;
+    }
+
+    .main-nav li {
+        margin: 0;
+    }
+
+    .utility-icons {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .cat-nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 10px;
+    }
+    
+    .cat-nav button {
+        flex-shrink: 0;
+    }
+
+    .hero-content h2 {
+        font-size: 2rem;
+    }
+
+    #product-list-container {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .product-card img {
+        height: 150px;
+    }
+
+    .cart-item {
+        flex-wrap: wrap;
+        text-align: center;
+    }
+    
+    .cart-item img {
+        width: 100%;
+        height: 100px;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .item-details {
+        text-align: left;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .item-controls {
+        width: 100%;
+        justify-content: space-around;
+    }
+}
