@@ -4,130 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ma boîte à loc' Angevine - Catalogue</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-        <h1>Ma boîte à loc' Angevine</h1>
-        <div class="header-actions">
-            <button class="header-action-btn" id="dark-mode-toggle" onclick="toggleDarkMode()">🌓 Mode Sombre</button>
-            <button class="header-action-btn" onclick="showSection('panier')">
-                🛒 Panier (<span id="cart-count">0</span>)
-            </button>
+        <div class="logo-brand">
+            <h1>Ma boîte à loc' Angevine</h1>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#" onclick="showSection('accueil')" class="active">Accueil</a></li>
+                <li><a href="#" onclick="showSection('catalogue')">Catalogue</a></li>
+                <li><a href="#" onclick="showSection('contact')">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="utility-icons">
+            <button id="dark-mode-toggle" title="Mode Sombre">🌓</button>
+            <a href="#" id="cart-link" onclick="showSection('panier')">
+                🛒<span id="cart-count">0</span>
+            </a>
         </div>
     </header>
-    <nav class="main-nav">
-        <a href="#" onclick="showSection('accueil')">Accueil</a>
-        <a href="#" onclick="showSection('catalogue')">Catalogue</a>
-        <a href="#" onclick="showSection('contact')">Contact</a>
-    </nav>
 
-    <nav class="cat-nav" id="catalogue-nav" style="display: none;">
-        </nav>
+    <main>
+        <nav class="cat-nav" id="catalogue-nav" style="display: none;"></nav>
 
-    <div id="accueil-section" class="content-section active">
-        <h2>Bienvenue chez Ma boîte à loc' Angevine</h2>
-        <div class="carousel-container">
-            <div class="carousel-track" id="carousel-track">
-                </div>
-            <button class="carousel-nav prev" onclick="moveCarousel(-1)">&#10094;</button>
-            <button class="carousel-nav next" onclick="moveCarousel(1)">&#10095;</button>
-            <div id="carousel-indicators">
-                </div>
-        </div>
-        <p>Votre partenaire de confiance pour la location de matériel en Anjou ! Que ce soit pour un événement, un chantier ou des travaux de bricolage, nous vous proposons une gamme variée d'équipements de qualité à des prix compétitifs.</p>
-        <button onclick="showSection('catalogue')">Découvrir le Catalogue</button>
-    </div>
-
-    <div id="catalogue-section" class="content-section">
-        <h2>🔎 Notre Catalogue de Produits</h2>
-        <div class="search-container">
-            <input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Rechercher un produit ou un mot-clé...">
-        </div>
-        <div class="product-list" id="product-list-container">
-            <p id="loading-message">Chargement du catalogue...</p>
-        </div>
-    </div>
-
-    <div id="panier-section" class="content-section">
-        <h2>🛒 Votre Demande de Réservation</h2>
-        <div id="cart-items-container">
+        <div id="accueil-section" class="content-section active">
+            <div class="hero-content">
+                <h2>Bienvenue chez Ma boîte à loc' Angevine</h2>
+                <p>Votre partenaire de confiance pour la location de matériel en Anjou ! Que ce soit pour un événement, un chantier ou des travaux de bricolage, nous vous proposons une gamme variée d'équipements de qualité à des prix compétitifs.</p>
             </div>
-        
-        <form id="reservation-form" method="POST" action="https://formsubmit.co/maboitealocangevine@gmail.com">
-            <div class="cart-summary">
-                <div class="cart-total-line">
-                    <label for="delivery-checkbox">
-                        <input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()" name="Demande de Livraison"> Livraison demandée
-                    </label>
-                    <strong><span id="delivery-info">Coût à déterminer</span></strong>
-                </div>
-
-                <div class="cart-total-line estimate" style="border-top: 1px solid #eee; padding-top: 10px;">
-                    <label>Articles dans le panier :</label>
-                    <strong><span id="cart-total-price">0 article(s)</span></strong>
-                </div>
-
-                <div class="cart-total-line estimate">
-                    <label>ESTIMATION DU TOTAL ARTICLES :</label>
-                    <strong><span id="cart-total-estimate">0.00 €</span></strong>
+            
+            <div class="carousel-container" id="carousel-container">
+                <div class="carousel-track" id="carousel-track">
+                    </div>
+                <button class="carousel-nav-btn" id="prev-btn" onclick="moveCarousel(-1)">&#10094;</button>
+                <button class="carousel-nav-btn" id="next-btn" onclick="moveCarousel(1)">&#10095;</button>
+                <div id="carousel-indicators">
                 </div>
             </div>
-
-            <div class="cart-confirmation">
-                <label for="user-email">Votre Email de Contact (Obligatoire) :</label><br>
-                <input type="email" id="user-email" name="Email du Client" required placeholder="votre.email@exemple.com">
-
-                <div id="delivery-address-group" style="display: none; padding: 10px 0;">
-                    <label for="delivery-address">Adresse complète pour la livraison :</label><br>
-                    <textarea id="delivery-address" name="Adresse de livraison" placeholder="Ex: 10 rue des Fleurs, 49140 Angers"></textarea>
-                </div>
-
-                <label for="reservation-message">Message / Précisions supplémentaires :</label><br>
-                <textarea id="reservation-message" name="Message du Client" placeholder="Ex: Je souhaite une livraison le matin."></textarea>
-
-                <input type="hidden" name="_next" value="https://maboitealocangevine.github.io/website/merci.html">
-                <input type="hidden" name="_replyto" id="hidden-replyto">
-                <input type="hidden" name="_cc" id="hidden-cc">
-                <input type="hidden" name="_subject" id="hidden-subject">
-                <textarea name="Récapitulatif de la Demande" id="email-body-content" style="display: none;"></textarea>
-                
-                <button type="submit" class="validate-btn" disabled>Envoyer la demande de Réservation</button>
-            </div>
-        </form>
+            <p style="text-align:center;"><button onclick="showSection('catalogue')" class="validate-btn">Découvrir le Catalogue</button></p>
         </div>
 
-    <div id="contact-section" class="content-section">
-        <h2>📞 Nous Contacter</h2>
-        <p>Vous pouvez nous joindre par téléphone au : <strong>06 XX XX XX XX</strong></p>
-        <p>Ou par email à : <strong>maboitealocangevine@gmail.com</strong></p>
-        <p>Adresse de retrait du matériel (sur rendez-vous) : [Adresse à ajouter ici]</p>
-    </div>
+        <div id="catalogue-section" class="content-section">
+            <h2>🔎 Notre Catalogue de Produits</h2>
+            <div id="search-bar">
+                <input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Rechercher un produit ou un mot-clé...">
+            </div>
+            <div id="product-list-container">
+                <p id="loading-message">Chargement du catalogue...</p>
+            </div>
+        </div>
+
+        <div id="panier-section" class="content-section">
+            <h2>🛒 Votre Demande de Réservation</h2>
+            <div id="cart-items-container">
+            </div>
+            
+            <div id="cart-summary">
+                <form id="reservation-form" method="POST" action="https://formsubmit.co/maboitealocangevine@gmail.com">
+                    
+                    <div class="form-group">
+                        <label for="delivery-checkbox">
+                            <input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()" name="Demande de Livraison"> Demande de Livraison (Coût sur devis)
+                            <span id="delivery-info" style="font-style: italic; color: var(--secondary-color);"></span>
+                        </label>
+                    </div>
+
+                    <div id="delivery-address-group" class="form-group">
+                        <label for="delivery-address">Adresse complète pour la livraison :</label>
+                        <textarea id="delivery-address" name="Adresse de livraison" placeholder="Ex: 10 rue des Fleurs, 49140 Angers"></textarea>
+                    </div>
+
+                    <p class="cart-total-line">
+                        <label>Articles dans le panier :</label>
+                        <strong id="cart-total-price">0 article(s)</strong>
+                    </p>
+                    <p class="cart-total-line estimate">
+                        <label>ESTIMATION DU TOTAL ARTICLES (HT) :</label>
+                        <strong id="cart-total-estimate">0.00 €</strong>
+                    </p>
+
+                    <h3 style="margin-top: 20px;">Informations de contact</h3>
+
+                    <div class="form-group">
+                        <label for="user-email">Votre Email de Contact (Obligatoire) :</label>
+                        <input type="email" id="user-email" name="Email du Client" required placeholder="votre.email@exemple.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reservation-message">Message / Précisions supplémentaires :</label>
+                        <textarea id="reservation-message" name="Message du Client" placeholder="Ex: Je souhaite une livraison le matin."></textarea>
+                    </div>
+
+                    <input type="hidden" name="_next" value="https://maboitealocangevine.github.io/website/merci.html">
+                    <input type="hidden" name="_replyto" id="hidden-replyto">
+                    <input type="hidden" name="_cc" id="hidden-cc">
+                    <input type="hidden" name="_subject" id="hidden-subject">
+                    <textarea name="Récapitulatif de la Demande" id="email-body-content" style="display: none;"></textarea>
+                    
+                    <button type="submit" class="validate-btn" disabled>Envoyer la demande de Réservation</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="contact-section" class="content-section">
+            <h2>📞 Nous Contacter</h2>
+            <p>Vous pouvez nous joindre par téléphone au : <strong>06 XX XX XX XX</strong></p>
+            <p>Ou par email à : <strong>maboitealocangevine@gmail.com</strong></p>
+            <p>Adresse de retrait du matériel (sur rendez-vous) : [Adresse à ajouter ici]</p>
+        </div>
+    </main>
 
     <div id="product-modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h3 id="modal-title">Nom du Produit</h3>
-            <img id="modal-image" src="" alt="Image Produit">
-            <p id="modal-description">Description détaillée du produit.</p>
-            <p id="modal-price">Prix: <strong>X €</strong></p>
-            <p class="max-qty-info" id="modal-max-quantity-info">Max disponible : X</p>
-            
-            <div class="modal-controls">
-                <label for="modal-quantity">Quantité:</label>
-                <input type="number" id="modal-quantity" value="1" min="1" max="10">
-                <label for="modal-start-date">Date de début:</label>
-                <input type="date" id="modal-start-date">
-                <label for="modal-end-date">Date de fin:</label>
-                <input type="date" id="modal-end-date">
+            <div class="modal-header">
+                <h3 id="modal-title">Nom du Produit</h3>
+                <span class="close-btn" onclick="closeModal()">&times;</span>
             </div>
-            
-            <button class="add-to-cart-btn" onclick="addToCartFromModal()">Ajouter à la Demande de Réservation</button>
+            <div class="modal-body">
+                <img id="modal-image" src="" alt="Image Produit">
+                <p id="modal-description">Description détaillée du produit.</p>
+                <p id="modal-price">Prix: <strong>X €</strong></p>
+                <p class="max-qty-info" id="modal-max-quantity-info">Max disponible : X</p>
+                
+                <div class="modal-form">
+                    <label for="modal-quantity">Quantité:</label>
+                    <input type="number" id="modal-quantity" value="1" min="1" max="10">
+                    <label for="modal-start-date">Date de début:</label>
+                    <input type="date" id="modal-start-date">
+                    <label for="modal-end-date">Date de fin:</label>
+                    <input type="date" id="modal-end-date">
+                </div>
+                
+                <button id="modal-add-to-cart" onclick="addToCartFromModal()">Ajouter à la Demande de Réservation</button>
+            </div>
         </div>
     </div>
 
-    <div id="toast-notification" class="toast"></div>
+    <div id="toast-notification"></div>
 
     <footer>
         <p>&copy; 2025 Ma boîte à loc' Angevine. Tous droits réservés.</p>

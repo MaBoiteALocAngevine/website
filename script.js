@@ -1,6 +1,6 @@
 // --- VARIABLES GLOBALES ---
         let allProductsData = [];
-        let carouselImagesData = []; // NOUVEAU: Liste des images pour le carrousel
+        let carouselImagesData = []; // Liste des images pour le carrousel
         let slideIndex = 0;
         let totalSlides = 0;
         let carouselInterval;
@@ -19,6 +19,7 @@
         document.addEventListener("DOMContentLoaded", () => {
             const toggle = document.getElementById("dark-mode-toggle");
             if (toggle) {
+                 // Fonction de bascule du mode sombre
                 toggle.addEventListener("click", () => {
                     document.body.classList.toggle("dark-mode");
                 });
@@ -28,22 +29,28 @@
         });
 
         function initApp() {
-            // Le carrousel et le catalogue sont maintenant initialisés APRÈS le chargement du CSV
             loadProductsFromCSVFile();
 
             const form = document.getElementById('reservation-form');
             if (form) {
                 form.addEventListener('submit', handleSubmitReservation);
             }
+             // Assurer que le premier lien est actif au démarrage
+            document.querySelector('.main-nav ul li a').classList.add('active');
+            showSection('accueil'); // Afficher la section d'accueil par défaut
         }
 
 
         // --- NAVIGATION ---
         function showSection(sectionId) {
+            // Gestion du carrousel
             if (sectionId !== 'accueil') {
                 clearInterval(carouselInterval);
             } else {
-                startCarousel();
+                // Ne démarrer le carrousel que s'il y a des slides
+                if (totalSlides > 0) {
+                     startCarousel();
+                }
             }
             if (sectionId === 'panier') {
                 renderCart();
@@ -55,6 +62,7 @@
             const target = document.getElementById(sectionId + '-section');
             if (target) target.classList.add('active');
 
+            // Mettre à jour la navigation principale
             document.querySelectorAll('.main-nav a').forEach(link => {
                 link.classList.remove('active');
                 if (link.onclick && link.onclick.toString().includes(`showSection('${sectionId}')`)) {
@@ -62,9 +70,10 @@
                 }
             });
 
+            // Afficher/Masquer la navigation par catégorie
             const catNav = document.getElementById('catalogue-nav');
             if (sectionId === 'catalogue') {
-                catNav.style.display = 'block';
+                catNav.style.display = 'flex'; // Utiliser flex pour l'alignement
                 if (!document.querySelector('.cat-nav button.active')) {
                     filterProducts('all');
                 }
@@ -73,7 +82,7 @@
             }
         }
 
-        // --- NOTIFICATION TOAST (REMPLACE LE POP-UP GOOGLE/ALERT) ---
+        // --- NOTIFICATION TOAST ---
         function showToast(message) {
             const toast = document.getElementById("toast-notification");
             toast.textContent = message;
@@ -92,7 +101,6 @@
             if (product) {
                 selectedProductForModal = product;
                 document.getElementById('modal-title').textContent = product.name;
-                // MISE À JOUR : utilise directement l'image_url du produit
                 document.getElementById('modal-image').src = product.image_url; 
                 document.getElementById('modal-description').textContent = product.description;
                 document.getElementById('modal-price').innerHTML = `Prix: <strong>${product.price}</strong>`;
@@ -102,7 +110,7 @@
                 document.getElementById('modal-end-date').value = '';
 
                 document.getElementById('modal-max-quantity-info').textContent = `Max disponible : ${product.max_quantity}`;
-                modal.style.display = "block";
+                modal.style.display = "flex"; // Utiliser flex pour centrer la modale
             }
         }
 
@@ -120,15 +128,13 @@
             }
         };
 
-        // --- LOGIQUE PANIER ET CALCUL DE PRIX (Non modifiée) ---
-        // (Les fonctions extractPriceDetails, calculateItemPrice, addToCartFromModal, updateCartCount, handleDeliveryChange, 
-        // renderCartSummary, renderCart, updateCartQuantity, removeFromCart, handleSubmitReservation restent inchangées)
+        // --- LOGIQUE PANIER ---
 
         function extractPriceDetails(priceString) {
             const priceMatch = priceString.match(/([\d\.,]+)/);
             const unitMatch = priceString.toLowerCase().includes('jour') ? 'per_day' : 
                               priceString.toLowerCase().includes('personne') ? 'per_person' :
-                              'flat_rate'; // Taux fixe par défaut
+                              'flat_rate'; 
 
             let priceValue = 0;
             if (priceMatch) {
@@ -152,17 +158,18 @@
                     const end = new Date(endDate);
                     // Calcule la différence en jours et ajoute 1 pour inclure les deux dates
                     const diffTime = Math.abs(end - start);
-                    // Arrondi au jour supérieur pour éviter les problèmes d'heure, puis +1
                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; 
                     multiplier = diffDays;
                 } else {
-                    // Si les dates sont manquantes, on utilise 1 jour pour l'estimation
                     warning = " (Est. 1 jour. Veuillez spécifier les dates pour le calcul réel)";
                     multiplier = 1; 
                 }
+            } else if (unit === 'per_person') {
+                 // Pour 'per_person', la quantité est le nombre de personnes
+                 multiplier = 1; 
             } else {
-                // Pour 'per_person' ou 'flat_rate', le multiplicateur est 1 car la quantité est déjà dans le calcul
-                multiplier = 1;
+                 // Pour 'flat_rate', le multiplicateur est 1
+                 multiplier = 1; 
             }
             
             const totalPrice = basePrice * multiplier * quantity;
@@ -199,20 +206,18 @@
                 panier.push(item);
                 closeModal();
                 updateCartCount();
-                // Remplacement de l'alerte par le toast harmonieux
                 showToast(`✅ ${item.product.name} (x${quantity}) ajouté à la demande de réservation.`);
             }
         }
 
         function updateCartCount() {
             document.getElementById('cart-count').textContent = panier.length;
-            const validateBtn = document.querySelector('#panier-section .validate-btn');
+            const validateBtn = document.querySelector('#reservation-form .validate-btn');
             const userEmailInput = document.getElementById('user-email');
             
-            // Le formulaire sera soumis par JS, donc on vérifie la validité ici
             const isValid = panier.length > 0 && userEmailInput.value.trim().includes('@');
             validateBtn.disabled = !isValid;
-            renderCartSummary(); // S'assure que le résumé est mis à jour
+            renderCartSummary(); 
         }
 
         // Lier l'événement 'input' de l'email à la mise à jour du bouton
@@ -227,13 +232,8 @@
             const addressGroup = document.getElementById('delivery-address-group');
             const infoSpan = document.getElementById('delivery-info');
             
-            if (isChecked) {
-                addressGroup.style.display = 'block';
-                infoSpan.textContent = DELIVERY_INFO_MESSAGE;
-            } else {
-                addressGroup.style.display = 'none';
-                infoSpan.textContent = DELIVERY_INFO_MESSAGE;
-            }
+            infoSpan.textContent = isChecked ? DELIVERY_INFO_MESSAGE : '';
+            addressGroup.style.display = isChecked ? 'block' : 'none';
             renderCartSummary();
         }
 
@@ -428,9 +428,7 @@ L'équipe Ma boîte à loc' Angevine
 
             // 4. Champs cachés pour le service de formulaire (FormSubmit)
             document.getElementById('hidden-subject').value = `Demande de Réservation Matériel (${totalItems} articles) - Est. ${totalEstimate.toFixed(2)} EUR`;
-            // Champ _replyto pour que vous puissiez répondre directement au client
             document.getElementById('hidden-replyto').value = userEmail;
-            // Champ _cc pour que le client reçoive une copie (FormSubmit)
             document.getElementById('hidden-cc').value = userEmail;
 
 
@@ -440,9 +438,8 @@ L'équipe Ma boîte à loc' Angevine
             // 6. Affichage de la notification toast 
             showToast("📧 Votre demande de réservation est en cours d'envoi !");
 
-            // 7. Réinitialisation du panier local après la soumission 
+            // 7. Réinitialisation
             panier = [];
-            // On conserve l'email saisi pour faciliter la prochaine demande du même utilisateur
             document.getElementById('reservation-message').value = '';
             document.getElementById('delivery-checkbox').checked = false;
             handleDeliveryChange(); 
@@ -450,28 +447,31 @@ L'équipe Ma boîte à loc' Angevine
         }
 
 
-        // --- LOGIQUE CAROUSEL (Mise à jour pour utiliser carouselImagesData) ---
+        // --- LOGIQUE CAROUSEL ---
 
-        /**
-         * INITIALISATION CARROUSEL : utilise la liste carouselImagesData (remplie par loadProductsFromCSVFile).
-         */
         function initCarousel() {
             const track = document.getElementById('carousel-track');
             const indicators = document.getElementById('carousel-indicators');
+            const container = document.getElementById('carousel-container');
+            
+            // Si le conteneur n'existe pas ou si la liste d'images est vide, on s'arrête
+            if (!container || carouselImagesData.length === 0) {
+                 if (container) {
+                     container.innerHTML = '<p style="text-align: center; color: var(--text-color);">Aucune image sélectionnée pour le carrousel.</p>';
+                 }
+                totalSlides = 0;
+                return;
+            }
             
             track.innerHTML = '';
             indicators.innerHTML = '';
             
-            // Utilisation de la variable globale remplie après le chargement du CSV
             carouselImagesData.forEach((imgSrc, index) => {
-                // Créer la slide
                 const slide = document.createElement('div');
                 slide.className = 'carousel-slide';
-                // MISE À JOUR : imgSrc est maintenant le chemin d'image directement
                 slide.innerHTML = `<img src="${imgSrc}" alt="Slide Carrousel ${index + 1}">`;
                 track.appendChild(slide);
                 
-                // Créer l'indicateur
                 const indicator = document.createElement('span');
                 indicator.onclick = () => showSlide(index);
                 indicators.appendChild(indicator);
@@ -480,11 +480,11 @@ L'équipe Ma boîte à loc' Angevine
             totalSlides = carouselImagesData.length;
             if (totalSlides > 0) {
                 showSlide(0);
-                startCarousel();
-            } else {
-                // Affiche un message si aucune image n'est marquée "Oui" dans le CSV
-                document.getElementById('carousel-container').innerHTML = '<p style="text-align: center; color: var(--text-color);">Aucune image sélectionnée pour le carrousel (colonne carrousel dans data.csv).</p>';
-            }
+                // Démarrer seulement si l'accueil est la section active (géré par showSection)
+                if (document.getElementById('accueil-section').classList.contains('active')) {
+                    startCarousel();
+                }
+            } 
         }
 
         function showSlide(index) {
@@ -512,14 +512,11 @@ L'équipe Ma boîte à loc' Angevine
             clearInterval(carouselInterval);
             carouselInterval = setInterval(() => {
                 moveCarousel(1);
-            }, 4000); // Change l'image toutes les 4 secondes
+            }, 4000); 
         }
 
-        // --- LOGIQUE CATALOGUE ---
+        // --- LOGIQUE CATALOGUE ET CHARGEMENT CSV ---
 
-        /**
-         * Charge les produits à partir du fichier data.csv externe et filtre les images du carrousel.
-         */
         async function loadProductsFromCSVFile() {
             const csvFilePath = 'data.csv'; 
             
@@ -530,12 +527,14 @@ L'équipe Ma boîte à loc' Angevine
                 }
                 const compiledText = await response.text();
 
-                // DÉBUT DU PARSING CSV (méthode existante)
+                // DÉBUT DU PARSING CSV
                 const lines = compiledText.trim().split('\n');
                 if (lines.length === 0) {
                      throw new Error("Le fichier CSV est vide.");
                 }
-                const headers = lines[0].split(',').map(h => h.trim());
+                
+                // Extraction des entêtes (sans espaces et en minuscules pour la robustesse)
+                const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
                 const products = [];
 
                 for (let i = 1; i < lines.length; i++) {
@@ -576,7 +575,7 @@ L'équipe Ma boîte à loc' Angevine
 
                 allProductsData = products;
                 
-                // NOUVEAU: Filtrer les images pour le carrousel
+                // Filtrer les images pour le carrousel (colonne 'carrousel' ou 'is_carousel')
                 carouselImagesData = allProductsData
                     .filter(p => p.carrousel && p.carrousel.toLowerCase() === 'oui')
                     .map(p => p.image_url);
@@ -585,18 +584,16 @@ L'équipe Ma boîte à loc' Angevine
                 renderProductList(allProductsData);
                 document.getElementById('loading-message').style.display = 'none';
 
-                // NOUVEAU: Initialiser le carrousel APRÈS avoir chargé les données
                 initCarousel(); 
 
             } catch (error) {
                 console.error("Impossible de charger le catalogue :", error);
                 const loadingMessage = document.getElementById('loading-message');
-                loadingMessage.textContent = "Erreur: Impossible de charger le catalogue. Veuillez vérifier que le fichier data.csv existe à la racine du site et qu'il est correctement formaté.";
-                loadingMessage.style.color = '#A44C3A'; // Couleur d'erreur
+                loadingMessage.textContent = "Erreur: Impossible de charger le catalogue. Veuillez vérifier que le fichier data.csv existe.";
+                loadingMessage.style.color = '#A44C3A'; 
             }
         }
 
-        // Les fonctions renderCategoryButtons, filterProducts, searchProducts, renderProductList restent inchangées
 
         function renderCategoryButtons() {
             const nav = document.getElementById('catalogue-nav');
@@ -606,7 +603,7 @@ L'équipe Ma boîte à loc' Angevine
             let buttonAll = document.createElement('button');
             buttonAll.textContent = CATEGORIES['all'];
             buttonAll.onclick = () => filterProducts('all');
-            buttonAll.classList.add('active'); // Actif par défaut
+            buttonAll.classList.add('active'); 
             nav.appendChild(buttonAll);
             
             // Autres catégories
@@ -632,7 +629,7 @@ L'équipe Ma boîte à loc' Angevine
                 ? allProductsData 
                 : allProductsData.filter(p => p.category === category);
                 
-            document.getElementById('product-search').value = ''; // Réinitialiser la recherche
+            document.getElementById('product-search').value = ''; 
             renderProductList(filteredProducts);
         }
 
@@ -645,7 +642,6 @@ L'équipe Ma boîte à loc' Angevine
                 return name.includes(searchTerm) || description.includes(searchTerm) || category.includes(searchTerm);
             });
             
-            // Désactiver le bouton de catégorie actif si la recherche est utilisée
             document.querySelectorAll('#catalogue-nav button').forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -655,7 +651,7 @@ L'équipe Ma boîte à loc' Angevine
 
         function renderProductList(products) {
             const listContainer = document.getElementById('product-list-container');
-            listContainer.innerHTML = ''; // Nettoyer la liste existante
+            listContainer.innerHTML = ''; 
 
             if (products.length === 0) {
                 listContainer.innerHTML = '<p style="text-align: center; color: #777;">Aucun produit trouvé correspondant à votre recherche.</p>';

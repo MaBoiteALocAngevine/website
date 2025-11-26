@@ -47,7 +47,7 @@ h1, h2, h3, h4 {
 }
 
 /* Boutons de base */
-button, .validate-btn {
+button, .validate-btn, #modal-add-to-cart {
     padding: 10px 15px;
     border: none;
     border-radius: var(--radius-default);
@@ -57,13 +57,13 @@ button, .validate-btn {
 }
 
 /* Bouton principal (Réservation / Valider) */
-.validate-btn {
+.validate-btn, #modal-add-to-cart {
     background-color: var(--primary-color);
     color: white;
     font-size: 1.1em;
     margin-top: 15px;
 }
-.validate-btn:hover:not(:disabled) {
+.validate-btn:hover:not(:disabled), #modal-add-to-cart:hover {
     background-color: #8c3b2f;
     transform: translateY(-1px);
 }
@@ -88,7 +88,6 @@ header {
     top: 0;
     z-index: 100;
 }
-
 .logo-brand h1 {
     margin: 0;
     color: var(--primary-color);
@@ -130,6 +129,7 @@ nav.main-nav ul li a.active {
     cursor: pointer;
     padding: 5px;
     position: relative;
+    text-decoration: none; /* Pour #cart-link qui est un <a> */
 }
 
 #dark-mode-toggle:hover, #cart-link:hover {
@@ -434,13 +434,6 @@ main {
     color: var(--text-color);
 }
 
-#modal-add-to-cart {
-    background-color: var(--primary-color);
-    color: white;
-    width: 100%;
-    font-size: 1.1em;
-    padding: 12px;
-}
 
 /* ==================================== */
 /* 7. PANIER (RÉSERVATION) */
