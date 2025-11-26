@@ -1,9 +1,0 @@
-id,category,name,description,price,image_url,max_quantity,carrousel
-101,evenementiel,Table de Réception Pliante,"Table de réception en plastique pliante. Peut accueillir jusqu'à 8 personnes. Dimensions : 180x75cm.",10 € / jour,images/table.jpg,10,Oui
-102,evenementiel,Tente de Réception 3x6m,"Tente professionnelle blanche idéale pour les événements extérieurs. Facile à monter.",50 € / jour,images/tente.jpg,3,Oui
-103,evenementiel,Groupe Électrogène 3000W,"Groupe électrogène puissant pour alimenter lumières et musique lors de vos événements en extérieur.",35 € / jour,images/groupe.jpg,5,Non
-104,evenementiel,Guirlande Lumineuse Guinguette (70m),"70 mètres d'éclairage blanc chaud. Parfait pour créer une ambiance festive et chaleureuse.",45 € / jour,images/guirlande.jpg,8,Oui
-105,evenementiel,Canon à Confettis Professionnel,"Canon à confettis à air comprimé pour un effet spectaculaire (confettis non inclus).",20 € / jour,images/canon.jpg,2,Non
-106,evenementiel,Kit Vaisselle (Assiettes, Verres, Couverts),"Set complet de vaisselle de qualité (par 12). Comprend assiettes, verres à pied et couverts.",1.5 € / personne,images/vaisselle.jpg,50,Non
-201,outillage,Perceuse Visseuse Professionnelle,"Perceuse visseuse sans fil de marque Bosch. Idéale pour les petits travaux de la maison.",15 € / jour,images/perceuse.jpg,5,Non
-202,outillage,Échafaudage Roulant (4m),"Échafaudage en aluminium léger et sécurisé, hauteur de travail maximale de 4 mètres.",25 € / jour,images/echafaudage.jpg,2,Non
