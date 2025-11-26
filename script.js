@@ -480,7 +480,7 @@ L'équipe Ma boîte à loc' Angevine
             totalSlides = carouselImagesData.length;
             if (totalSlides > 0) {
                 showSlide(0);
-                // Démarrer seulement si l'accueil est la section active (géré par showSection)
+                // Démarrer seulement si l'accueil est la section active
                 if (document.getElementById('accueil-section').classList.contains('active')) {
                     startCarousel();
                 }
