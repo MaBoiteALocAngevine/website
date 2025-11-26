@@ -1,6 +1,6 @@
 // --- VARIABLES GLOBALES ---
         let allProductsData = [];
-        // MISE À JOUR 1 : Initialisation du tableau avec des chemins vers images/carrousel
+        // MISE À JOUR 1 : Rappel des chemins d'images à vérifier
         let carouselImages = [
             'images/carrousel/location-tente.jpg',
             'images/carrousel/location-sono.jpg',
@@ -16,6 +16,9 @@
         let panier = [];
         // Message informatif de livraison
         const DELIVERY_INFO_MESSAGE = "Coût à déterminer (sur devis)";
+        // Adresse email de la société pour l'envoi du formulaire
+        const BUSINESS_EMAIL = "maboitealocangevine@gmail.com"; 
+
         const CATEGORIES = {
             'all': 'Tous les produits',
             'evenementiel': 'Événementiel',
@@ -32,6 +35,11 @@
             }
             // Initialisation du carrousel au chargement de la page
             initCarousel();
+            // Lier la fonction de soumission au formulaire
+            const form = document.getElementById('reservation-form');
+            if (form) {
+                form.addEventListener('submit', handleSubmitReservation);
+            }
         });
 
         // --- NAVIGATION ---
@@ -202,13 +210,18 @@
             const validateBtn = document.querySelector('#panier-section .validate-btn');
             const userEmailInput = document.getElementById('user-email');
             
-            const isValid = panier.length > 0 && userEmailInput.value.trim() !== '';
+            // Le formulaire sera soumis par JS, donc on vérifie la validité ici
+            const isValid = panier.length > 0 && userEmailInput.value.trim().includes('@');
             validateBtn.disabled = !isValid;
             renderCartSummary(); // S'assure que le résumé est mis à jour
         }
 
-        // Ajout de la fonction pour mettre à jour l'état du bouton si l'email change
-        document.getElementById('user-email').addEventListener('input', updateCartCount);
+        // Lier l'événement 'input' de l'email à la mise à jour du bouton
+        document.addEventListener('input', (event) => {
+            if (event.target.id === 'user-email') {
+                updateCartCount();
+            }
+        });
 
         function handleDeliveryChange() {
             const isChecked = document.getElementById('delivery-checkbox').checked;
@@ -320,20 +333,30 @@
             updateCartCount();
         }
 
-        // MISE À JOUR : Envoi à l'email souhaité et récapitulatif détaillé pour l'utilisateur
-        function validateCart() {
+        // NOUVEAU : Fonction de soumission du formulaire (appelée par l'événement 'submit' du formulaire)
+        function handleSubmitReservation(event) {
+            event.preventDefault(); // Empêche la soumission classique pour insérer le récapitulatif
+
+            const form = event.target;
+            const userEmailInput = document.getElementById('user-email');
+            
             if (panier.length === 0) {
                 showToast("Votre panier est vide. Veuillez ajouter des articles avant de valider.");
                 return;
             }
 
-            const userEmail = document.getElementById('user-email').value.trim();
+            const userEmail = userEmailInput.value.trim();
             if (!userEmail || !userEmail.includes('@')) {
                 showToast("Veuillez entrer une adresse email valide pour la réservation.");
-                document.getElementById('user-email').focus();
+                userEmailInput.focus();
                 return;
             }
 
+            // 1. Mise à jour de la destination du formulaire (nécessaire si l'action n'est pas déjà définie)
+            // Pour FormSubmit (exemple), l'action doit être une URL spécifique à votre email (à remplacer)
+            form.action = `https://formsubmit.co/${BUSINESS_EMAIL}`;
+
+            // 2. Génération du corps de l'e-mail détaillé
             const isDelivery = document.getElementById('delivery-checkbox').checked;
             const deliveryAddress = isDelivery ? document.getElementById('delivery-address').value.trim() : 'Non demandée (Retrait sur place)';
             const reservationMessage = document.getElementById('reservation-message').value.trim() || 'Aucun message supplémentaire.';
@@ -372,35 +395,37 @@ Je souhaite effectuer une demande de réservation pour le matériel suivant :
 ${priceDetails}
 
 --- INFORMATIONS SUPPLÉMENTAIRES ---\n
-Demandeur (Email) : ${userEmail}
+Email du client : ${userEmail}
 Demande de livraison : ${isDelivery ? 'OUI' : 'NON'}
 Adresse de livraison (si demandée) : ${deliveryAddress}
-Message : ${reservationMessage}
+Message du client : ${reservationMessage}
 
 --- ESTIMATION GLOBALE (HORS FRAIS DE LIVRAISON) ---
 Nombre total d'articles : ${totalItems}
 Estimation du Total TTC des articles : ${totalEstimate.toFixed(2)} €
 (⚠️ Ce montant est une estimation. Il sera confirmé par devis après vérification des disponibilités et ajout des frais de livraison éventuels.)
-
-Merci de bien vouloir me recontacter pour confirmer la disponibilité, le tarif total, et finaliser la réservation.
-
-Cordialement,
-Nom/Prénom : (À compléter dans l'e-mail avant envoi)
-Téléphone : (À compléter dans l'e-mail avant envoi)
 `;
-
-            // Envoi à l'adresse spécifiée par l'utilisateur
-            const mailtoLink = `mailto:maboitealocangevine@gmail.com?subject=Demande de Réservation Matériel (${totalItems} articles) - Est. ${totalEstimate.toFixed(2)} €&body=${encodeURIComponent(emailBody)}`;
             
-            // Ouvre le client mail de l'utilisateur
-            window.location.href = mailtoLink;
-            
-            // Notification toast à la place de l'ancienne alerte Google
-            showToast("📧 Votre demande a été préparée dans votre client de messagerie. N'oubliez pas de l'envoyer !");
+            // 3. Injection du corps de l'e-mail dans le champ caché
+            document.getElementById('email-body-content').value = emailBody.trim();
 
-            // Réinitialise le panier après le lancement du mailto
+            // 4. Champs cachés pour le service de formulaire (FormSubmit/Formspree)
+            document.getElementById('hidden-subject').value = `Demande de Réservation Matériel (${totalItems} articles) - Est. ${totalEstimate.toFixed(2)} €`;
+            // Champ _replyto pour que vous puissiez répondre directement au client
+            document.getElementById('hidden-replyto').value = userEmail;
+            // Champ _cc pour que le client reçoive une copie (FormSubmit)
+            document.getElementById('hidden-cc').value = userEmail;
+
+
+            // 5. Soumission effective du formulaire
+            form.submit();
+
+            // 6. Affichage de la notification toast (le service de formulaire gérera la suite, redirection, etc.)
+            showToast("📧 Votre demande de réservation est en cours d'envoi !");
+
+            // 7. Réinitialisation du panier local après la soumission (pour une nouvelle demande)
             panier = [];
-            document.getElementById('user-email').value = userEmail; // Garde l'email renseigné
+            // On conserve l'email saisi pour faciliter la prochaine demande du même utilisateur
             document.getElementById('reservation-message').value = '';
             document.getElementById('delivery-checkbox').checked = false;
             handleDeliveryChange(); 

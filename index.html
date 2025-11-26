@@ -54,39 +54,44 @@
         <h2>🛒 Votre Demande de Réservation</h2>
         <div id="cart-items-container">
             </div>
-        <div class="cart-summary">
-            <div class="cart-total-line">
-                <label for="delivery-checkbox">
-                    <input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()"> Livraison demandée
-                </label>
-                <strong><span id="delivery-info">Coût à déterminer</span></strong>
+        
+        <form id="reservation-form" method="POST" action="YOUR_FORMSUBMIT_ENDPOINT">
+            <div class="cart-summary">
+                <div class="cart-total-line">
+                    <label for="delivery-checkbox">
+                        <input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()" name="Demande de Livraison"> Livraison demandée
+                    </label>
+                    <strong><span id="delivery-info">Coût à déterminer</span></strong>
+                </div>
+
+                <div class="cart-total-line estimate" style="border-top: 1px solid #eee; padding-top: 10px;">
+                    <label>Articles dans le panier :</label>
+                    <strong><span id="cart-total-price">0 article(s)</span></strong>
+                </div>
+
+                <div class="cart-total-line estimate">
+                    <label>ESTIMATION DU TOTAL ARTICLES :</label>
+                    <strong><span id="cart-total-estimate">0.00 €</span></strong>
+                </div>
+
+                <div id="delivery-address-group" style="display: none; padding: 10px 0;">
+                    <label for="delivery-address">Adresse complète pour la livraison :</label><br>
+                    <textarea id="delivery-address" name="Adresse de livraison" placeholder="Ex: 10 rue des Fleurs, 49140 Ville"></textarea>
+                </div>
+
+                <div class="cart-confirmation">
+                    <label for="user-email">Votre Email de Contact (Obligatoire) :</label>
+                    <input type="email" id="user-email" name="Email du Client" placeholder="votre.email@exemple.com" required>
+
+                    <label for="reservation-message">Message supplémentaire (dates spécifiques, questions...) :</label>
+                    <textarea id="reservation-message" name="Message du Client" rows="4" placeholder="Votre message..."></textarea>
+                    
+                    <input type="hidden" name="_replyto" id="hidden-replyto"> <input type="hidden" name="_cc" id="hidden-cc"> <input type="hidden" name="_subject" id="hidden-subject"> <textarea name="Récapitulatif de la Demande" id="email-body-content" style="display: none;"></textarea>
+                    
+                    <button type="submit" class="validate-btn" disabled>Envoyer la demande de Réservation</button>
+                </div>
             </div>
-
-            <div class="cart-total-line estimate" style="border-top: 1px solid #eee; padding-top: 10px;">
-                <label>Articles dans le panier :</label>
-                <strong><span id="cart-total-price">0 article(s)</span></strong>
-            </div>
-
-            <div class="cart-total-line estimate">
-                <label>ESTIMATION DU TOTAL ARTICLES :</label>
-                <strong><span id="cart-total-estimate">0.00 €</span></strong>
-            </div>
-
-            <div id="delivery-address-group" style="display: none; padding: 10px 0;">
-                <label for="delivery-address">Adresse complète pour la livraison :</label><br>
-                <textarea id="delivery-address" placeholder="Ex: 10 rue des Fleurs, 49140 Ville"></textarea>
-            </div>
-
-            <div class="cart-confirmation">
-                <label for="user-email">Votre Email de Contact (Obligatoire) :</label>
-                <input type="email" id="user-email" placeholder="votre.email@exemple.com">
-
-                <label for="reservation-message">Message supplémentaire (dates spécifiques, questions...) :</label>
-                <textarea id="reservation-message" rows="4" placeholder="Votre message..."></textarea>
-
-                <button class="validate-btn" onclick="validateCart()" disabled>Finaliser la demande par Email</button>
-            </div>
-        </div>
+        </form>
     </div>
 
     <div id="contact-section" class="content-section">
