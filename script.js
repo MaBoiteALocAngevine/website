@@ -97,7 +97,8 @@
         // --- MODALE PRODUIT ---
         function showProductDetails(productId) {
             const modal = document.getElementById('product-modal');
-            const product = allProductsData.find(p => p.id == productId);
+            // La recherche se fait uniquement dans les produits publiés (allProductsData)
+            const product = allProductsData.find(p => p.id == productId); 
             if (product) {
                 selectedProductForModal = product;
                 document.getElementById('modal-title').textContent = product.name;
@@ -569,14 +570,22 @@ L'équipe Ma boîte à loc' Angevine
                         });
                         products.push(product);
                     } else {
+                         // Le warning est important si le format du CSV est incorrect
                          console.warn(`Ligne ignorée (format incorrect, ${values.length} col. vs ${headers.length} attendues): ${line}`);
                     }
                 }
                 // FIN DU PARSING CSV
 
-                allProductsData = products;
                 
-                // Filtrer les images pour le carrousel (colonne 'carrousel' ou 'is_carousel')
+                // 🛠 NOUVELLE LOGIQUE DE FILTRAGE
+                // 1. Filtrer les produits : seuls ceux avec "publication: Oui" sont affichés
+                const publishedProducts = products.filter(p => 
+                    p.publication && p.publication.toLowerCase().trim() === 'oui'
+                );
+
+                allProductsData = publishedProducts;
+                
+                // 2. Filtrer les images pour le carrousel (colonne 'carrousel' ou 'is_carousel')
                 carouselImagesData = allProductsData
                     // La colonne carrousel doit exister dans le CSV et contenir "oui"
                     .filter(p => p.carrousel && p.carrousel.toLowerCase().trim() === 'oui') 
@@ -616,6 +625,7 @@ L'équipe Ma boîte à loc' Angevine
             nav.appendChild(buttonAll);
             
             // Autres catégories
+            // On utilise uniquement les produits PUBLIÉS
             const uniqueCategories = [...new Set(allProductsData.map(p => p.category))];
             
             uniqueCategories.forEach(cat => {
@@ -636,6 +646,7 @@ L'équipe Ma boîte à loc' Angevine
 
             const filteredProducts = category === 'all' 
                 ? allProductsData 
+                // allProductsData contient déjà les produits publiés
                 : allProductsData.filter(p => p.category === category);
                 
             document.getElementById('product-search').value = ''; 
