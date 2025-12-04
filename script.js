@@ -15,6 +15,14 @@
             'outillage': 'Outillage'
         };
 
+        // 🛠 NOUVELLE FONCTION POUR LA MISE EN FORME
+        function formatDescription(text) {
+            if (!text) return '';
+            // Remplace tous les sauts de ligne (\n pour Linux/Mac, \r\n pour Windows) par la balise HTML <br>
+            return text.replace(/\r?\n/g, '<br>');
+        }
+        // ------------------------------------------
+
         // --- MODE SOMBRE ---
         document.addEventListener("DOMContentLoaded", () => {
             const toggle = document.getElementById("dark-mode-toggle");
@@ -103,7 +111,10 @@
                 selectedProductForModal = product;
                 document.getElementById('modal-title').textContent = product.name;
                 document.getElementById('modal-image').src = product.image_url; 
-                document.getElementById('modal-description').textContent = product.description;
+                
+                // 🛠 MODIFICATION ICI : Utilisation de innerHTML et formatDescription
+                document.getElementById('modal-description').innerHTML = formatDescription(product.description);
+                
                 document.getElementById('modal-price').innerHTML = `Prix: <strong>${product.price}</strong>`;
                 document.getElementById('modal-quantity').value = 1;
                 document.getElementById('modal-quantity').max = product.max_quantity;
@@ -685,7 +696,7 @@ L'équipe Ma boîte à loc' Angevine
                     <img src="${product.image_url}" alt="${product.name}">
                     <div class="product-card-body">
                         <h4>${product.name}</h4>
-                        <p>${product.description}</p>
+                        <p>${formatDescription(product.description)}</p>
                         <p class="product-price"><strong>${product.price}</strong></p>
                         <button onclick="showProductDetails('${product.id}')">Détails / Réserver</button>
                     </div>
