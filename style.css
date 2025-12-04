@@ -1,3 +1,7 @@
+body {
+    background-color: red !important;
+}
+
 /* --- Global Styles --- */
 :root {
     /* Couleurs Chaudes (Original : Vert, Nouvelle: Orange/Chaud) */
