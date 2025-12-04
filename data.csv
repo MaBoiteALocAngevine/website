@@ -1,32 +1,10 @@
-id,category,name,description,price,image_url,max_quantity,carrousel
-101,evenementiel,Table de réception,"Grâce à sa conception pliable et légère, cette table haute est facile à transporter et à installer en quelques secondes. Elle est l'élément clé pour transformer l'ambiance de vos événements : le format debout favorise les échanges, le professionnalisme de vos réceptions, et la convivialité de vos rassemblements, qu'ils soient privés ou professionnels.
-
-<strong>Détails Techniques</strong>
-- Type : Table de réception haute
-- Hauteur : 105 cm
-- Plateau : Plastique Blanc
-- Diamètre du plateau : 60 cm
-- Accessoire inclus : Toile / Housse de couleur Noire
-- Fonctionnalité : Pliable
-- Dimensions pliée (L x l x E) : 126 cm x 60 cm x 5 cm",6 € / jour,images/table.jpg,12,Oui
-102,evenementiel,Tonelle pliante 3x6m,Tente professionnelle blanche idéale pour les événements extérieurs. Facile à monter.,20 € / jour,images/tente.jpg,1,Oui
-103,evenementiel,Vidéo-projecteur,"Vidéo-projecteur professionnel Epson EB-W22 idéal pour projections, présentations, évenements, soirées... 
-Excellente luminosité de 3000 lumens, offrant une image claire et contrastée, même dans un environnement légèrement éclairé.
-Inclus :
-Câble HDMI de 5 mètres
-Adaptateur compatible avec les nouvelles prises HDMI
-Housse de transport rigide et pratique
-Il est également possible, pour 5 € de plus / 24h, d’avoir un micro filaire professionnel.
-Détails :
-Résolution : WXGA (1280 x 800)
-Technologie : 3LCD (couleurs naturelles et homogènes)
-Connectiques : HDMI, VGA, USB, audio
-Puissance lumineuse : 3000 lumens
-Utilisable avec un ordinateur, une console ou une clé HDMI
-",15 € / jour,images/videoprojecteur.jpg,1,Oui
-104,evenementiel,Guirlande Lumineuse Guinguette (70m),70 mètres d'éclairage blanc chaud. Parfait pour créer une ambiance festive et chaleureuse.,5 € / jour,images/guirlande.jpg,1,Oui
-105,evenementiel,Canon à Confettis Professionnel,Canon à confettis à air comprimé pour un effet spectaculaire (confettis non inclus).,20 € / jour,images/canon.jpg,1,Non
-106,evenementiel,"Kit Vaisselle (Assiettes, Verres, Couverts)","Set complet de vaisselle de qualité (par 12). Comprend assiettes, verres à pied et couverts.",1.5 € / personne,images/vaisselle.jpg,100,Non
-201,outillage,Perceuse Visseuse Professionnelle,Perceuse visseuse sans fil de marque Bosch. Idéale pour les petits travaux de la maison.,15 € / jour,images/perceuse.jpg,1,Non
-202,outillage,Échafaudage Roulant (4m),"Échafaudage en aluminium léger et sécurisé, hauteur de travail maximale de 4 mètres.",25 € / jour,images/echafaudage.jpg,1,Non
-203,outillage,Groupe Électrogène 3000W,Groupe électrogène puissant pour alimenter lumières et musique lors de vos événements en extérieur.,35 € / jour,images/groupe.jpg,1,Non
+id,category,name,description,price,image_url,max_quantity,carrousel,publication
+101,evenementiel,Table de réception,"Grâce à sa conception pliable et légère, cette table haute est facile à transporter et à installer en quelques secondes. Elle est l'élément clé pour transformer l'ambiance de vos événements : le format debout favorise les échanges, le professionnalisme de vos réceptions, et la convivialité de vos rassemblements, qu'ils soient privés ou professionnels.<br><br><strong>Détails Techniques</strong><br>- Type : Table de réception haute<br>- Hauteur : 105 cm<br>- Plateau : Plastique Blanc<br>- Diamètre du plateau : 60 cm<br>- Accessoire inclus : Toile / Housse de couleur Noire<br>- Fonctionnalité : Pliable<br>- Dimensions pliée (L x l x E) : 126 cm x 60 cm x 5 cm",6 € / jour,images/table.jpg,12,Oui,Oui
+102,evenementiel,Tonelle pliante 3x6m,Tente professionnelle blanche idéale pour les événements extérieurs. Facile à monter.,20 € / jour,images/tente.jpg,1,Oui,Oui
+103,evenementiel,Vidéo-projecteur,"Vidéo-projecteur professionnel Epson EB-W22 idéal pour projections, présentations, évenements, soirées...<br>Excellente luminosité de 3000 lumens, offrant une image claire et contrastée, même dans un environnement légèrement éclairé.<br>Inclus :<br>Câble HDMI de 5 mètres<br>Adaptateur compatible avec les nouvelles prises HDMI<br>Housse de transport rigide et pratique<br>Il est également possible, pour 5 € de plus / 24h, d’avoir un micro filaire professionnel.<br>Détails :<br>Résolution : WXGA (1280 x 800)<br>Technologie : 3LCD (couleurs naturelles et homogènes)<br>Connectiques : HDMI, VGA, USB, audio<br>Puissance lumineuse : 3000 lumens<br>Utilisable avec un ordinateur, une console ou une clé HDMI",15 € / jour,images/videoprojecteur.jpg,1,Oui,Oui
+104,evenementiel,Guirlande Lumineuse Guinguette (70m),70 mètres d'éclairage blanc chaud. Parfait pour créer une ambiance festive et chaleureuse.,5 € / jour,images/guirlande.jpg,1,Oui,Oui
+105,evenementiel,Canon à Confettis Professionnel,Canon à confettis à air comprimé pour un effet spectaculaire (confettis non inclus).,20 € / jour,images/canon.jpg,1,Non,Oui
+106,evenementiel,"Kit Vaisselle (Assiettes, Verres, Couverts)","Set complet de vaisselle de qualité (par 12). Comprend assiettes, verres à pied et couverts.",1.5 € / personne,images/vaisselle.jpg,100,Non,Non
+201,outillage,Perceuse Visseuse Professionnelle,Perceuse visseuse sans fil de marque Bosch. Idéale pour les petits travaux de la maison.,15 € / jour,images/perceuse.jpg,1,Non,Oui
+202,outillage,Échafaudage Roulant (4m),"Échafaudage en aluminium léger et sécurisé, hauteur de travail maximale de 4 mètres.",25 € / jour,images/echafaudage.jpg,1,Non,Oui
+203,outillage,Groupe Électrogène 3000W,Groupe électrogène puissant pour alimenter lumières et musique lors de vos événements en extérieur.,35 € / jour,images/groupe.jpg,1,Non,Non
