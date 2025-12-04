@@ -1,178 +1,207 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ma boîte à loc' Angevine - Catalogue</title>
-    <link rel="stylesheet" href="style.css?v=1.1">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma boîte à loc' Angevine - Location de matériel à Rives du Loir</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="logo-brand">
-            <h1>Ma boîte à loc' Angevine</h1>
-        </div>
-        <nav class="main-nav">
-            <ul>
-                <li><a href="#" onclick="showSection('accueil')" class="active">Accueil</a></li>
-                <li><a href="#" onclick="showSection('catalogue')">Catalogue</a></li>
-                <li><a href="#" onclick="showSection('contact')">Contact</a></li>
-            </ul>
-        </nav>
-        <div class="utility-icons">
-            <button id="dark-mode-toggle" title="Mode Sombre">🌓</button>
-            <a href="#" id="cart-link" onclick="showSection('panier')">
-                🛒<span id="cart-count">0</span>
-            </a>
-        </div>
-    </header>
 
-    <main>
-        <nav class="cat-nav" id="catalogue-nav" style="display: none;"></nav>
+    <header class="main-header">
+        <div class="header-content">
+            <h1 class="logo">
+                <i class="fas fa-tools"></i>
+                <a href="#" onclick="showSection('accueil')">Ma boîte à loc' Angevine</a>
+            </h1>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#" onclick="showSection('accueil')">Accueil</a></li>
+                    <li><a href="#" onclick="showSection('catalogue')">Catalogue</a></li>
+                    <li><a href="#" onclick="showSection('contact')">Contact</a></li>
+                    <li>
+                        <a href="#" onclick="showSection('panier')" class="cart-link">
+                            <i class="fas fa-shopping-basket"></i> Panier (<span id="cart-count">0</span>)
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <button id="dark-mode-toggle" class="dark-mode-btn" title="Activer/Désactiver le mode sombre">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
 
-        <div id="accueil-section" class="content-section active">
-            <div class="hero-content">
-                <h2>Bienvenue chez Ma boîte à loc' Angevine</h2>
-                <p>Votre partenaire de confiance pour la location de matériel en Anjou ! Que ce soit pour un événement, un chantier ou des travaux de bricolage, nous vous proposons une gamme variée d'équipements de qualité à des prix compétitifs.</p>
-            </div>
-            
-            <div class="carousel-container" id="carousel-container">
-                <div class="carousel-track" id="carousel-track">
-                    </div>
-                <button class="carousel-nav-btn" id="prev-btn" onclick="moveCarousel(-1)">&#10094;</button>
-                <button class="carousel-nav-btn" id="next-btn" onclick="moveCarousel(1)">&#10095;</button>
-                <div id="carousel-indicators">
-                </div>
-            </div>
-            <p style="text-align:center;"><button onclick="showSection('catalogue')" class="validate-btn">Découvrir le Catalogue</button></p>
-        </div>
+    <main class="container">
+        <p id="loading-message" class="loading-message">Chargement du catalogue...</p>
 
-        <div id="catalogue-section" class="content-section">
-            <h2>🔎 Notre Catalogue de Produits</h2>
-            <div id="search-bar">
-                <input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Rechercher un produit ou un mot-clé...">
-            </div>
-            <div id="product-list-container">
-                <p id="loading-message">Chargement du catalogue...</p>
-            </div>
-        </div>
+        <section id="accueil-section" class="content-section active">
+            <div class="hero-section">
+                <h2>Votre partenaire local de location de matériel</h2>
+                <p>Matériel événementiel, outillage... pour professionnels et particuliers à Rives du Loir en Anjou.</p>
+                <a href="#" onclick="showSection('catalogue')" class="button primary-button">Découvrir le catalogue</a>
+            </div>
 
-        <div id="panier-section" class="content-section">
-            <h2>🛒 Votre Demande de Réservation</h2>
-            <div id="cart-items-container">
-            </div>
-            
-            <div id="cart-summary">
-                <form id="reservation-form" method="POST" action="https://formsubmit.co/maboitealocangevine@gmail.com">
-                    
-                    <div class="form-group">
-                        <label for="delivery-checkbox">
-                            <input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()" name="Demande de Livraison"> Demande de Livraison (Coût sur devis)
-                            <span id="delivery-info" style="font-style: italic; color: var(--secondary-color);"></span>
-                        </label>
-                    </div>
+            <div id="carousel-container" class="carousel-container">
+                <div id="carousel-track" class="carousel-track">
+                    </div>
+                <button class="carousel-control prev" onclick="moveCarousel(-1)">&#10094;</button>
+                <button class="carousel-control next" onclick="moveCarousel(1)">&#10095;</button>
+                <div id="carousel-indicators" class="carousel-indicators">
+                    </div>
+            </div>
+        </section>
 
-                    <div id="delivery-address-group" class="form-group">
-                        <label for="delivery-address">Adresse complète pour la livraison :</label>
-                        <textarea id="delivery-address" name="Adresse de livraison" placeholder="Ex: 10 rue des Fleurs, 49140 Angers"></textarea>
-                    </div>
+        <section id="catalogue-section" class="content-section">
+            <h2 class="section-title">Catalogue de Matériel</h2>
+            
+            <div class="catalogue-controls">
+                <div id="catalogue-nav" class="cat-nav">
+                    </div>
+                <div class="search-bar">
+                    <input type="text" id="product-search" placeholder="Rechercher un produit..." oninput="searchProducts()">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
 
-                    <p class="cart-total-line">
-                        <label>Articles dans le panier :</label>
-                        <strong id="cart-total-price">0 article(s)</strong>
-                    </p>
-                    <p class="cart-total-line estimate">
-                        <label>ESTIMATION DU TOTAL ARTICLES (HT) :</label>
-                        <strong id="cart-total-estimate">0.00 €</strong>
-                    </p>
-                    <p class="cart-total-line caution-total">
-                        <label>TOTAL CAUTION REQUISE :</label>
-                        <strong id="cart-total-caution">0.00 €</strong>
-                    </p>
-                                        <h3 style="margin-top: 20px;">Informations de contact</h3>
+            <div id="product-list-container" class="product-list-container">
+                </div>
+        </section>
 
-                    <div class="form-group">
-                        <label for="user-email">Votre Email de Contact (Obligatoire) :</label>
-                        <input type="email" id="user-email" name="Email du Client" required placeholder="votre.email@exemple.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reservation-message">Message / Précisions supplémentaires :</label>
-                        <textarea id="reservation-message" name="Message du Client" placeholder="Ex: Je souhaite une livraison le matin."></textarea>
-                    </div>
-
-                    <input type="hidden" name="_next" value="https://maboitealocangevine.github.io/website/merci.html">
-                    <input type="hidden" name="_replyto" id="hidden-replyto">
-                    <input type="hidden" name="_cc" id="hidden-cc">
-                    <input type="hidden" name="_subject" id="hidden-subject">
-                    <textarea name="Récapitulatif de la Demande" id="email-body-content" style="display: none;"></textarea>
-
-                    <div id="cart-policy-info">
+        <section id="panier-section" class="content-section">
+            <h2 class="section-title">Votre Demande de Réservation</h2>
+            <div class="cart-layout">
+                <div class="cart-items">
+                    <h3>Articles sélectionnés</h3>
+                    <div id="cart-items-container" class="cart-items-container">
                         </div>
-                                        
-                    <button type="submit" class="validate-btn" disabled>Envoyer la demande de Réservation</button>
-                </form>
-            </div>
-        </div>
+                </div>
+                
+                <div class="reservation-summary">
+                    <h3>Finalisation de la demande</h3>
+                    <form id="reservation-form">
+                        
+                        <div class="form-group">
+                            <label for="user-email">Votre Email (pour le devis) <span class="required">*</span></label>
+                            <input type="email" id="user-email" name="Email" required>
+                        </div>
 
-        <div id="contact-section" class="content-section">
-            <h2>📞 Nous Contacter</h2>
-            
-            <div class="contact-details">
-                <p class="contact-item"><strong>Téléphone :</strong> <a href="tel:+33652982348">06 52 98 23 48</a></p>
-                <p class="contact-item"><strong>Email :</strong> <a href="mailto:maboitealocangevine@gmail.com">maboitealocangevine@gmail.com</a></p>
-                <p class="contact-item"><strong>Adresse de Retrait :</strong> 5 impasse les Rochebruyeres 49140 RIVES DU LOIR EN ANJOU</p>
-            </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="delivery-checkbox" name="Demande de livraison" onchange="handleDeliveryChange()">
+                            <label for="delivery-checkbox">Je souhaite une livraison</label>
+                            <span id="delivery-info" class="delivery-info"></span>
+                        </div>
 
-            <div class="social-links">
-                <h3>Retrouvez-nous en ligne :</h3>
-                <p>
-                    <a href="https://www.facebook.com/maboitealocangevine" target="_blank" class="social-btn facebook">📘 Facebook (Bientôt)</a>
-                    <a href="https://www.instagram.com/maboitealocangevine" target="_blank" class="social-btn instagram">📸 Instagram (Bientôt)</a>
-                    <a href="https://share.google/VGKCCYhKCwpdnQ7Ro" target="_blank" class="social-btn google">🗺️ Notre page Google</a>
-                </p>
-            </div>
+                        <div id="delivery-address-group" class="form-group" style="display:none;">
+                            <label for="delivery-address">Adresse complète pour la livraison <span class="required">*</span></label>
+                            <textarea id="delivery-address" name="Adresse de livraison" rows="2" placeholder="Rue, Ville, Code Postal"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reservation-message">Message complémentaire (détails, dates spécifiques, etc.)</label>
+                            <textarea id="reservation-message" name="Message client" rows="3"></textarea>
+                        </div>
 
-            <div class="disclaimer-box">
-                <h4>⚠ Information Importante :</h4>
-                <p>Notre adresse de retrait est réservée aux rendez-vous confirmés. Nous ne disposons pas de boutique physique ouverte au public. Veuillez impérativement nous contacter au préalable par téléphone ou email pour convenir d'une date et heure de retrait ou d'une visite.</p>
-            </div>
-        </div>
-    </main>
+                        <div class="cart-totals">
+                            <p>Total Articles: <span id="cart-total-price" class="bold-text">0 article(s)</span></p>
+                            <p>Est. Coût HT: <span id="cart-total-estimate" class="bold-text price-estimate">0.00 €</span></p>
+                            <p>Caution Totale: <span id="cart-total-caution" class="bold-text caution-total">0.00 €</span></p>
+                        </div>
 
-    <div id="product-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modal-title">Nom du Produit</h3>
-                <span class="close-btn" onclick="closeModal()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <img id="modal-image" src="" alt="Image Produit">
-                <p id="modal-description">Description détaillée du produit.</p>
-                <p id="modal-price">Prix: <strong>X €</strong></p>
-                <p id="modal-caution" class="modal-caution-line">Caution Unitaire: <strong>X €</strong></p>
-                                <p class="max-qty-info" id="modal-max-quantity-info">Max disponible : X</p>
-                
-                <div class="modal-form">
-                    <label for="modal-quantity">Quantité:</label>
-                    <input type="number" id="modal-quantity" value="1" min="1" max="10">
-                    <label for="modal-start-date">Date de début:</label>
-                    <input type="date" id="modal-start-date">
-                    <label for="modal-end-date">Date de fin:</label>
-                    <input type="date" id="modal-end-date">
-                </div>
-                
-                <button id="modal-add-to-cart" onclick="addToCartFromModal()">Ajouter à la Demande de Réservation</button>
-            </div>
-        </div>
-    </div>
+                        <div id="cart-policy-info" class="cart-policy-info">
+                            </div>
 
-    <div id="toast-notification"></div>
+                        <input type="hidden" name="_subject" id="hidden-subject">
+                        <input type="hidden" name="_replyto" id="hidden-replyto">
+                        <input type="hidden" name="_cc" id="hidden-cc">
+                        <input type="hidden" name="Détail Réservation" id="email-body-content">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="text" name="_honey" style="display:none"> <button type="submit" class="button validate-btn" disabled>
+                            <i class="fas fa-paper-plane"></i> Valider la Demande (Devis)
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
 
-    <footer>
-        <p>&copy; 2025 Ma boîte à loc' Angevine. Tous droits réservés.</p>
-    </footer>
+        <section id="contact-section" class="content-section">
+            <h2 class="section-title">Nous Contacter</h2>
+            <div class="contact-grid">
+                <div class="contact-info-card">
+                    <h3><i class="fas fa-map-marker-alt"></i> Adresse</h3>
+                    <p>Rives du Loir en Anjou (Villeveque) - 49</p>
+                    <p>Retrait sur rendez-vous uniquement.</p>
+                </div>
+                <div class="contact-info-card">
+                    <h3><i class="fas fa-envelope"></i> Email Professionnel</h3>
+                    <p><a href="mailto:maboitealocangevine@gmail.com">maboitealocangevine@gmail.com</a></p>
+                    <p>Réponse assurée sous 24h ouvrées.</p>
+                </div>
+                <div class="contact-info-card">
+                    <h3><i class="fas fa-info-circle"></i> Statut</h3>
+                    <p>Micro-entreprise française.</p>
+                    <p>Location événementielle et outillage.</p>
+                </div>
+                <div class="contact-map">
+                    <p class="map-placeholder">
+                        <i class="fas fa-map"></i>
+                        Zone de service : Angers et alentours.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-    <script src="script.js"></script>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; <span id="current-year"></span> Ma boîte à loc' Angevine. Tous droits réservés.</p>
+        <p>Micro-entreprise située à Rives du Loir en Anjou.</p>
+    </footer>
+
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <div class="modal-header">
+                <h3 id="modal-title">Nom du Produit</h3>
+            </div>
+            <div class="modal-body-grid">
+                <div class="modal-image-container">
+                    <img id="modal-image" src="" alt="Image Produit" class="modal-image">
+                </div>
+                <div class="modal-details">
+                    <p id="modal-description" class="modal-description"></p>
+                    <p id="modal-price" class="modal-price"></p>
+                    <p id="modal-caution" class="modal-caution"></p>
+                    <p id="modal-max-quantity-info" class="modal-max-quantity-info"></p>
+                </div>
+            </div>
+            <div class="modal-controls">
+                <div class="quantity-control">
+                    <label for="modal-quantity">Quantité:</label>
+                    <input type="number" id="modal-quantity" value="1" min="1">
+                </div>
+                <div class="date-control">
+                    <label for="modal-start-date">Date de Début:</label>
+                    <input type="date" id="modal-start-date">
+                </div>
+                <div class="date-control">
+                    <label for="modal-end-date">Date de Fin:</label>
+                    <input type="date" id="modal-end-date">
+                </div>
+                <button class="button primary-button add-to-cart-btn" onclick="addToCartFromModal()">
+                    <i class="fas fa-cart-plus"></i> Ajouter à la Réservation
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toast-notification" class="toast-notification"></div>
+
+    <script src="script.js"></script>
+    <script>
+        // Mise à jour de l'année dans le footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
