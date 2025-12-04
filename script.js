@@ -15,10 +15,27 @@
             'outillage': 'Outillage'
         };
 
-        // 🛠 NOUVELLE FONCTION POUR LA MISE EN FORME
+        // 🛠 NOUVELLE CONSTANTE POUR LA POLITIQUE DE PAIEMENT/CAUTION
+        const PAYMENT_CAUTION_POLICY = {
+            method: "Espèces ou Virement Instantané (Pas de carte bancaire)",
+            cautionReturn: "La caution sera rendue sous la même forme que donnée, après restitution du matériel et constat qu'aucune détérioration n'est relevée.",
+        };
+
+        // 🛠 NOUVELLE FONCTION UTILITAIRE : Extrait une valeur numérique d'une chaîne (€ inclus)
+        function extractNumericValue(valueString) {
+            if (!valueString) return 0;
+            // Cherche un nombre (entiers ou décimaux avec point/virgule)
+            const match = valueString.match(/([\d\s\.,]+)/);
+            if (match) {
+                // Supprime les espaces et remplace la virgule par un point pour le parseFloat
+                return parseFloat(match[1].replace(/\s/g, '').replace(',', '.'));
+            }
+            return 0;
+        }
+
+        // Fonction pour la mise en forme de la description
         function formatDescription(text) {
             if (!text) return '';
-            // Remplace tous les sauts de ligne (\n pour Linux/Mac, \r\n pour Windows) par la balise HTML <br>
             return text.replace(/\r?\n/g, '<br>');
         }
         // ------------------------------------------
@@ -105,24 +122,27 @@
         // --- MODALE PRODUIT ---
         function showProductDetails(productId) {
             const modal = document.getElementById('product-modal');
-            // La recherche se fait uniquement dans les produits publiés (allProductsData)
             const product = allProductsData.find(p => p.id == productId); 
             if (product) {
                 selectedProductForModal = product;
                 document.getElementById('modal-title').textContent = product.name;
                 document.getElementById('modal-image').src = product.image_url; 
                 
-                // 🛠 MODIFICATION ICI : Utilisation de innerHTML et formatDescription
                 document.getElementById('modal-description').innerHTML = formatDescription(product.description);
                 
-                document.getElementById('modal-price').innerHTML = `Prix: <strong>${product.price}</strong>`;
+                document.getElementById('modal-price').innerHTML = `Prix de Location: <strong>${product.price}</strong>`;
+                
+                // 🛠 AJOUT : Affichage de la Caution unitaire
+                // NOTE : Le HTML de la modale DOIT inclure un élément avec id="modal-caution"
+                document.getElementById('modal-caution').innerHTML = `Caution Unitaire: <strong>${product.caution}</strong>`;
+                
                 document.getElementById('modal-quantity').value = 1;
                 document.getElementById('modal-quantity').max = product.max_quantity;
                 document.getElementById('modal-start-date').value = '';
                 document.getElementById('modal-end-date').value = '';
 
                 document.getElementById('modal-max-quantity-info').textContent = `Max disponible : ${product.max_quantity}`;
-                modal.style.display = "flex"; // Utiliser flex pour centrer la modale
+                modal.style.display = "flex"; 
             }
         }
 
@@ -252,11 +272,16 @@
         function renderCartSummary() {
             let totalEstimate = 0;
             let totalItems = 0;
+            let totalCaution = 0; // 🛠 AJOUT : Total Caution
 
             panier.forEach(item => {
                 const itemPriceCalc = calculateItemPrice(item);
                 totalEstimate += itemPriceCalc.total;
                 totalItems += item.quantity;
+                
+                // 🛠 CALCUL CAUTION : Caution unitaire * Quantité
+                const cautionValue = extractNumericValue(item.product.caution);
+                totalCaution += cautionValue * item.quantity;
             });
 
             document.getElementById('cart-total-price').textContent = `${totalItems} article(s)`;
@@ -269,6 +294,20 @@
                 totalElement.textContent = "0.00 €";
                 totalElement.style.color = 'var(--text-dark)';
             }
+            
+            // 🛠 AFFICHAGE TOTAL CAUTION ET POLITIQUE
+            // NOTE : Le HTML doit inclure un élément avec id="cart-total-caution"
+            document.getElementById('cart-total-caution').textContent = `${totalCaution.toFixed(2)} €`;
+            
+            const policyContainer = document.getElementById('cart-policy-info');
+            policyContainer.innerHTML = `
+                <div class="cart-policy-group">
+                    <p><strong>Paiement (Location) :</strong> ${PAYMENT_CAUTION_POLICY.method}</p>
+                    <p><strong>Caution (Dépôt) :</strong> ${PAYMENT_CAUTION_POLICY.method}</p>
+                    <p class="caution-return-note">${PAYMENT_CAUTION_POLICY.cautionReturn}</p>
+                </div>
+            `;
+
         }
 
 
@@ -292,6 +331,12 @@
                 const datesDisplay = (item.startDate && item.endDate) ? 
                     `Du: <strong>${item.startDate}</strong> au: <strong>${item.endDate}</strong> (${itemPriceCalc.multiplier}j)` : 
                     `Période: Non spécifiée`;
+                    
+                // 🛠 CALCUL ET AFFICHAGE CAUTION PAR ARTICLE
+                const cautionValue = extractNumericValue(item.product.caution);
+                const itemCautionTotal = (cautionValue * item.quantity).toFixed(2);
+                const cautionDisplay = `Caution requise: <strong>${itemCautionTotal} €</strong> (${item.product.caution} unitaire)`;
+
 
                 const itemElement = document.createElement('div');
                 itemElement.className = 'cart-item';
@@ -302,7 +347,8 @@
                         <h4>${item.product.name}</h4>
                         <p>${datesDisplay}</p>
                         <p>Prix unitaire: ${item.product.price}</p>
-                        <p><strong>Est. Coût : ${itemTotalPrice} €</strong> ${itemWarning}</p>
+                        <p><strong>Est. Coût Location : ${itemTotalPrice} €</strong> ${itemWarning}</p>
+                        <p class="cart-item-caution">${cautionDisplay}</p> 
                     </div>
                     <div class="item-controls">
                         <label>Qté: 
@@ -373,18 +419,24 @@
             let priceDetails = '';
             let totalEstimate = 0;
             let totalItems = 0;
+            let totalCaution = 0; // 🛠 AJOUT : Total Caution
 
             panier.forEach(item => {
                 const itemPriceCalc = calculateItemPrice(item);
                 totalEstimate += itemPriceCalc.total;
                 totalItems += item.quantity;
                 
+                // 🛠 CALCUL CAUTION
+                const cautionValue = extractNumericValue(item.product.caution);
+                const itemCaution = cautionValue * item.quantity;
+                totalCaution += itemCaution;
+
                 const dates = (item.startDate && item.endDate) ? 
                     `Du ${item.startDate} au ${item.endDate} (${itemPriceCalc.multiplier} jour(s))` : 
                     `Non spécifiée.`;
                 
                 const calculatedPriceLine = itemPriceCalc.isDaily ? 
-                    `Est. Coût Article : ${itemPriceCalc.total.toFixed(2)} EUR (Basé sur ${itemPriceCalc.multiplier}j)` : 
+                    `Est. Coût Article : ${itemPriceCalc.total.toFixed(2)} EUR (Basé sur ${itemPriceCalc.multiplier} jour(s))` : 
                     `Est. Coût Article : ${itemPriceCalc.total.toFixed(2)} EUR`;
 
                 // FORMATAGE SIMPLE TEXTE
@@ -396,10 +448,12 @@ Nom de l'article : ${item.product.name}
 Quantité : x${item.quantity}
 Prix unitaire : ${item.product.price}
 Période souhaitée : ${dates}
-Estimation Coût : ${calculatedPriceLine}
+Estimation Coût Location : ${calculatedPriceLine}
+Caution Requise : ${itemCaution.toFixed(2)} EUR (${item.product.caution} unitaire)
 `;
             });
 
+            // 🛠 MISE À JOUR DU CORPS DU MAIL AVEC LA CAUTION ET LA POLITIQUE
             const emailBody = `Bonjour,
 
 Nous vous remercions pour votre demande de réservation. Voici le récapitulatif des articles demandés.
@@ -418,11 +472,19 @@ Adresse de livraison (si demandée) : ${deliveryAddress}
 Message du client : ${reservationMessage}
 
 =======================================================
-ESTIMATION GLOBALE (HORS LIVRAISON)
+ESTIMATION GLOBALE
 =======================================================
 Nombre total d'articles : ${totalItems}
-Estimation du Total TTC des articles : ${totalEstimate.toFixed(2)} EUR
+Estimation du Total Location TTC : ${totalEstimate.toFixed(2)} EUR
+Total des Cautions requises : ${totalCaution.toFixed(2)} EUR
 (Ce montant est une estimation et sera confirmé par devis après vérification des disponibilités et ajout des frais de livraison éventuels.)
+
+=======================================================
+MODALITÉS DE PAIEMENT & CAUTION
+=======================================================
+Paiement (Location) : ${PAYMENT_CAUTION_POLICY.method}
+Caution (Dépôt) : ${PAYMENT_CAUTION_POLICY.method}
+Note sur la Caution : ${PAYMENT_CAUTION_POLICY.cautionReturn}
 
 =======================================================
 CONTACT RAPIDE
@@ -439,7 +501,7 @@ L'équipe Ma boîte à loc' Angevine
             document.getElementById('email-body-content').value = emailBody.trim();
 
             // 4. Champs cachés pour le service de formulaire (FormSubmit)
-            document.getElementById('hidden-subject').value = `Demande de Réservation Matériel (${totalItems} articles) - Est. ${totalEstimate.toFixed(2)} EUR`;
+            document.getElementById('hidden-subject').value = `Demande de Réservation Matériel (${totalItems} articles) - Est. ${totalEstimate.toFixed(2)} EUR (+ ${totalCaution.toFixed(2)} EUR Caution)`;
             document.getElementById('hidden-replyto').value = userEmail;
             document.getElementById('hidden-cc').value = userEmail;
 
@@ -466,10 +528,8 @@ L'équipe Ma boîte à loc' Angevine
             const indicators = document.getElementById('carousel-indicators');
             const container = document.getElementById('carousel-container');
             
-            // Si le conteneur n'existe pas ou si la liste d'images est vide, on s'arrête
             if (!container || carouselImagesData.length === 0) {
                  if (container) {
-                     // Message d'erreur/information si aucune image n'est trouvée pour le carrousel
                      container.innerHTML = '<p style="text-align: center; color: var(--primary-color); padding: 50px;">Aucune image sélectionnée pour le carrousel. Vérifiez la colonne "carrousel" dans data.csv.</p>';
                  }
                 totalSlides = 0;
@@ -493,7 +553,6 @@ L'équipe Ma boîte à loc' Angevine
             totalSlides = carouselImagesData.length;
             if (totalSlides > 0) {
                 showSlide(0);
-                // Démarrer seulement si l'accueil est la section active
                 if (document.getElementById('accueil-section').classList.contains('active')) {
                     startCarousel();
                 }
@@ -581,31 +640,27 @@ L'équipe Ma boîte à loc' Angevine
                         });
                         products.push(product);
                     } else {
-                         // Le warning est important si le format du CSV est incorrect
                          console.warn(`Ligne ignorée (format incorrect, ${values.length} col. vs ${headers.length} attendues): ${line}`);
                     }
                 }
                 // FIN DU PARSING CSV
 
                 
-                // 🛠 NOUVELLE LOGIQUE DE FILTRAGE
-                // 1. Filtrer les produits : seuls ceux avec "publication: Oui" sont affichés
+                // Filtrer les produits : seuls ceux avec "publication: Oui" sont affichés
                 const publishedProducts = products.filter(p => 
                     p.publication && p.publication.toLowerCase().trim() === 'oui'
                 );
 
                 allProductsData = publishedProducts;
                 
-                // 2. Filtrer les images pour le carrousel (colonne 'carrousel' ou 'is_carousel')
+                // Filtrer les images pour le carrousel
                 carouselImagesData = allProductsData
-                    // La colonne carrousel doit exister dans le CSV et contenir "oui"
                     .filter(p => p.carrousel && p.carrousel.toLowerCase().trim() === 'oui') 
                     .map(p => p.image_url);
 
                 renderCategoryButtons();
                 renderProductList(allProductsData);
                 
-                // FIX: Vérifier l'existence de l'élément avant de le manipuler
                 const loadingMessage = document.getElementById('loading-message');
                 if (loadingMessage) {
                     loadingMessage.style.display = 'none';
@@ -636,7 +691,6 @@ L'équipe Ma boîte à loc' Angevine
             nav.appendChild(buttonAll);
             
             // Autres catégories
-            // On utilise uniquement les produits PUBLIÉS
             const uniqueCategories = [...new Set(allProductsData.map(p => p.category))];
             
             uniqueCategories.forEach(cat => {
@@ -657,7 +711,6 @@ L'équipe Ma boîte à loc' Angevine
 
             const filteredProducts = category === 'all' 
                 ? allProductsData 
-                // allProductsData contient déjà les produits publiés
                 : allProductsData.filter(p => p.category === category);
                 
             document.getElementById('product-search').value = ''; 
@@ -697,7 +750,8 @@ L'équipe Ma boîte à loc' Angevine
                     <div class="product-card-body">
                         <h4>${product.name}</h4>
                         <p>${formatDescription(product.description)}</p>
-                        <p class="product-price"><strong>${product.price}</strong></p>
+                        <p class="product-price">Prix: <strong>${product.price}</strong></p>
+                        <p class="product-caution">Caution: <strong>${product.caution}</strong></p> 
                         <button onclick="showProductDetails('${product.id}')">Détails / Réserver</button>
                     </div>
                 `;
