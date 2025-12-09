@@ -1,50 +1,17 @@
-﻿// Dépend de _config.js
-// =================================================================
-// 2. ÉTATS GLOBAUX (Variables partagées)
-// =================================================================
-let allProductsData = [];
-let carouselProducts = [];
-let panier = [];
-let currentCarouselIndex = 0;
-let carouselInterval = null; 
-
-// =================================================================
-// 3. UTILITAIRES 
-// =================================================================
+﻿// --- UTILS.JS ---
+// Ne contient PAS de déclaration de 'allProductsData' (c'est fait dans config.js)
 
 /**
- * Convertit une chaîne CSV en un tableau d'objets JavaScript.
+ * Affiche une notification toast.
  */
-function parseCSV(csvString) {
-    const lines = csvString.trim().split('\n');
-    const headers = lines[0].split(',');
-    const data = [];
-
-    for (let i = 1; i < lines.length; i++) {
-        const line = lines[i];
-        if (!line) continue;
-        
-        const values = line.match(/(?:\"([^\"]*)\"|([^,]+))/g).map(v => v.replace(/^"|"$/g, '').trim());
-
-        if (values.length !== headers.length) {
-            console.error(`Erreur de parsing à la ligne ${i + 1}. Nombre de colonnes incorrect.`);
-            continue;
-        }
-
-        const obj = {};
-        for (let j = 0; j < headers.length; j++) {
-            let key = headers[j].trim();
-            let value = values[j] || '';
-            
-            if (!isNaN(parseFloat(value)) && isFinite(value)) {
-                value = Number(value);
-            }
-            
-            obj[key] = value;
-        }
-        data.push(obj);
-    }
-    return data;
+function showToast(message) {
+    const toast = document.getElementById('toast-notification');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
 }
 
 /**
@@ -53,13 +20,13 @@ function parseCSV(csvString) {
 function extractPriceDetails(priceString) {
     const cleanedValue = priceString.replace(/€/g, '').replace(/[^\d.,]/g, '').replace(',', '.').trim();
     const priceValue = parseFloat(cleanedValue) || 0;
-    const isDaily = priceString.toLowerCase().includes('/jour');
-
-    return { priceValue, isDaily };
+    const isDaily = priceString.toLowerCase().includes('/ jour');
+    const isPerson = priceString.toLowerCase().includes('/ personne');
+    return { priceValue, isDaily, isPerson };
 }
 
 /**
- * Calcule le prix total d'un article en fonction de la durée de location.
+ * Calcule le prix total d'un article dans le panier, incluant la durée si journalier.
  */
 function calculateItemPrice(item) {
     const product = allProductsData.find(p => p.id === item.id);
@@ -67,10 +34,12 @@ function calculateItemPrice(item) {
 
     const { priceValue, isDaily } = extractPriceDetails(product.price);
     
+    // Le prix n'est pas journalier (forfait, par personne, etc.)
     if (!isDaily || !item.startDate || !item.endDate) {
         return priceValue * item.quantity;
     }
 
+    // Calcul de la durée de location en jours
     const start = new Date(item.startDate);
     const end = new Date(item.endDate);
 
@@ -105,16 +74,35 @@ function formatDate(dateString) {
 }
 
 /**
- * Affiche une notification (toast).
+ * Parse un contenu CSV en un tableau d'objets JavaScript.
  */
-function showToast(message) {
-    const toast = document.getElementById('toast-notification');
-    if (!toast) return;
+function parseCSV(csvText) {
+    const lines = csvText.trim().split('\n');
+    if (lines.length === 0) return [];
 
-    toast.textContent = message;
-    toast.classList.add('show');
-    
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 3000);
+    const headers = lines[0].split(',').map(h => h.trim());
+    const data = [];
+
+    for (let i = 1; i < lines.length; i++) {
+        const line = lines[i];
+        if (!line) continue;
+        // Utilise une regex pour gérer les valeurs entre guillemets contenant des virgules
+        const values = line.match(/(?:\"([^\"]*)\"|([^,]+))/g).map(v => v.replace(/^"|"$/g, '').trim());
+        if (values.length !== headers.length) {
+            console.error(`Erreur de parsing à la ligne ${i + 1}. Nombre de colonnes incorrect.`);
+            continue;
+        }
+        const obj = {};
+        for (let j = 0; j < headers.length; j++) {
+            let key = headers[j].trim();
+            let value = values[j] || '';
+            // Tente de convertir en nombre si possible
+            if (!isNaN(parseFloat(value)) && isFinite(value)) {
+                value = Number(value);
+            }
+            obj[key] = value;
+        }
+        data.push(obj);
+    }
+    return data;
 }

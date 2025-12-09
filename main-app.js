@@ -11,7 +11,6 @@ function toggleDarkMode() {
     const isDarkMode = document.body.classList.contains('dark-mode');
     const toggleButton = document.getElementById('dark-mode-toggle');
     const icon = toggleButton.querySelector('i');
-
     if (isDarkMode) {
         localStorage.setItem('darkMode', 'enabled');
         icon.classList.remove('fa-moon');
@@ -37,6 +36,8 @@ window.addToCartFromModal = addToCartFromModal;
 window.updateCartItem = updateCartItem;
 window.removeItem = removeItem;
 window.toggleDarkMode = toggleDarkMode;
+// Correction: Exposer parseCSV pour ui-data.js
+window.parseCSV = parseCSV; 
 
 // *** BLOC DE DÉMARRAGE DE L'APPLICATION ***
 document.addEventListener('DOMContentLoaded', () => {
@@ -52,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const darkModeToggle = document.getElementById('dark-mode-toggle');
     if (darkModeToggle) {
         darkModeToggle.addEventListener('click', toggleDarkMode);
+       
         const icon = darkModeToggle.querySelector('i');
         if (icon) {
              const isDarkMode = document.body.classList.contains('dark-mode');
