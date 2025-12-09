@@ -8,7 +8,7 @@ let selectedProductForModal = null;
 let panier = [];
 const DELIVERY_INFO_MESSAGE = "Coût à déterminer (sur devis pour la livraison et le montage)";
 const BUSINESS_EMAIL = "maboitealocangevine@gmail.com";
-const BUSINESS_PHONE = "06 52 98 23 48"; // Numéro récupéré de la section Contact
+const BUSINESS_PHONE = "06 52 98 23 48";
 const CATEGORIES = {
     'all': 'Tous les produits',
     'evenementiel': 'Événementiel',
@@ -265,11 +265,14 @@ function renderCartSummary() {
     
     // Affichage Coût Total de Location (TTC)
     const totalRentalElement = document.getElementById('cart-total-estimate');
+    totalRentalEstimate > 0 ? totalRentalElement.style.color = 'var(--primary-color)' : totalRentalElement.style.color = 'var(--text-dark)';
     totalRentalElement.textContent = `${totalRentalEstimate.toFixed(2).replace('.', ',')} € TTC`; 
     
     // Affichage Montant Total des Cautions (TTC)
     const totalCautionElement = document.getElementById('cart-total-caution');
     totalCautionElement.textContent = `${totalCautionAmount.toFixed(2).replace('.', ',')} € TTC`;
+    totalCautionAmount > 0 ? totalCautionElement.style.color = 'var(--secondary-color)' : totalCautionElement.style.color = 'var(--text-dark)';
+
 }
 
 

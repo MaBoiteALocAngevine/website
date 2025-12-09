@@ -41,8 +41,8 @@
             <div class="carousel-container" id="carousel-container">
                 <div class="carousel-track" id="carousel-track">
                 </div>
-                <button class="carousel-nav-btn" id="prev-btn" onclick="moveCarousel(-1)">&#10094;</button>
-                <button class="carousel-nav-btn" id="next-btn" onclick="moveCarousel(1)">&#10095;</button>
+                <button class="carousel-nav-btn" id="prev-btn" onclick="moveCarousel(-1)">❮</button>
+                <button class="carousel-nav-btn" id="next-btn" onclick="moveCarousel(1)">❯</button>
                 <div id="carousel-indicators">
                 </div>
             </div>
@@ -54,22 +54,22 @@
                     <div class="modality-card">
                         <span class="card-icon">💳</span>
                         <h4>Paiement & Caution</h4>
-                        <p>Le règlement de votre location s'effectue par **espèces** ou **virement bancaire instantané**.</p>
-                        <p class="small-note">La caution, du même montant que celle indiquée sur l'estimation, est exigée selon les mêmes modalités et vous sera **intégralement restituée** dès le retour du matériel et après constatation de son bon état.</p>
+                        <p>Le règlement de votre location s'effectue par <strong>espèces</strong> ou <strong>virement bancaire instantané</strong>.</p>
+                        <p class="small-note">La caution, du même montant que celle indiquée sur l'estimation, est exigée selon les mêmes modalités et vous sera <strong>intégralement restituée</strong> dès le retour du matériel et après constatation de son bon état.</p>
                     </div>
                     
                     <div class="modality-card">
                         <span class="card-icon">🚚</span>
                         <h4>Livraison & Montage</h4>
-                        <p>Pour votre confort, nous proposons un service de **livraison** et de **montage/installation** du matériel directement sur le lieu de votre événement ou chantier.</p>
-                        <p class="small-note">Ces prestations sont **optionnelles** et feront l'objet d'un **surcoût** défini sur devis. Veuillez l'indiquer lors de votre demande de réservation.</p>
+                        <p>Pour votre confort, nous proposons un service de <strong>livraison</strong> et de <strong>montage/installation</strong> du matériel directement sur le lieu de votre événement ou chantier.</p>
+                        <p class="small-note">Ces prestations sont <strong>optionnelles</strong> et feront l'objet d'un <strong>surcoût</strong> défini sur devis. Veuillez l'indiquer lors de votre demande de réservation.</p>
                     </div>
 
                     <div class="modality-card">
                         <span class="card-icon">🧾</span>
                         <h4>Facturation</h4>
-                        <p>Une **facture détaillée** peut être émise pour votre location, notamment pour les professionnels.</p>
-                        <p class="small-note">Ce service est disponible **sur simple demande** au moment de la confirmation de votre réservation.</p>
+                        <p>Une <strong>facture détaillée</strong> peut être émise pour votre location, notamment pour les professionnels.</p>
+                        <p class="small-note">Ce service est disponible <strong>sur simple demande</strong> au moment de la confirmation de votre réservation.</p>
                     </div>
                 </div>
             </div>
@@ -202,12 +202,39 @@
     </main>
 
     <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Nom du Produit</h3>
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <img id="modal-image" src="" alt="Image Produit">
+                <p id="modal-description">Description détaillée du produit.</p>
+                
+                <p id="modal-price">Prix: <strong id="modal-product-price-value">X € TTC</strong></p>
+                
+                <p id="modal-caution">Caution: <strong id="modal-product-caution-value">X € TTC</strong></p>
+                
+                <p class="max-qty-info" id="modal-max-quantity-info">Max disponible : X</p>
+                
+                <div class="modal-form">
+                    <label for="modal-quantity">Quantité:</label>
+                    <input type="number" id="modal-quantity" value="1" min="1" max="10">
+                    <label for="modal-start-date">Date de début:</label>
+                    <input type="date" id="modal-start-date">
+                    <label for="modal-end-date">Date de fin:</label>
+                    <input type="date" id="modal-end-date">
+                </div>
+                
+                <button id="modal-add-to-cart" onclick="addToCartFromModal()">Ajouter à la Demande de Réservation</button>
+            </div>
         </div>
+    </div>
 
     <div id="toast-notification"></div>
 
     <footer>
-        <p>&copy; 2025 Ma boîte à loc' Angevine. Tous droits réservés.</p>
+        <p>© 2025 Ma boîte à loc' Angevine. Tous droits réservés.</p>
     </footer>
 
     <script src="script.js"></script>
