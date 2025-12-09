@@ -149,6 +149,23 @@ header {
 body.dark-mode #dark-mode-toggle {
     color: var(--text-light);
 }
+#cart-link {
+    font-weight: 600;
+    color: var(--primary-color);
+    padding: 5px 10px;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+#cart-link:hover {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+}
+body.dark-mode #cart-link {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
 
 /* --- BOUTONS D'ACTION --- */
 .validate-btn, .primary-action-btn, .product-card button, #modal-add-to-cart {
@@ -311,10 +328,32 @@ body.dark-mode #dark-mode-toggle {
     overflow: hidden;
 }
 .cat-nav button {
-    /* Styles pour les onglets */
+    background-color: transparent; 
+    color: var(--text-dark);
+    border: none;
+    border-radius: 0; 
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent; 
+    box-shadow: none; 
+    text-transform: capitalize;
+    margin: 0;
 }
+
+.cat-nav button:hover {
+    color: var(--primary-color);
+    background-color: var(--background-light);
+    transform: none;
+}
+
 .cat-nav button.active {
-    /* Styles pour l'onglet actif */
+    background-color: var(--background-light); 
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color); 
+    font-weight: 700;
+    transform: none;
 }
 
 /* FIX: Champ de recherche esthétique */
@@ -348,11 +387,40 @@ body.dark-mode #dark-mode-toggle {
 }
 
 .product-card {
-    /* Styles inchangés */
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex; 
+    flex-direction: column;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
 }
 .product-card img {
-    /* Styles inchangés */
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
 }
+.product-card-body {
+    padding: 15px;
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+/* FIX: Uniformise la hauteur de l'extrait de description pour aligner les boutons */
+.description-snippet {
+    min-height: 4.5em; /* Environ 3 lignes de texte */
+    max-height: 4.5em;
+    overflow: hidden; 
+    margin-bottom: 15px;
+    color: var(--text-muted);
+}
+
 
 /* --- MODALE (Corrige la disproportion) --- */
 .modal {
@@ -379,7 +447,7 @@ body.dark-mode #dark-mode-toggle {
     animation: slideIn 0.3s ease-out;
 }
 .modal-body img {
-    max-width: 100%; /* S'assure que l'image ne déborde pas */
+    max-width: 100%; 
     height: auto;
     border-radius: 8px;
     margin-bottom: 15px;
@@ -439,9 +507,41 @@ body.dark-mode #dark-mode-toggle {
 
 /* --- Media Queries pour la Responsivité --- */
 @media (max-width: 768px) {
-    /* Reste des media queries existantes */
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    .main-nav ul {
+        width: 100%;
+        justify-content: space-around;
+        margin-bottom: 10px;
+    }
+    .carousel-slide img {
+        height: 300px; 
+    }
+    .cat-nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 5px;
+        border-radius: 0;
+    }
+    .cat-nav button {
+        flex-shrink: 0;
+        margin: 0;
+    }
     .modality-cards-container {
-        /* Permet de conserver une seule colonne sur mobile */
         grid-template-columns: 1fr;
+    }
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .item-controls {
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
     }
 }
