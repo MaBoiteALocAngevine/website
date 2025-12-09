@@ -128,7 +128,7 @@ function openModal(productId) {
         document.getElementById('modal-end-date').value = '';
 
         document.getElementById('modal-max-quantity-info').textContent = `Max disponible : ${product.max_quantity}`;
-        modal.style.display = "flex";
+        modal.style.display = "flex"; // Affiche la modale
     }
 }
 
@@ -272,6 +272,7 @@ function renderCartSummary() {
     const totalCautionElement = document.getElementById('cart-total-caution');
     totalCautionElement.textContent = `${totalCautionAmount.toFixed(2).replace('.', ',')} € TTC`;
     totalCautionAmount > 0 ? totalCautionElement.style.color = 'var(--secondary-color)' : totalCautionElement.style.color = 'var(--text-dark)';
+
 }
 
 
