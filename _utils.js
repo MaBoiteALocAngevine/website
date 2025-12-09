@@ -1,61 +1,82 @@
-﻿// --- _utils.js ---
-// Fonctions utilitaires
-// Dépendances: _config.js
+﻿// Dépend de _config.js
+// =================================================================
+// 2. ÉTATS GLOBAUX (Variables partagées)
+// =================================================================
+let allProductsData = [];
+let carouselProducts = [];
+let panier = [];
+let currentCarouselIndex = 0;
+let carouselInterval = null; 
+
+// =================================================================
+// 3. UTILITAIRES 
+// =================================================================
 
 /**
- * Affiche une notification temporaire (toast) à l'utilisateur.
- * @param {string} message Le message à afficher.
+ * Convertit une chaîne CSV en un tableau d'objets JavaScript.
  */
-function showToast(message) {
-    const toast = document.getElementById("toast-notification");
-    if (toast) {
-        toast.textContent = message;
-        toast.classList.add("show");
-        setTimeout(() => {
-            toast.classList.remove("show");
-        }, 3000); // 3 secondes
+function parseCSV(csvString) {
+    const lines = csvString.trim().split('\n');
+    const headers = lines[0].split(',');
+    const data = [];
+
+    for (let i = 1; i < lines.length; i++) {
+        const line = lines[i];
+        if (!line) continue;
+        
+        const values = line.match(/(?:\"([^\"]*)\"|([^,]+))/g).map(v => v.replace(/^"|"$/g, '').trim());
+
+        if (values.length !== headers.length) {
+            console.error(`Erreur de parsing à la ligne ${i + 1}. Nombre de colonnes incorrect.`);
+            continue;
+        }
+
+        const obj = {};
+        for (let j = 0; j < headers.length; j++) {
+            let key = headers[j].trim();
+            let value = values[j] || '';
+            
+            if (!isNaN(parseFloat(value)) && isFinite(value)) {
+                value = Number(value);
+            }
+            
+            obj[key] = value;
+        }
+        data.push(obj);
     }
+    return data;
 }
 
 /**
- * Extrait la valeur numérique du prix et détermine s'il est journalier.
- * @param {string} priceString La chaîne de prix (ex: "6 € / jour", "1.5 € / personne").
- * @returns {object} { priceValue: number, isDaily: boolean }
+ * Extrait la valeur numérique du prix et vérifie s'il s'agit d'un prix journalier.
  */
 function extractPriceDetails(priceString) {
-    // Nettoyer la chaîne (retirer le symbole €, / jour, / personne, etc.)
-    let cleanedValue = priceString.replace(/[^\d,\.]/g, '').replace(',', '.');
-    const priceValue = parseFloat(cleanedValue);
-    const isDaily = priceString.toLowerCase().includes('/ jour');
+    const cleanedValue = priceString.replace(/€/g, '').replace(/[^\d.,]/g, '').replace(',', '.').trim();
+    const priceValue = parseFloat(cleanedValue) || 0;
+    const isDaily = priceString.toLowerCase().includes('/jour');
 
     return { priceValue, isDaily };
 }
 
 /**
  * Calcule le prix total d'un article en fonction de la durée de location.
- * @param {object} item L'objet panier (avec les détails du produit et les dates/quantités).
- * @returns {number} Le prix total calculé.
  */
 function calculateItemPrice(item) {
-    // Utilise la chaîne de prix d'origine du produit pour déterminer si c'est journalier
     const product = allProductsData.find(p => p.id === item.id);
     if (!product) return 0;
-    
-    const { priceValue, isDaily } = extractPriceDetails(product.price);
 
+    const { priceValue, isDaily } = extractPriceDetails(product.price);
+    
     if (!isDaily || !item.startDate || !item.endDate) {
-        // Prix forfaitaire ou dates manquantes, on multiplie juste par la quantité
         return priceValue * item.quantity;
     }
 
     const start = new Date(item.startDate);
     const end = new Date(item.endDate);
 
-    // Calculer le nombre de jours (incluant le jour de départ et d'arrivée)
     const timeDifference = end.getTime() - start.getTime();
     let dayCount = Math.ceil(timeDifference / (1000 * 3600 * 24)) + 1;
     
-    // S'assurer qu'il y a au moins 1 jour
     if (dayCount <= 0 || isNaN(dayCount)) dayCount = 1;
 
     return priceValue * dayCount * item.quantity;
@@ -63,40 +84,37 @@ function calculateItemPrice(item) {
 
 /**
  * Calcule la caution totale d'un article
- * @param {object} item L'objet panier
- * @returns {number} La caution totale
  */
 function calculateItemCaution(item) {
     const product = allProductsData.find(p => p.id === item.id);
     if (!product) return 0;
 
-    // Assure que la caution est un nombre
-    const cautionString = product.caution.replace('€', '');
-    const cautionValue = parseFloat(cautionString);
-    if (isNaN(cautionValue)) return 0;
+    const cautionString = product.caution.toString().replace('€', '').trim();
+    const cautionValue = parseFloat(cautionString) || 0;
     
-    // Pour les cautions unitaires, on multiplie par la quantité
     return cautionValue * item.quantity; 
 }
 
 /**
- * Calcule la caution totale pour l'ensemble du panier.
- * @returns {number} La caution totale.
- */
-function calculateTotalCaution() {
-    return panier.reduce((sum, item) => sum + calculateItemCaution(item), 0);
-}
-
-/**
  * Formate une date au format YYYY-MM-DD vers DD/MM/YYYY
- * @param {string} dateString La date au format YYYY-MM-DD.
- * @returns {string} La date formatée DD/MM/YYYY.
  */
 function formatDate(dateString) {
     if (!dateString) return '';
-    const parts = dateString.split('-');
-    if (parts.length === 3) {
-        return `${parts[2]}/${parts[1]}/${parts[0]}`;
-    }
-    return dateString;
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+}
+
+/**
+ * Affiche une notification (toast).
+ */
+function showToast(message) {
+    const toast = document.getElementById('toast-notification');
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
 }

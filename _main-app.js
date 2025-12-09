@@ -1,21 +1,11 @@
-﻿// --- _main-app.js ---
-// Dépendances: _config.js, _utils.js, _cart-logic.js, _ui-data.js
+﻿// Dépend de toutes les fonctions précédentes (loadProductsFromCSVFile, showSection, toggleDarkMode, etc.)
+// =================================================================
+// 6. INITIALISATION DE L'APPLICATION 
+// =================================================================
 
-// Rendre les fonctions essentielles globales pour les événements 'onclick' dans index.html
-window.moveCarousel = moveCarousel;
-window.startCarousel = startCarousel;
-window.closeModal = closeModal;
-window.showSection = showSection;
-window.filterProducts = filterProducts;
-window.openModal = openModal;
-window.addToCartFromModal = addToCartFromModal;
-window.updateCartItem = updateCartItem;
-window.removeItem = removeItem;
-// Ajout des fonctions utilisées dans l'initialisation
-window.loadProductsFromCSVFile = loadProductsFromCSVFile;
-window.updateCartCount = updateCartCount;
-
-// Ajout de la fonction toggleDarkMode qui semble manquer
+/**
+ * Bascule entre le mode sombre et le mode clair.
+ */
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     const isDarkMode = document.body.classList.contains('dark-mode');
@@ -33,38 +23,45 @@ function toggleDarkMode() {
     }
 }
 
-// *** BLOC DE DÉMARRAGE DE L'APPLICATION (FIX DES BUGS) ***
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Charger les données et initialiser l'UI (Catalogue, Carrousel)
-    // C'est l'appel manquant qui empêchait le catalogue et le carrousel de s'afficher
-    loadProductsFromCSVFile(); // Chargement des données et appel à initCarousel/filterProducts
+// FIX: Rendre les fonctions essentielles globales. 
+// Le code HTML appelle 'showSection' directement via 'onclick="..."' avant que
+// le DOM ne soit complètement chargé, d'où l'erreur 'is not defined'.
+// En les attachant à l'objet 'window', on s'assure qu'elles sont connues dès que le script est chargé.
+window.moveCarousel = moveCarousel;
+window.startCarousel = startCarousel;
+window.closeModal = closeModal;
+window.showSection = showSection;
+window.filterProducts = filterProducts;
+window.openModal = openModal;
+window.addToCartFromModal = addToCartFromModal;
+window.updateCartItem = updateCartItem;
+window.removeItem = removeItem;
+window.toggleDarkMode = toggleDarkMode;
 
-    // 2. Initialiser les écouteurs d'événements
+// *** BLOC DE DÉMARRAGE DE L'APPLICATION ***
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Initialiser le mode sombre s'il est déjà en localStorage
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+    }
+
+    // 2. Charger les données et initialiser l'UI (Catalogue, Carrousel, Panier)
+    loadProductsFromCSVFile();
+
+    // 3. Initialiser les écouteurs d'événements
     const darkModeToggle = document.getElementById('dark-mode-toggle');
     if (darkModeToggle) {
         darkModeToggle.addEventListener('click', toggleDarkMode);
+        const icon = darkModeToggle.querySelector('i');
+        if (icon) {
+             const isDarkMode = document.body.classList.contains('dark-mode');
+             icon.classList.remove(isDarkMode ? 'fa-moon' : 'fa-sun');
+             icon.classList.add(isDarkMode ? 'fa-sun' : 'fa-moon');
+        }
     }
     
     const reservationForm = document.getElementById('reservation-form');
-    // Le formulaire est sur la section contact. On s'assure qu'il est lié à la fonction de soumission.
     if (reservationForm) {
         reservationForm.addEventListener('submit', handleSubmitReservation);
-    }
-
-    // 3. Afficher la section d'accueil (par défaut) et démarrer le carrousel
-    showSection('accueil');
-    
-    // 4. Initialiser l'affichage du panier (compteur dans le header)
-    updateCartCount();
-
-    // 5. Initialiser le mode sombre s'il est déjà en localStorage
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-        // Mise à jour de l'icône
-        const icon = document.getElementById('dark-mode-toggle').querySelector('i');
-        if (icon) {
-            icon.classList.remove('fa-moon');
-            icon.classList.add('fa-sun');
-        }
     }
 });
