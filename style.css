@@ -422,7 +422,7 @@ body.dark-mode #cart-link {
 }
 
 
-/* --- MODALE (Corrige la disproportion) --- */
+/* --- MODALE (Correction du problème de fluidité et de proportion) --- */
 .modal {
     display: none; 
     position: fixed; 
@@ -431,18 +431,23 @@ body.dark-mode #cart-link {
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow: auto; /* Permet le défilement si le contenu dépasse */
     background-color: rgba(0, 0, 0, 0.6); 
     align-items: center;
     justify-content: center;
+    padding: 10px; /* Ajout d'un padding pour éviter que la modale ne touche les bords */
+    box-sizing: border-box;
 }
 .modal-content {
     background-color: var(--card-bg);
-    margin: 10vh auto; 
+    /* Modification: Réduction de la marge et ajout de max-height/overflow */
+    margin: 30px auto; 
     padding: 30px;
     border-radius: 10px;
     width: 90%;
-    max-width: 550px; /* Taille optimisée */
+    max-width: 550px; 
+    max-height: 90vh; /* La modale ne prendra pas plus de 90% de la hauteur de l'écran */
+    overflow-y: auto; /* Permet de scroller le contenu si max-height est atteinte */
     box-shadow: var(--shadow-hover);
     animation: slideIn 0.3s ease-out;
 }
@@ -453,6 +458,55 @@ body.dark-mode #cart-link {
     margin-bottom: 15px;
     object-fit: cover;
 }
+
+/* --- AMÉLIORATION DES CHAMPS DE SAISIE DE LA MODALE --- */
+.modal-form {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    display: grid;
+    /* Aligne les labels et les inputs sur une grille simple */
+    grid-template-columns: 1fr; 
+    gap: 10px;
+}
+
+.modal-form label {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-top: 5px;
+    display: block; /* S'assure que le label prend toute la ligne */
+}
+
+.modal-form input[type="number"],
+.modal-form input[type="date"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px; 
+    font-size: 1rem;
+    box-sizing: border-box; 
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: var(--background-light); 
+    color: var(--text-dark);
+}
+
+.modal-form input[type="number"]:focus,
+.modal-form input[type="date"]:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(164, 76, 58, 0.3);
+    outline: none;
+}
+/* Mode sombre pour les inputs */
+body.dark-mode .modal-form input[type="number"],
+body.dark-mode .modal-form input[type="date"] {
+    background-color: #5a4b4b; 
+    color: var(--text-light);
+    border-color: #6a5c5c;
+}
+body.dark-mode .modal-form label {
+    color: var(--secondary-color);
+}
+/* --- FIN AMÉLIORATION CHAMPS SAISIE MODALE --- */
+
 
 /* --- CONTACT --- */
 .disclaimer-box {
@@ -543,5 +597,9 @@ body.dark-mode #cart-link {
         flex-direction: row;
         width: 100%;
         justify-content: space-between;
+    }
+    /* S'assurer que le contenu de la modale ne déborde pas sur mobile */
+    .modal-content {
+        margin: 10px auto; 
     }
 }
