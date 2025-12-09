@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma boîte à loc' Angevine - Location de matériel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo-container">
+            <a href="javascript:void(0)" onclick="showSection('accueil')">
+                <h1>Ma boîte à loc' Angevine</h1>
+                <p>Location événementiel & outillage à Rives du Loir en Anjou</p>
+            </a>
+        </div>
+        
+        <nav class="main-nav">
+            <ul>
+                <li><a href="javascript:void(0)" onclick="showSection('accueil')" class="active">Accueil</a></li>
+                <li><a href="javascript:void(0)" onclick="showSection('catalogue')">Catalogue</a></li>
+                <li><a href="javascript:void(0)" onclick="showSection('panier')">Panier (<span id="cart-count">0</span>)</a></li>
+                <li><a href="javascript:void(0)" onclick="showSection('contact')">Contact</a></li>
+                <li class="dark-mode-toggle-item">
+                    <button id="dark-mode-toggle" title="Basculer le mode sombre/clair">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <nav id="catalogue-nav" style="display: none;">
+        </nav>
+
+
+    <main>
+        
+        <section id="accueil-section" class="content-section active">
+            <h2>Bienvenue sur Ma boîte à loc' Angevine</h2>
+            <p class="intro-text">Votre partenaire de confiance pour la location de matériel événementiel et d'outillage à Rives du Loir en Anjou.</p>
+
+            <div id="carousel-container" class="carousel-container">
+                <button class="prev" onclick="moveCarousel(-1)">&#10094;</button>
+                <button class="next" onclick="moveCarousel(1)">&#10095;</button>
+                <div class="dots-container">
+                    </div>
+            </div>
+            
+            <p class="call-to-action">Découvrez notre <a href="javascript:void(0)" onclick="showSection('catalogue')">catalogue complet</a> ou <a href="javascript:void(0)" onclick="showSection('contact')">contactez-nous</a> pour un devis personnalisé.</p>
+        </section>
+
+        <section id="catalogue-section" class="content-section">
+            <h2>Notre Catalogue</h2>
+            <div id="loading-message" class="loading-message">Chargement du catalogue...</div>
+            <div id="product-list" class="product-list">
+                </div>
+        </section>
+
+        <section id="panier-section" class="content-section">
+            <h2>Mon Panier</h2>
+            <div id="cart-items-container">
+                </div>
+            <div id="cart-summary" class="cart-summary" style="display: none;">
+                </div>
+        </section>
+
+        <section id="contact-section" class="content-section">
+            <h2>Contact & Réservation</h2>
+            <form id="reservation-form" class="reservation-form">
+                <h3>Demande de réservation</h3>
+                <p>Pour confirmer la disponibilité et le prix total de votre sélection, veuillez remplir ce formulaire. Nous vous recontacterons dans les plus brefs délais.</p>
+                
+                <label for="name">Nom / Entreprise :</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email :</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Téléphone :</label>
+                <input type="tel" id="phone" name="phone">
+
+                <label for="message">Message ou besoins spécifiques (optionnel) :</label>
+                <textarea id="message" name="message"></textarea>
+
+                <label for="delivery">
+                    <input type="checkbox" id="delivery" name="delivery">
+                    Je souhaite une livraison / retrait (Coût à déterminer)
+                </label>
+
+                <button type="submit" id="submit-reservation" class="btn-primary" disabled>
+                    Envoyer ma demande de réservation (Panier vide)
+                </button>
+            </form>
+        </section>
+
+    </main>
+
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div id="modal-body">
+                </div>
+        </div>
+    </div>
+    
+    <div id="toast-notification" class="toast-notification"></div>
+
+    <footer class="main-footer">
+        <p>&copy; <span id="current-year"></span> Ma boîte à loc' Angevine. Micro entreprise basée à Rives du Loir en Anjou.</p>
+        <p><a href="javascript:void(0)" onclick="showSection('contact')">Mentions Légales & CGV</a></p>
+    </footer>
+
+    <script src="_config.js"></script>         <script src="_utils.js"></script>          <script src="_cart-logic.js"></script>     <script src="_ui-data.js"></script>        <script src="_main-app.js"></script>       <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear(); 
+    </script>
+</body>
+</html>
