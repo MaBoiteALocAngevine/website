@@ -272,7 +272,6 @@ function renderCartSummary() {
     const totalCautionElement = document.getElementById('cart-total-caution');
     totalCautionElement.textContent = `${totalCautionAmount.toFixed(2).replace('.', ',')} € TTC`;
     totalCautionAmount > 0 ? totalCautionElement.style.color = 'var(--secondary-color)' : totalCautionElement.style.color = 'var(--text-dark)';
-
 }
 
 
