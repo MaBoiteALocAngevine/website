@@ -6,8 +6,9 @@ let totalSlides = 0;
 let carouselInterval;
 let selectedProductForModal = null;
 let panier = [];
-const DELIVERY_INFO_MESSAGE = "Coût à déterminer (sur devis)";
+const DELIVERY_INFO_MESSAGE = "Coût à déterminer (sur devis pour la livraison et le montage)";
 const BUSINESS_EMAIL = "maboitealocangevine@gmail.com";
+const BUSINESS_PHONE = "06 52 98 23 48"; // Numéro récupéré de la section Contact
 const CATEGORIES = {
     'all': 'Tous les produits',
     'evenementiel': 'Événementiel',
@@ -30,7 +31,7 @@ function parsePrice(priceString) {
     return 0;
 }
 
-// --- MODE SOMBRE ---
+// --- INITIALISATION ET MODE SOMBRE ---
 document.addEventListener("DOMContentLoaded", () => {
     const toggle = document.getElementById("dark-mode-toggle");
     if (toggle) {
@@ -39,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
             document.body.classList.toggle("dark-mode");
         });
     }
-    // Initialisation de l'application
     initApp(); 
 });
 function initApp() {
@@ -61,7 +61,6 @@ function showSection(sectionId) {
     if (sectionId !== 'accueil') {
         clearInterval(carouselInterval);
     } else {
-        // Ne démarrer le carrousel que s'il y a des slides
         if (totalSlides > 0) {
              startCarousel();
         }
@@ -87,7 +86,6 @@ function showSection(sectionId) {
     const catNav = document.getElementById('catalogue-nav');
     if (sectionId === 'catalogue') {
         catNav.style.display = 'flex';
-        // Utiliser flex pour l'alignement
         if (!document.querySelector('.cat-nav button.active')) {
             filterProducts('all');
         }
@@ -109,7 +107,6 @@ function showToast(message) {
 }
 
 // --- MODALE PRODUIT ---
-// Renommé showProductDetails à openModal pour correspondre au HTML
 function openModal(productId) { 
     const modal = document.getElementById('product-modal');
     const product = allProductsData.find(p => p.id == productId);
@@ -117,13 +114,13 @@ function openModal(productId) {
         selectedProductForModal = product;
         document.getElementById('modal-title').textContent = product.name;
         document.getElementById('modal-image').src = product.image_url; 
-        document.getElementById('modal-description').innerHTML = product.description; // Utiliser innerHTML pour les balises HTML dans la description
+        document.getElementById('modal-description').innerHTML = product.description; 
         
         // AFFICHAGE DU PRIX (TTC)
-        document.getElementById('modal-product-price-value').innerHTML = `${product.price} <span style="font-size: 0.8em; color: #777;">TTC</span>`;
+        document.getElementById('modal-product-price-value').innerHTML = `${product.price} <span style="font-size: 0.8em; color: var(--text-muted);">TTC</span>`;
         
         // AFFICHAGE DE LA CAUTION (TTC)
-        document.getElementById('modal-product-caution-value').innerHTML = `${product.caution} <span style="font-size: 0.8em; color: #777;">TTC</span>`;
+        document.getElementById('modal-product-caution-value').innerHTML = `${product.caution} <span style="font-size: 0.8em; color: var(--text-muted);">TTC</span>`;
 
         document.getElementById('modal-quantity').value = 1;
         document.getElementById('modal-quantity').max = product.max_quantity;
@@ -147,17 +144,16 @@ window.onclick = function(event) {
         closeModal();
     }
 };
-// --- LOGIQUE PANIER ---
+
+// --- LOGIQUE PANIER ET CALCUL ---
 
 function extractPriceDetails(priceString) {
-    // Utilise la nouvelle fonction pour obtenir la valeur numérique
     const priceValue = parsePrice(priceString); 
 
     const unitMatch = priceString.toLowerCase().includes('jour') ? 'per_day' : 
                               priceString.toLowerCase().includes('personne') ?
                               'per_person' :
                               'flat_rate';
-    // Le reste du code...
     return { value: priceValue, unit: unitMatch, unitString: priceString.match(/€\s*(\/.+)?/)?.[1]?.trim() || '' };
 }
 
@@ -174,7 +170,6 @@ function calculateItemPrice(item) {
         if (startDate && endDate) {
             const start = new Date(startDate);
             const end = new Date(endDate);
-            // Calcule la différence en jours et ajoute 1 pour inclure les deux dates
             const diffTime = Math.abs(end - start);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; 
             multiplier = diffDays;
@@ -183,10 +178,8 @@ function calculateItemPrice(item) {
             multiplier = 1; 
         }
     } else if (unit === 'per_person') {
-         // Pour 'per_person', la quantité est le nombre de personnes
          multiplier = 1;
     } else {
-         // Pour 'flat_rate', le multiplicateur est 1
          multiplier = 1;
     }
     
@@ -242,6 +235,7 @@ document.addEventListener('input', (event) => {
         updateCartCount();
     }
 });
+
 function handleDeliveryChange() {
     const isChecked = document.getElementById('delivery-checkbox').checked;
     const addressGroup = document.getElementById('delivery-address-group');
@@ -253,8 +247,8 @@ function handleDeliveryChange() {
 }
 
 function renderCartSummary() {
-    let totalRentalEstimate = 0; // Renommé
-    let totalCautionAmount = 0; // Nouveau total pour la caution
+    let totalRentalEstimate = 0; 
+    let totalCautionAmount = 0; 
     let totalItems = 0;
 
     panier.forEach(item => {
@@ -271,24 +265,11 @@ function renderCartSummary() {
     
     // Affichage Coût Total de Location (TTC)
     const totalRentalElement = document.getElementById('cart-total-estimate');
-    if (totalRentalEstimate > 0) {
-        // Remplacement du point par la virgule pour le format français
-        totalRentalElement.textContent = `${totalRentalEstimate.toFixed(2).replace('.', ',')} € TTC`; 
-        totalRentalElement.style.color = 'var(--primary-color)';
-    } else {
-        totalRentalElement.textContent = "0,00 € TTC";
-        totalRentalElement.style.color = 'var(--text-dark)';
-    }
+    totalRentalElement.textContent = `${totalRentalEstimate.toFixed(2).replace('.', ',')} € TTC`; 
     
     // Affichage Montant Total des Cautions (TTC)
     const totalCautionElement = document.getElementById('cart-total-caution');
-    if (totalCautionAmount > 0) {
-        totalCautionElement.textContent = `${totalCautionAmount.toFixed(2).replace('.', ',')} € TTC`;
-        totalCautionElement.style.color = 'var(--primary-color)';
-    } else {
-        totalCautionElement.textContent = '0,00 € TTC';
-        totalCautionElement.style.color = 'var(--text-dark)';
-    }
+    totalCautionElement.textContent = `${totalCautionAmount.toFixed(2).replace('.', ',')} € TTC`;
 }
 
 
@@ -306,7 +287,7 @@ function renderCart() {
     panier.forEach(item => {
         const itemPriceCalc = calculateItemPrice(item);
         const itemTotalPrice = itemPriceCalc.total.toFixed(2);
-        const itemWarning = itemPriceCalc.warning ? `<br><small style="color: #A44C3A; font-weight: 600;">${itemPriceCalc.warning}</small>` : '';
+        const itemWarning = itemPriceCalc.warning ? `<br><small style="color: var(--secondary-color); font-weight: 600;">${itemPriceCalc.warning}</small>` : '';
         
         // Affichage de la caution par article
         const unitCaution = parsePrice(item.product.caution); 
@@ -384,10 +365,11 @@ function handleSubmitReservation(event) {
     const isDelivery = document.getElementById('delivery-checkbox').checked;
     const deliveryAddress = isDelivery ? document.getElementById('delivery-address').value.trim() : 'N/A';
     const reservationMessage = document.getElementById('reservation-message').value.trim() || 'Aucun message supplémentaire.';
+    const isBillingRequested = document.getElementById('billing-request').checked;
     
     let priceDetails = '';
     let totalRentalEstimate = 0;
-    let totalCautionAmount = 0; // Ajout de la caution
+    let totalCautionAmount = 0; 
     let totalItems = 0;
     
     panier.forEach(item => {
@@ -426,8 +408,9 @@ ${priceDetails.trim()}
 INFORMATIONS COMPLEMENTAIRES
 =======================================================
 Email du client : ${userEmail}
-Demande de livraison : ${isDelivery ? 'OUI' : 'NON'}
+Demande de livraison & Montage : ${isDelivery ? 'OUI' : 'NON'}
 Adresse de livraison (si demandée) : ${deliveryAddress}
+Demande de Facturation : ${isBillingRequested ? 'OUI' : 'NON'}
 Message du client : ${reservationMessage}
 =======================================================
 ESTIMATION GLOBALE (HORS LIVRAISON)
@@ -436,7 +419,7 @@ Nombre total d'articles : ${totalItems}
 Estimation du Total TTC (Location) : ${totalRentalEstimate.toFixed(2)} EUR
 Montant Total des Cautions (TTC) : ${totalCautionAmount.toFixed(2)} EUR
 
-(Ce montant est une estimation et sera confirmé par devis après vérification des disponibilités et ajout des frais de livraison éventuels.)
+(Ce montant est une estimation et sera confirmé par devis après vérification des disponibilités et ajout des frais de livraison éventuels. La caution est payable par espèces ou virement instantané.)
 =======================================================
 CONTACT RAPIDE
 =======================================================
@@ -490,19 +473,18 @@ async function loadProductsFromCSVFile() {
             } else {
                 console.warn(`Ligne ignorée (format incorrect, ${values.length} col. vs ${headers.length} attendues): ${line}`);
             }
-        } // FIN DU PARSING CSV
+        } 
 
         allProductsData = products;
         
         // Filtrer les images pour le carrousel (colonne 'carrousel' ou 'is_carousel')
-        carouselImagesData = allProductsData // La colonne carrousel doit exister dans le CSV et contenir "oui"
+        carouselImagesData = allProductsData 
             .filter(p => p.carrousel && p.carrousel.toLowerCase().trim() === 'oui')
             .map(p => p.image_url);
 
         renderCategoryButtons();
-        renderProductList(allProductsData); // Affichage initial
+        renderProductList(allProductsData); 
         
-        // FIX: Vérifier l'existence de l'élément avant de le manipuler
         const loadingMessage = document.getElementById('loading-message');
         if (loadingMessage) {
             loadingMessage.style.display = 'none';
@@ -577,7 +559,7 @@ function searchProducts() {
 
 function renderProductList(products) {
     const container = document.getElementById('product-list-container');
-    container.innerHTML = ''; // Nettoie la liste
+    container.innerHTML = ''; 
     
     if (products.length === 0) {
         container.innerHTML = '<p class="empty-list-message">Aucun produit trouvé dans cette catégorie ou correspondant à la recherche.</p>';
@@ -602,7 +584,6 @@ function renderProductList(products) {
 }
 
 // --- LOGIQUE CARROUSEL ---
-// Les fonctions showSlide, moveCarousel, startCarousel et initCarousel ne sont pas modifiées
 function initCarousel() {
     const track = document.getElementById('carousel-track');
     const indicators = document.getElementById('carousel-indicators');
@@ -610,8 +591,7 @@ function initCarousel() {
 
     if (!container || carouselImagesData.length === 0) {
         if (container) {
-            // Message d'erreur/information si aucune image n'est trouvée pour le carrousel
-            container.innerHTML = '<p style="text-align: center; color: var(--primary-color); padding: 50px;">Aucune image sélectionnée pour le carrousel. Vérifiez la colonne "carrousel" dans data.csv.</p>';
+            container.innerHTML = '<p style="text-align: center; color: var(--primary-color); padding: 50px;">Aucune image sélectionnée pour le carrousel.</p>';
         }
         totalSlides = 0;
         return;
@@ -632,7 +612,7 @@ function initCarousel() {
 
     totalSlides = carouselImagesData.length;
     if (totalSlides > 0) {
-        showSlide(0); // Démarrer seulement si l'accueil est la section active
+        showSlide(0); 
         if (document.getElementById('accueil-section').classList.contains('active')) {
             startCarousel();
         }
