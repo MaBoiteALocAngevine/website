@@ -1,80 +1,92 @@
-﻿// Dépendances: _config.js, _ui-data.js (loadProductsFromCSVFile, initCarousel), _cart-logic.js (handleSubmitReservation, updateCartCount)
+﻿// --- _main-app.js ---
+// Dépendances: _config.js, _ui-data.js (loadProductsFromCSVFile, initCarousel, startCarousel, moveCarousel, currentSlide, totalSlides, filterProducts, renderCart, closeModal, openModal), _cart-logic.js (handleSubmitReservation, updateCartCount, addToCartFromModal)
+
+// Rendre les fonctions globales pour les événements 'onclick' dans index.html et ui-data
+window.moveCarousel = moveCarousel;
+window.closeModal = closeModal;
+window.showSection = showSection;
+window.filterProducts = filterProducts;
+window.openModal = openModal;
+window.addToCartFromModal = addToCartFromModal;
+
 
 // --- GESTION DU MODE SOMBRE ET INITIALISATION ---
-document.addEventListener("DOMContentLoaded", () => { // [cite: 1199]
+document.addEventListener("DOMContentLoaded", () => { 
     const toggle = document.getElementById("dark-mode-toggle");
     if (toggle) {
-        // Fonction de bascule du mode sombre [cite: 1199]
+        // Fonction de bascule du mode sombre 
         toggle.addEventListener("click", () => {
             document.body.classList.toggle("dark-mode");
-            // Sauvegarder la préférence de mode sombre [cite: 1199]
+            // Sauvegarder la préférence de mode sombre 
             localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
         });
     }
-    // Appliquer la préférence de mode sombre [cite: 1199]
+    // Appliquer la préférence de mode sombre 
     if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark-mode');
     }
-    initApp(); // Initialisation de l'application [cite: 1199]
+    initApp(); // Initialisation de l'application
 });
 
 function initApp() {
-    loadProductsFromCSVFile(); // Charger les données [cite: 1200]
+    loadProductsFromCSVFile(); // Charger les données
 
-    const form = document.getElementById('reservation-form'); // [cite: 1201]
+    const form = document.getElementById('reservation-form'); 
     if (form) {
-        form.addEventListener('submit', handleSubmitReservation); // [cite: 1202]
+        form.addEventListener('submit', handleSubmitReservation); 
     }
 
-    // Assurer que le premier lien est actif au démarrage [cite: 1203]
+    // Assurer que le premier lien est actif au démarrage 
     const firstLink = document.querySelector('.main-nav ul li a');
     if (firstLink) {
         firstLink.classList.add('active');
     }
-    showSection('accueil'); // Afficher la section d'accueil par défaut [cite: 1204]
-    updateCartCount(); // Mise à jour du compteur au chargement [cite: 1204]
+    showSection('accueil'); // Afficher la section d'accueil par défaut 
+    updateCartCount(); // Mise à jour du compteur au chargement 
 }
 
 
 // --- NAVIGATION PRINCIPALE ---
 function showSection(sectionId) {
-    // Gestion du carrousel [cite: 1205]
+    // Gestion du carrousel 
     if (sectionId !== 'accueil') {
         clearInterval(carouselInterval);
     } else {
-        // Ne démarrer le carrousel que s'il y a des slides [cite: 1205, 1206]
+        // Ne démarrer le carrousel que s'il y a des slides 
         if (totalSlides > 0) {
             startCarousel();
         }
     }
     if (sectionId === 'panier') {
-        renderCart(); // [cite: 1207]
+        renderCart(); 
     }
 
-    // Afficher/Masquer les sections [cite: 1207, 1208]
+    // Afficher/Masquer les sections 
     document.querySelectorAll('.content-section').forEach(section => {
         section.classList.remove('active');
     });
     const target = document.getElementById(sectionId + '-section');
-    if (target) target.classList.add('active'); // [cite: 1208, 1209]
+    if (target) target.classList.add('active'); 
 
-    // Mettre à jour la navigation principale [cite: 1209]
+    // Mettre à jour la navigation principale 
     document.querySelectorAll('.main-nav a').forEach(link => {
         link.classList.remove('active');
-        const linkSectionId = link.getAttribute('onclick').match(/showSection\('(.+?)'\)/)?.[1];
+        // Récupérer l'ID de la section à partir de l'attribut onclick
+        const linkSectionId = link.getAttribute('onclick')?.match(/showSection\('(.+?)'\)/)?.[1];
         if (linkSectionId === sectionId) {
-            link.classList.add('active'); // [cite: 1209]
+            link.classList.add('active'); 
         }
     });
     
-    // Afficher/Masquer la navigation par catégorie [cite: 1210]
-    const catNav = document.getElementById('catalogue-nav'); // [cite: 1210]
-    if (sectionId === 'catalogue') { // [cite: 1211]
-        catNav.style.display = 'flex'; // Utiliser flex pour l'alignement [cite: 1212]
-        if (!document.querySelector('.cat-nav button.active') && allProductsData.length > 0) {
-            filterProducts('all'); // [cite: 1212]
+    // Afficher/Masquer la navigation par catégorie 
+    const catNav = document.getElementById('catalogue-nav'); 
+    if (sectionId === 'catalogue') { 
+        catNav.style.display = 'flex'; // Utiliser flex pour l'alignement 
+        // Si aucune catégorie n'est active, afficher 'all' par défaut
+        if (!document.querySelector('#catalogue-nav button.active') && allProductsData.length > 0) {
+            filterProducts('all'); 
         }
     } else {
-        catNav.style.display = 'none'; // [cite: 1213]
+        catNav.style.display = 'none'; 
     }
 }

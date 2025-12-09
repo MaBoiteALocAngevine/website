@@ -1,4 +1,5 @@
-﻿// Dépendances: _config.js, _utils.js (showToast, calculateItemPrice, formatDate, extractPriceDetails)
+﻿// --- _cart-logic.js ---
+// Dépendances: _config.js, _utils.js (showToast, calculateItemPrice, formatDate, extractPriceDetails, calculateTotalCaution, calculateItemCaution)
 
 // --- GESTION DU STOCKAGE DU PANIER ---
 
@@ -8,6 +9,10 @@
 function saveCart() {
     localStorage.setItem('panier', JSON.stringify(panier));
     updateCartCount();
+    // Re-rendre le panier si nous sommes sur la section panier
+    if (document.getElementById('panier-section').classList.contains('active')) {
+        renderCart();
+    }
 }
 
 /**
@@ -17,7 +22,20 @@ function updateCartCount() {
     const countElement = document.getElementById('cart-count');
     const totalItems = panier.reduce((sum, item) => sum + item.quantity, 0);
     if (countElement) {
-        countElement.textContent = totalItems > 0 ? `(${totalItems})` : '';
+        // Affiche la quantité totale d'articles dans le panier
+        countElement.textContent = totalItems > 0 ? totalItems : 0; 
+
+        // Mise à jour du bouton de réservation
+        const submitButton = document.getElementById('submit-reservation');
+        if (submitButton) {
+            if (totalItems > 0) {
+                submitButton.disabled = false;
+                submitButton.textContent = "Envoyer ma demande de réservation";
+            } else {
+                submitButton.disabled = true;
+                submitButton.textContent = "Envoyer ma demande de réservation (Panier vide)";
+            }
+        }
     }
 }
 
@@ -28,279 +46,278 @@ function updateCartCount() {
  */
 function addToCartFromModal() {
     const product = selectedProductForModal;
-    const quantity = parseInt(document.getElementById('modal-quantity').value);
-    const startDate = document.getElementById('modal-start-date').value;
-    const endDate = document.getElementById('modal-end-date').value;
+    const quantityInput = document.getElementById('modal-quantity');
+    const quantity = parseInt(quantityInput ? quantityInput.value : 0);
+    const startDateInput = document.getElementById('modal-start-date');
+    const endDateInput = document.getElementById('modal-end-date');
+    const startDate = startDateInput ? startDateInput.value : null;
+    const endDate = endDateInput ? endDateInput.value : null;
     
     if (!product || !quantity || quantity <= 0) {
         showToast("Veuillez choisir une quantité valide.");
         return;
     }
+    
+    // Vérification de la quantité maximale
     if (quantity > product.max_quantity) {
         showToast(`Quantité maximale pour ce produit : ${product.max_quantity}`);
         return;
     }
+
     // Validation des dates si le prix est journalier
     const { isDaily } = extractPriceDetails(product.price);
     if (isDaily) {
         if (!startDate || !endDate || new Date(startDate) > new Date(endDate)) {
-            showToast("Veuillez choisir des dates de début et de fin valides.");
+            // CORRECTION DE L'ERREUR DE SYNTAXE
+            showToast("Veuillez choisir des dates de location valides."); 
             return;
         }
     }
 
-    const item = {
-        productId: product.id,
-        name: product.name,
-        image_url: product.image_url,
-        price: product.price,
-        caution: product.caution,
-        quantity: quantity,
-        startDate: startDate || null,
-        endDate: endDate || null
+    // Créer un identifiant unique pour cette instance du panier
+    const cartItemId = `${product.id}-${Date.now()}`; 
+
+    const newItem = {
+        cartItemId: cartItemId, 
+        id: product.id, 
+        name: product.name, 
+        quantity: quantity, 
+        startDate: startDate, 
+        endDate: endDate
     };
 
-    // Vérifier si un produit avec les mêmes ID et DATES est déjà dans le panier
-    const existingItemIndex = panier.findIndex(p => 
-        p.productId === item.productId && p.startDate === item.startDate && p.endDate === item.endDate
-    );
-
-    if (existingItemIndex > -1) {
-        // Mettre à jour la quantité
-        panier[existingItemIndex].quantity += quantity;
-        showToast(`Quantité de ${product.name} mise à jour dans le panier.`);
-    } else {
-        // Ajouter un nouvel article
-        panier.push(item);
-        showToast(`${product.name} ajouté au panier !`);
-    }
-
+    panier.push(newItem);
     saveCart();
     closeModal();
+    showToast(`${quantity}x ${product.name} ajouté(s) au panier.`);
 }
 
 /**
  * Supprime un article du panier.
- * @param {number} itemId Index de l'article dans le tableau `panier`.
+ * @param {string} cartItemId L'identifiant unique de l'article dans le panier.
  */
-function removeItemFromCart(itemId) {
-    if (confirm("Voulez-vous vraiment retirer cet article du panier ?")) {
-        panier.splice(itemId, 1);
+function removeItem(cartItemId) {
+    panier = panier.filter(item => item.cartItemId !== cartItemId);
+    saveCart();
+    showToast("Article retiré du panier.");
+}
+
+/**
+ * Met à jour la quantité, la date de début ou de fin d'un article du panier.
+ * @param {string} cartItemId L'identifiant unique de l'article dans le panier.
+ * @param {string} type Le type de champ à mettre à jour ('quantity', 'startDate', 'endDate').
+ * @param {string|number} value La nouvelle valeur.
+ */
+function updateCartItem(cartItemId, type, value) {
+    const itemIndex = panier.findIndex(item => item.cartItemId === cartItemId);
+    if (itemIndex > -1) {
+        const item = panier[itemIndex];
+        const product = allProductsData.find(p => p.id === item.id);
+        
+        // Validation de quantité
+        if (type === 'quantity') {
+            const newQuantity = parseInt(value);
+            if (newQuantity > 0 && newQuantity <= product.max_quantity) {
+                item.quantity = newQuantity;
+            } else if (newQuantity <= 0) {
+                // Option : supprimer l'article si la quantité est 0
+                removeItem(cartItemId);
+                return; 
+            } else {
+                showToast(`Quantité maximale pour ${product.name} : ${product.max_quantity}`);
+                // Revenir à l'ancienne valeur dans l'interface si l'entrée est invalide
+                document.querySelector(`#item-${cartItemId} [data-type="quantity"]`).value = item.quantity;
+                return;
+            }
+        } else if (type === 'startDate' || type === 'endDate') {
+            item[type] = value;
+            // Re-valider les dates si les deux sont définies
+            const { isDaily } = extractPriceDetails(product.price);
+            if (isDaily && item.startDate && item.endDate && new Date(item.startDate) > new Date(item.endDate)) {
+                showToast("Date de début doit être antérieure ou égale à la date de fin.");
+                // Optionnel: réinitialiser l'une des dates
+                item[type] = ''; 
+                document.querySelector(`#item-${cartItemId} [data-type="${type}"]`).value = '';
+                return;
+            }
+        }
+
         saveCart();
-        renderCart(); // Re-render the cart
-        showToast("Article retiré du panier.");
+        renderCart(); // Re-render pour mettre à jour les totaux
     }
 }
 
-/**
- * Met à jour la quantité d'un article dans le panier.
- * @param {number} itemId Index de l'article.
- * @param {number} newQuantity Nouvelle quantité.
- */
-function updateCartQuantity(itemId, newQuantity) {
-    newQuantity = parseInt(newQuantity);
-    if (newQuantity < 1 || isNaN(newQuantity)) return;
-    
-    // (Note: La vérification de la quantité max devrait être faite ici si les données produit sont facilement accessibles)
-    panier[itemId].quantity = newQuantity;
-    saveCart();
-    renderCart();
-}
+// --- RENDU DU PANIER ---
 
 /**
- * Met à jour les dates de location d'un article.
- * @param {number} itemId Index de l'article.
- * @param {string} newStartDate Nouvelle date de début.
- * @param {string} newEndDate Nouvelle date de fin.
- */
-function updateCartDates(itemId, newStartDate, newEndDate) {
-    if (newStartDate && newEndDate && new Date(newStartDate) > new Date(newEndDate)) {
-        showToast("La date de fin doit être postérieure ou égale à la date de début.");
-        // Recharger les valeurs précédentes pour annuler l'entrée utilisateur
-        document.getElementById(`cart-start-date-${itemId}`).value = panier[itemId].startDate;
-        document.getElementById(`cart-end-date-${itemId}`).value = panier[itemId].endDate;
-        return;
-    }
-
-    panier[itemId].startDate = newStartDate;
-    panier[itemId].endDate = newEndDate;
-    saveCart();
-    renderCart();
-}
-
-// --- AFFICHAGE DU PANIER ET TOTALS ---
-
-/**
- * Rend l'affichage complet du panier.
+ * Affiche le contenu du panier sur la page 'panier'.
  */
 function renderCart() {
-    const cartList = document.getElementById('cart-list');
-    const cartTotals = document.getElementById('cart-totals');
-    const reservationForm = document.getElementById('reservation-form');
+    const container = document.getElementById('cart-items-container');
+    const summary = document.getElementById('cart-summary');
+    container.innerHTML = '';
 
-    if (!cartList || !cartTotals || !reservationForm) return;
-
-    cartList.innerHTML = '';
-    
     if (panier.length === 0) {
-        cartList.innerHTML = '<p class="empty-cart-message">Votre panier est vide pour le moment.</p>';
-        cartTotals.innerHTML = '';
-        reservationForm.style.display = 'none';
+        container.innerHTML = '<p class="empty-cart-message">Votre panier est vide.</p>';
+        summary.style.display = 'none';
+        updateCartCount(); // Pour désactiver le bouton de réservation
         return;
     }
 
-    let subTotal = 0;
-    let totalCaution = 0;
-    reservationForm.style.display = 'block';
+    summary.style.display = 'block';
+    
+    // Rendu des articles
+    panier.forEach(item => {
+        const product = allProductsData.find(p => p.id === item.id);
+        if (!product) return; // Si le produit n'est pas trouvé
 
-    panier.forEach((item, index) => {
-        const itemTotal = calculateItemPrice(item);
-        subTotal += itemTotal;
-        
-        // Extraction de la caution
-        const cautionMatch = item.caution.match(/([\d\s,]+)\s*€/i);
-        // Nettoyage de la valeur de la caution
-        const cautionValue = cautionMatch ? parseFloat(cautionMatch[1].replace(/,/g, '.').replace(/\s/g, '')) : 0; 
-        totalCaution += cautionValue * item.quantity;
+        const itemTotal = calculateItemPrice(item).toFixed(2);
+        const itemCaution = calculateItemCaution(item).toFixed(2);
+        const { isDaily, priceValue } = extractPriceDetails(product.price);
 
-        const isDaily = extractPriceDetails(item.price).isDaily;
+        const priceDetails = isDaily 
+            ? `(${priceValue.toFixed(2)} € / jour)` 
+            : `(${priceValue.toFixed(2)} €)`;
+
+        const dateControls = isDaily ? `
+            <div class="cart-dates-control">
+                <label for="start-${item.cartItemId}">Début:</label>
+                <input type="date" id="start-${item.cartItemId}" data-type="startDate" value="${item.startDate || ''}" 
+                       onchange="updateCartItem('${item.cartItemId}', 'startDate', this.value)">
+                <label for="end-${item.cartItemId}">Fin:</label>
+                <input type="date" id="end-${item.cartItemId}" data-type="endDate" value="${item.endDate || ''}" 
+                       onchange="updateCartItem('${item.cartItemId}', 'endDate', this.value)">
+            </div>
+        ` : '';
 
         const cartItemHTML = `
-            <div class="cart-item">
-                <img src="${item.image_url}" alt="${item.name}" class="cart-item-img">
-                <div class="cart-item-details">
-                    <h4>${item.name}</h4>
-                    <p class="cart-item-price-unit">${item.price}</p>
-                    
-                    ${isDaily ? 
-                        `<div class="cart-dates">
-                            <label>Du:</label>
-                            <input type="date" id="cart-start-date-${index}" value="${item.startDate || ''}" 
-                                onchange="updateCartDates(${index}, this.value, document.getElementById('cart-end-date-${index}').value)">
-                            <label>Au:</label>
-                            <input type="date" id="cart-end-date-${index}" value="${item.endDate || ''}" 
-                                onchange="updateCartDates(${index}, document.getElementById('cart-start-date-${index}').value, this.value)">
-                        </div>` 
-                        : `<p class="cart-dates-info">Location forfaitaire</p>`
-                    }
-
-                    <div class="cart-item-controls">
-                        <label for="cart-quantity-${index}">Qté:</label>
-                        <input type="number" id="cart-quantity-${index}" value="${item.quantity}" min="1" 
-                            onchange="updateCartQuantity(${index}, this.value)" class="quantity-input">
-                        <span class="cart-item-total">Total: ${itemTotal.toFixed(2).replace('.', ',')} €</span>
-                        <button onclick="removeItemFromCart(${index})" class="remove-btn">Retirer</button>
-                    </div>
+            <div class="cart-item" id="item-${item.cartItemId}">
+                <img src="${product.image_url}" alt="${item.name}">
+                <div class="item-details">
+                    <h4>${item.name} ${priceDetails}</h4>
+                    <p>Caution : <span class="cart-item-caution">${itemCaution} €</span></p>
+                    <p class="item-total-price">Total estimé : <strong class="price-estimate">${itemTotal} €</strong></p>
+                    ${dateControls}
+                </div>
+                <div class="item-controls">
+                    <label for="qty-${item.cartItemId}">Quantité :</label>
+                    <input type="number" id="qty-${item.cartItemId}" data-type="quantity" value="${item.quantity}" min="1" max="${product.max_quantity}"
+                           onchange="updateCartItem('${item.cartItemId}', 'quantity', this.value)">
+                    <button class="remove-btn" onclick="removeItem('${item.cartItemId}')">Retirer</button>
                 </div>
             </div>
         `;
-        cartList.innerHTML += cartItemHTML;
+        container.innerHTML += cartItemHTML;
     });
 
-    // Affichage des totaux
-    const deliveryCheck = document.getElementById('delivery-check');
-    const isDeliveryChecked = deliveryCheck ? deliveryCheck.checked : false;
-    const deliveryCost = isDeliveryChecked ? DELIVERY_INFO_MESSAGE : "0,00 €";
+    // Rendu du résumé
+    calculateCartTotals();
+    updateCartCount();
+}
 
-    cartTotals.innerHTML = `
-        <div class="cart-summary">
-            <p>Sous-Total Location: <span>${subTotal.toFixed(2).replace('.', ',')} €</span></p>
-            <p>Total Caution: <span>${totalCaution.toFixed(2).replace('.', ',')} €</span></p>
-            
-            <div class="delivery-option">
-                <input type="checkbox" id="delivery-check" onchange="handleDeliveryChange()" ${isDeliveryChecked ? 'checked' : ''}>
-                <label for="delivery-check">Demande de Livraison</label>
+
+/**
+ * Calcule et affiche les totaux du panier (sous la liste des articles).
+ */
+function calculateCartTotals() {
+    const summary = document.getElementById('cart-summary');
+    const totalHT = panier.reduce((sum, item) => sum + calculateItemPrice(item), 0);
+    const totalCaution = calculateTotalCaution();
+
+    // NOTE: Micro-entreprise, nous supposons pas de TVA pour l'instant (Montant Total = Montant HT)
+    const totalTTC = totalHT; 
+    
+    // Affichage des totaux
+    summary.innerHTML = `
+        <div class="reservation-summary">
+            <h3>Résumé de la Réservation</h3>
+            <div class="cart-totals">
+                <p>Sous-total (HT) : <span class="price-estimate bold-text">${totalHT.toFixed(2)} €</span></p>
+                <p>TVA (0% - Micro-entreprise) : <span>0.00 €</span></p>
+                <p>Total estimé (TTC) : <span class="price-estimate bold-text">${totalTTC.toFixed(2)} €</span></p>
+                <p class="caution-total">Caution Totale : <span class="bold-text">${totalCaution.toFixed(2)} €</span></p>
             </div>
-            <p class="delivery-cost">Frais de livraison: <span>${deliveryCost}</span></p>
-            
-            <h3 class="grand-total">TOTAL (Location + Caution): <span>${(subTotal + totalCaution).toFixed(2).replace('.', ',')} €</span></h3>
+
+            <div class="cart-policy-info">
+                <strong>Attention :</strong> Ce total est une estimation. Le prix final sera confirmé avec la date de réservation et l'option de livraison/retrait.
+                <p class="caution-return-note">La caution totale est due à la remise du matériel et est restituée en intégralité à son retour, sous réserve de l'état du matériel.</p>
+            </div>
         </div>
     `;
-    
-    // Réattacher l'événement pour la case à cocher après le rendu
-    // C'est nécessaire car innerHTML écrase l'élément
-    const newDeliveryCheck = document.getElementById('delivery-check');
-    if (newDeliveryCheck) {
-        newDeliveryCheck.onchange = handleDeliveryChange;
-    }
 }
 
-/**
- * Gère le changement d'état de la case à cocher de livraison.
- */
-function handleDeliveryChange() {
-    renderCart(); // Re-render pour mettre à jour l'affichage des frais
-}
-
-
-// --- SOUMISSION DE LA RÉSERVATION ---
+// --- GESTION DU FORMULAIRE DE RÉSERVATION ---
 
 /**
- * Gère la soumission du formulaire de réservation et prépare l'email.
- * @param {Event} event L'événement de soumission du formulaire.
+ * Gère la soumission du formulaire de réservation.
+ * @param {Event} event L'événement de soumission.
  */
 function handleSubmitReservation(event) {
     event.preventDefault();
 
     if (panier.length === 0) {
-        showToast("Votre panier est vide.");
+        showToast("Votre panier est vide, impossible d'envoyer la demande.");
         return;
     }
+
+    const form = event.target;
+    const name = form.elements['name'].value;
+    const email = form.elements['email'].value;
+    const phone = form.elements['phone'].value;
+    const message = form.elements['message'].value;
+    const delivery = form.elements['delivery'].checked;
     
-    const name = document.getElementById('client-name').value;
-    const email = document.getElementById('client-email').value;
-    const phone = document.getElementById('client-phone').value;
-    const message = document.getElementById('client-message').value;
-    const isDelivery = document.getElementById('delivery-check').checked;
+    // Construire le corps de l'e-mail
+    let subject = `Demande de Réservation: ${name}`;
+    let body = `Bonjour Ma boîte à loc' Angevine,\n\n`;
+    body += `Je souhaite effectuer une demande de réservation pour les articles suivants :\n\n`;
 
-    if (!name || !email || !phone) {
-        showToast("Veuillez remplir votre nom, email et téléphone.");
-        return;
-    }
+    let totalEstim = 0;
 
-    let emailBody = `Réservation de matériel pour ${name} (${phone}, ${email})\n\n`;
-    emailBody += "--- DÉTAIL DE LA COMMANDE ---\n";
-
-    let subTotal = 0;
-    let totalCaution = 0;
-
-    panier.forEach((item) => {
+    panier.forEach((item, index) => {
+        const product = allProductsData.find(p => p.id === item.id);
         const itemTotal = calculateItemPrice(item);
-        subTotal += itemTotal;
+        totalEstim += itemTotal;
+        
+        let dateInfo = '';
+        const { isDaily } = extractPriceDetails(product.price);
 
-        const cautionMatch = item.caution.match(/([\d\s,]+)\s*€/i);
-        const cautionValue = cautionMatch ? parseFloat(cautionMatch[1].replace(/,/g, '.').replace(/\s/g, '')) : 0;
-        totalCaution += cautionValue * item.quantity;
+        if (isDaily && item.startDate && item.endDate) {
+            dateInfo = `Du ${formatDate(item.startDate)} au ${formatDate(item.endDate)}`;
+        } else if (isDaily) {
+            dateInfo = `(Dates de location à préciser)`;
+        }
 
-        const datesString = item.startDate && item.endDate ? ` (Du ${formatDate(item.startDate)} au ${formatDate(item.endDate)})` : '';
-
-        emailBody += `\n- ${item.name} (${item.price}) x ${item.quantity}${datesString}`;
-        emailBody += `\n  > Total Est. Location: ${itemTotal.toFixed(2).replace('.', ',')} € (Caution: ${item.caution} x ${item.quantity})`;
+        body += `${index + 1}. ${item.name} (ID: ${item.id})\n`;
+        body += `   Quantité: ${item.quantity}\n`;
+        if (dateInfo) body += `   Période: ${dateInfo}\n`;
+        body += `   Prix estimé : ${itemTotal.toFixed(2)} €\n`;
+        body += `   Caution unitaire : ${calculateItemCaution(item).toFixed(2)} €\n\n`;
     });
 
-    const grandTotal = subTotal + totalCaution;
+    const totalCaution = calculateTotalCaution();
+
+    body += `-------------------------------------------\n`;
+    body += `Total Estimé HT/TTC : ${totalEstim.toFixed(2)} €\n`;
+    body += `Caution Totale : ${totalCaution.toFixed(2)} €\n`;
+    body += `\n-------------------------------------------\n`;
+    body += `Détails du demandeur:\n`;
+    body += `Nom / Entreprise: ${name}\n`;
+    body += `Email: ${email}\n`;
+    body += `Téléphone: ${phone || 'Non renseigné'}\n`;
+    body += `Livraison / Retrait souhaité: ${delivery ? 'OUI' : 'NON'}\n`;
+    if (message) body += `Message / Besoins spécifiques: ${message}\n`;
     
-    emailBody += "\n\n--- RÉSUMÉ DES COÛTS ---\n";
-    emailBody += `Sous-Total Location: ${subTotal.toFixed(2).replace('.', ',')} €\n`;
-    emailBody += `Total Caution: ${totalCaution.toFixed(2).replace('.', ',')} €\n`;
-    emailBody += `Demande de Livraison: ${isDelivery ? 'OUI (' + DELIVERY_INFO_MESSAGE + ')' : 'NON'}\n`;
-    emailBody += `TOTAL ESTIMÉ (Location + Caution): ${grandTotal.toFixed(2).replace('.', ',')} €\n`;
+    body += `\nMerci de me recontacter pour confirmer la disponibilité et le prix total.\n`;
 
-    if (message) {
-        emailBody += `\n--- MESSAGE SUPPLÉMENTAIRE --\n${message}\n`;
-    }
+    // Créer le lien mailto
+    const mailtoLink = `mailto:maboitealocangevine@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-    // Effacer le panier et rediriger vers le client de messagerie
-    localStorage.removeItem('panier');
-    panier = [];
-    saveCart(); 
-
-    const subject = `Demande de Réservation: ${name}`;
-    const mailtoLink = `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
-    
+    // Ouvrir le client mail
     window.location.href = mailtoLink;
 
-    // Afficher un message de confirmation rapide avant la redirection
-    showToast("Email de réservation préparé ! Veuillez l'envoyer via votre client de messagerie.");
-    showSection('accueil'); // Rediriger l'utilisateur
+    // Optionnel : Vider le panier après l'envoi de l'e-mail (après confirmation)
+    // panier = [];
+    // saveCart(); 
+    // showToast("Demande envoyée ! Veuillez confirmer l'e-mail dans votre client mail.");
 }
