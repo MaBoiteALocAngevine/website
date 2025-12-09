@@ -1,92 +1,70 @@
 ﻿// --- _main-app.js ---
-// Dépendances: _config.js, _ui-data.js (loadProductsFromCSVFile, initCarousel, startCarousel, moveCarousel, currentSlide, totalSlides, filterProducts, renderCart, closeModal, openModal), _cart-logic.js (handleSubmitReservation, updateCartCount, addToCartFromModal)
+// Dépendances: _config.js, _utils.js, _cart-logic.js, _ui-data.js
 
-// Rendre les fonctions globales pour les événements 'onclick' dans index.html et ui-data
+// Rendre les fonctions essentielles globales pour les événements 'onclick' dans index.html
 window.moveCarousel = moveCarousel;
+window.startCarousel = startCarousel;
 window.closeModal = closeModal;
 window.showSection = showSection;
 window.filterProducts = filterProducts;
 window.openModal = openModal;
 window.addToCartFromModal = addToCartFromModal;
+window.updateCartItem = updateCartItem;
+window.removeItem = removeItem;
+// Ajout des fonctions utilisées dans l'initialisation
+window.loadProductsFromCSVFile = loadProductsFromCSVFile;
+window.updateCartCount = updateCartCount;
 
+// Ajout de la fonction toggleDarkMode qui semble manquer
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    const toggleButton = document.getElementById('dark-mode-toggle');
+    const icon = toggleButton.querySelector('i');
 
-// --- GESTION DU MODE SOMBRE ET INITIALISATION ---
-document.addEventListener("DOMContentLoaded", () => { 
-    const toggle = document.getElementById("dark-mode-toggle");
-    if (toggle) {
-        // Fonction de bascule du mode sombre 
-        toggle.addEventListener("click", () => {
-            document.body.classList.toggle("dark-mode");
-            // Sauvegarder la préférence de mode sombre 
-            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-        });
+    if (isDarkMode) {
+        localStorage.setItem('darkMode', 'enabled');
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    } else {
+        localStorage.setItem('darkMode', 'disabled');
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
     }
-    // Appliquer la préférence de mode sombre 
-    if (localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark-mode');
-    }
-    initApp(); // Initialisation de l'application
-});
-
-function initApp() {
-    loadProductsFromCSVFile(); // Charger les données
-
-    const form = document.getElementById('reservation-form'); 
-    if (form) {
-        form.addEventListener('submit', handleSubmitReservation); 
-    }
-
-    // Assurer que le premier lien est actif au démarrage 
-    const firstLink = document.querySelector('.main-nav ul li a');
-    if (firstLink) {
-        firstLink.classList.add('active');
-    }
-    showSection('accueil'); // Afficher la section d'accueil par défaut 
-    updateCartCount(); // Mise à jour du compteur au chargement 
 }
 
+// *** BLOC DE DÉMARRAGE DE L'APPLICATION (FIX DES BUGS) ***
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Charger les données et initialiser l'UI (Catalogue, Carrousel)
+    // C'est l'appel manquant qui empêchait le catalogue et le carrousel de s'afficher
+    loadProductsFromCSVFile(); // Chargement des données et appel à initCarousel/filterProducts
 
-// --- NAVIGATION PRINCIPALE ---
-function showSection(sectionId) {
-    // Gestion du carrousel 
-    if (sectionId !== 'accueil') {
-        clearInterval(carouselInterval);
-    } else {
-        // Ne démarrer le carrousel que s'il y a des slides 
-        if (totalSlides > 0) {
-            startCarousel();
-        }
+    // 2. Initialiser les écouteurs d'événements
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', toggleDarkMode);
     }
-    if (sectionId === 'panier') {
-        renderCart(); 
-    }
-
-    // Afficher/Masquer les sections 
-    document.querySelectorAll('.content-section').forEach(section => {
-        section.classList.remove('active');
-    });
-    const target = document.getElementById(sectionId + '-section');
-    if (target) target.classList.add('active'); 
-
-    // Mettre à jour la navigation principale 
-    document.querySelectorAll('.main-nav a').forEach(link => {
-        link.classList.remove('active');
-        // Récupérer l'ID de la section à partir de l'attribut onclick
-        const linkSectionId = link.getAttribute('onclick')?.match(/showSection\('(.+?)'\)/)?.[1];
-        if (linkSectionId === sectionId) {
-            link.classList.add('active'); 
-        }
-    });
     
-    // Afficher/Masquer la navigation par catégorie 
-    const catNav = document.getElementById('catalogue-nav'); 
-    if (sectionId === 'catalogue') { 
-        catNav.style.display = 'flex'; // Utiliser flex pour l'alignement 
-        // Si aucune catégorie n'est active, afficher 'all' par défaut
-        if (!document.querySelector('#catalogue-nav button.active') && allProductsData.length > 0) {
-            filterProducts('all'); 
-        }
-    } else {
-        catNav.style.display = 'none'; 
+    const reservationForm = document.getElementById('reservation-form');
+    // Le formulaire est sur la section contact. On s'assure qu'il est lié à la fonction de soumission.
+    if (reservationForm) {
+        reservationForm.addEventListener('submit', handleSubmitReservation);
     }
-}
+
+    // 3. Afficher la section d'accueil (par défaut) et démarrer le carrousel
+    showSection('accueil');
+    
+    // 4. Initialiser l'affichage du panier (compteur dans le header)
+    updateCartCount();
+
+    // 5. Initialiser le mode sombre s'il est déjà en localStorage
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        // Mise à jour de l'icône
+        const icon = document.getElementById('dark-mode-toggle').querySelector('i');
+        if (icon) {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+    }
+});
