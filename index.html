@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -20,7 +20,7 @@
             </ul>
         </nav>
         <div class="utility-icons">
-            <button id="dark-mode-toggle" title="Mode Sombre">🌓</button>
+            <button id="dark-mode-toggle" title="Mode Sombre">🌙</button>
             <a href="#" id="cart-link" onclick="showSection('panier')">
                 🛒<span id="cart-count">0</span>
             </a>
@@ -38,7 +38,7 @@
             
             <div class="carousel-container" id="carousel-container">
                 <div class="carousel-track" id="carousel-track">
-                    </div>
+                </div>
                 <button class="carousel-nav-btn" id="prev-btn" onclick="moveCarousel(-1)">&#10094;</button>
                 <button class="carousel-nav-btn" id="next-btn" onclick="moveCarousel(1)">&#10095;</button>
                 <div id="carousel-indicators">
@@ -72,7 +72,7 @@
                         </label>
                     </div>
 
-                    <div id="delivery-address-group" class="form-group">
+                    <div id="delivery-address-group" class="form-group" style="display: none;">
                         <label for="delivery-address">Adresse complète pour la livraison :</label>
                         <textarea id="delivery-address" name="Adresse de livraison" placeholder="Ex: 10 rue des Fleurs, 49140 Angers"></textarea>
                     </div>
@@ -81,10 +81,21 @@
                         <label>Articles dans le panier :</label>
                         <strong id="cart-total-price">0 article(s)</strong>
                     </p>
+                    
                     <p class="cart-total-line estimate">
-                        <label>ESTIMATION DU TOTAL ARTICLES (HT) :</label>
-                        <strong id="cart-total-estimate">0.00 €</strong>
+                        <label>ESTIMATION DU COÛT TOTAL DE LOCATION (TTC) :</label>
+                        <strong id="cart-total-estimate">0,00 € TTC</strong>
                     </p>
+                    
+                    <p class="cart-total-line caution-summary">
+                        <label>MONTANT TOTAL DES CAUTIONS (TTC) :</label>
+                        <strong id="cart-total-caution">0,00 € TTC</strong>
+                    </p>
+
+                    <p class="small-text" style="font-size: 0.8rem; color: #888; margin-top: -10px;">
+                        <em>Le montant de la caution est une garantie non incluse dans le coût de location.</em>
+                    </p>
+
 
                     <h3 style="margin-top: 20px;">Informations de contact</h3>
 
@@ -103,7 +114,7 @@
                     <input type="hidden" name="_cc" id="hidden-cc">
                     <input type="hidden" name="_subject" id="hidden-subject">
                     <textarea name="Récapitulatif de la Demande" id="email-body-content" style="display: none;"></textarea>
-                    
+                
                     <button type="submit" class="validate-btn" disabled>Envoyer la demande de Réservation</button>
                 </form>
             </div>
@@ -128,7 +139,7 @@
             </div>
 
             <div class="disclaimer-box">
-                <h4>⚠ Information Importante :</h4>
+                <h4>⚠️ Information Importante :</h4>
                 <p>Notre adresse de retrait est réservée aux rendez-vous confirmés. Nous ne disposons pas de boutique physique ouverte au public. Veuillez impérativement nous contacter au préalable par téléphone ou email pour convenir d'une date et heure de retrait ou d'une visite.</p>
             </div>
         </div>
@@ -143,7 +154,11 @@
             <div class="modal-body">
                 <img id="modal-image" src="" alt="Image Produit">
                 <p id="modal-description">Description détaillée du produit.</p>
-                <p id="modal-price">Prix: <strong>X €</strong></p>
+                
+                <p id="modal-price">Prix: <strong id="modal-product-price-value">X € TTC</strong></p>
+                
+                <p id="modal-caution">Caution: <strong id="modal-product-caution-value">X € TTC</strong></p>
+                
                 <p class="max-qty-info" id="modal-max-quantity-info">Max disponible : X</p>
                 
                 <div class="modal-form">
