@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ma boîte à loc' Angevine - Location de matériel</title>
     
-    <base href="/website/">
-    
-    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="./style.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-
-    <header class="main-header">
+<header class="main-header">
         <div class="header-content">
             <h1 onclick="showSection('accueil')">Ma boîte à loc' Angevine</h1>
             <nav class="main-nav">
@@ -120,11 +117,11 @@
         <p>Conception et maintenance par L. C. | <a href="javascript:void(0)" onclick="showSection('contact')">Mentions Légales</a></p>
     </footer>
 
-    <script src="_config.js"></script>
-    <script src="_utils.js"></script>
-    <script src="_cart-logic.js"></script>
-    <script src="_ui-data.js"></script>
-    <script src="_main-app.js"></script>
+    <script src="./_config.js"></script> 
+    <script src="./_utils.js"></script>
+    <script src="./_cart-logic.js"></script>
+    <script src="./_ui-data.js"></script>
+    <script src="./_main-app.js"></script>
     <script>
         document.getElementById('current-year').textContent = new Date().getFullYear();
     </script>
