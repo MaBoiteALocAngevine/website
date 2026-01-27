@@ -1,15 +1,14 @@
 ﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-K1WY9LK5SS"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-K1WY9LK5SS');
-</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K1WY9LK5SS"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-K1WY9LK5SS');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ma boîte à loc' Angevine - Location de Matériel en Anjou</title>
@@ -19,14 +18,13 @@
 <body>
     <header>
         <div class="logo-brand">
-            <span class="logo-icon"></span>
             <h1>Ma boîte à loc' Angevine</h1>
         </div>
         <nav class="main-nav">
             <ul>
-                <li><a href="#" onclick="showSection('accueil')" class="active">Accueil</a></li>
-                <li><a href="#" onclick="showSection('catalogue')">Catalogue</a></li>
-                <li><a href="#" onclick="showSection('contact')">Contact</a></li>
+                <li><a href="#" onclick="showSection('accueil')" class="active" id="nav-accueil">Accueil</a></li>
+                <li><a href="#" onclick="showSection('catalogue')" id="nav-catalogue">Catalogue</a></li>
+                <li><a href="#" onclick="showSection('contact')" id="nav-contact">Contact</a></li>
             </ul>
         </nav>
         <div class="utility-icons">
@@ -48,46 +46,38 @@
             </div>
             
             <div class="carousel-container" id="carousel-container">
-                <div class="carousel-track" id="carousel-track">
-                    </div>
+                <div class="carousel-track" id="carousel-track"></div>
                 <button class="carousel-nav-btn" id="prev-btn" onclick="moveCarousel(-1)">❮</button>
                 <button class="carousel-nav-btn" id="next-btn" onclick="moveCarousel(1)">❯</button>
-                <div id="carousel-indicators">
-                </div>
+                <div id="carousel-indicators"></div>
             </div>
 
             <div id="service-modalities" class="info-section">
                 <h3>Nos Modalités de Service</h3>
-                
                 <div class="modality-cards-container">
                     <div class="modality-card">
-                        <span class="card-icon"></span>
                         <h4>Paiement & Caution</h4>
-                        <p>Le règlement de votre location s'effectue par <strong>espèces</strong> ou <strong>virement bancaire instantané</strong>.</p>
-                        <p class="small-note">La caution, du même montant que celle indiquée sur l'estimation, est exigée selon les mêmes modalités et vous sera <strong>intégralement restituée</strong> dès le retour du matériel et après constatation de son bon état.</p>
+                        <p>Le règlement s'effectue par <strong>espèces</strong> ou <strong>virement bancaire instantané</strong>.</p>
+                        <p class="small-note">La caution est exigée selon les mêmes modalités et restituée dès le retour du matériel en bon état.</p>
                     </div>
-                    
                     <div class="modality-card">
-                        <span class="card-icon"></span>
                         <h4>Livraison & Montage</h4>
-                        <p>Pour votre confort, nous proposons un service de <strong>livraison</strong> et de <strong>montage/installation</strong> du matériel directement sur le lieu de votre événement ou chantier.</p>
-                        <p class="small-note">Ces prestations sont <strong>optionnelles</strong> et feront l'objet d'un <strong>surcoût</strong> défini sur devis. Veuillez l'indiquer lors de votre demande de réservation.</p>
+                        <p>Nous proposons un service de <strong>livraison</strong> et de <strong>montage</strong> directement sur votre lieu d'événement.</p>
+                        <p class="small-note">Ces prestations sont optionnelles et sur devis. Indiquez-le lors de votre demande.</p>
                     </div>
-
                     <div class="modality-card">
-                        <span class="card-icon"></span>
                         <h4>Facturation</h4>
                         <p>Une <strong>facture détaillée</strong> peut être émise pour votre location, notamment pour les professionnels.</p>
-                        <p class="small-note">Ce service est disponible <strong>sur simple demande</strong> au moment de la confirmation de votre réservation.</p>
+                        <p class="small-note">Disponible sur simple demande au moment de la confirmation.</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="catalogue-section" class="content-section">
-            <h2>Notre Catalogue de Solutions Événementielles et Outillage</h2>
+            <h2>Notre Catalogue</h2>
             <div id="search-bar">
-                <input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Rechercher un produit ou un mot-clé...">
+                <input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Rechercher un produit...">
             </div>
             <div id="product-list-container">
                 <p id="loading-message">Chargement du catalogue...</p>
@@ -95,117 +85,59 @@
         </div>
 
         <div id="panier-section" class="content-section">
-            <h2>Finaliser votre Demande de Réservation</h2>
-            <div id="cart-items-container">
-            </div>
-            
+            <h2>Finaliser votre Réservation</h2>
+            <div id="cart-items-container"></div>
             <div id="cart-summary">
                 <form id="reservation-form" method="POST" action="https://formsubmit.co/maboitealocangevine@gmail.com">
-                    
                     <div class="form-group">
-                        <label for="delivery-checkbox">
-                            <input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()" name="Demande de Livraison"> Demande de Livraison & Montage (Coût sur devis)
-                            <span id="delivery-info" style="font-style: italic; color: var(--secondary-color);"></span>
-                        </label>
+                        <label><input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()" name="Demande de Livraison"> Livraison & Montage (Sur devis)</label>
+                        <span id="delivery-info" style="font-style: italic; color: var(--secondary-color);"></span>
                     </div>
-
                     <div id="delivery-address-group" class="form-group" style="display: none;">
-                        <label for="delivery-address">Adresse complète pour la livraison :</label>
-                        <textarea id="delivery-address" name="Adresse de livraison" placeholder="Ex: 10 rue des Fleurs, 49140 Angers"></textarea>
+                        <label>Adresse de livraison :</label>
+                        <textarea id="delivery-address" name="Adresse de livraison"></textarea>
                     </div>
-                    
                     <div class="form-group">
-                        <label for="billing-request">
-                            <input type="checkbox" id="billing-request" name="Demande de Facturation"> Facturation demandée
-                        </label>
+                        <label><input type="checkbox" id="billing-request" name="Demande de Facturation"> Facturation demandée</label>
                     </div>
-
-                    <p class="cart-total-line">
-                        <label>Articles dans le panier :</label>
-                        <strong id="cart-total-price">0 article(s)</strong>
-                    </p>
+                    <p class="cart-total-line">Articles : <strong id="cart-total-price">0</strong></p>
+                    <p class="cart-total-line estimate">ESTIMATION LOCATION : <strong id="cart-total-estimate">0,00 € TTC</strong></p>
+                    <p class="cart-total-line caution-summary">TOTAL CAUTIONS : <strong id="cart-total-caution">0,00 € TTC</strong></p>
                     
-                    <p class="cart-total-line estimate">
-                        <label>ESTIMATION DU COÛT TOTAL DE LOCATION (TTC) :</label>
-                        <strong id="cart-total-estimate">0,00 € TTC</strong>
-                    </p>
-                    
-                    <p class="cart-total-line caution-summary">
-                        <label>MONTANT TOTAL DES CAUTIONS (TTC) :</label>
-                        <strong id="cart-total-caution">0,00 € TTC</strong>
-                    </p>
-
-                    <p class="small-text" style="font-size: 0.8rem; color: var(--text-muted); margin-top: -10px;">
-                        <em>Le montant de la caution est une garantie et sera restitué après vérification du matériel.</em>
-                    </p>
-
-                    <h3 style="margin-top: 20px;">Vos Coordonnées</h3>
-
+                    <h3>Vos Coordonnées</h3>
                     <div class="form-group">
-                        <label for="user-email">Votre Email de Contact (Obligatoire) :</label>
-                        <input type="email" id="user-email" name="Email du Client" required placeholder="votre.email@exemple.com">
+                        <label>Votre Email (Obligatoire) :</label>
+                        <input type="email" id="user-email" name="Email du Client" required>
                     </div>
-
                     <div class="form-group">
-                        <label for="reservation-message">Précisions supplémentaires (horaires, conditions...) :</label>
-                        <textarea id="reservation-message" name="Message du Client" placeholder="Ex: Je souhaite une livraison le matin."></textarea>
+                        <label>Précisions supplémentaires :</label>
+                        <textarea id="reservation-message" name="Message du Client"></textarea>
                     </div>
-
                     <input type="hidden" name="_next" value="https://maboitealocangevine.github.io/website/merci.html">
                     <input type="hidden" name="_replyto" id="hidden-replyto">
                     <input type="hidden" name="_cc" id="hidden-cc">
                     <input type="hidden" name="_subject" id="hidden-subject">
-                    <textarea name="Récapitulatif de la Demande" id="email-body-content" style="display: none;"></textarea>
-                
-                    <button type="submit" class="validate-btn primary-action-btn" disabled>Envoyer la demande de Réservation</button>
+                    <textarea name="Récapitulatif" id="email-body-content" style="display: none;"></textarea>
+                    <button type="submit" class="validate-btn primary-action-btn" disabled>Envoyer la demande</button>
                 </form>
             </div>
         </div>
 
         <div id="contact-section" class="content-section">
             <h2>Contact & Localisation</h2>
-            
             <div class="disclaimer-box">
                 <h4>Information Retrait Matériel :</h4>
-                <p>Notre adresse de retrait est réservée aux rendez-vous confirmés. Nous n'avons pas de boutique physique ouverte au public. Veuillez impérativement nous contacter au préalable pour convenir des modalités de retrait ou de livraison.</p>
+                <p>Retrait uniquement sur rendez-vous confirmés. Pas de boutique physique ouverte au public.</p>
             </div>
-            
             <div class="contact-grid">
                 <div class="contact-details">
-                    <p class="contact-item"><strong>Téléphone :</strong> <a href="tel:+33652982348">06 52 98 23 48</a></p>
-                    <p class="contact-item"><strong>Email :</strong> <a href="mailto:maboitealocangevine@gmail.com">maboitealocangevine@gmail.com</a></p>
-                    
-                    <p class="contact-item"><strong>Facturation :</strong> Disponible sur demande.</p>
-                    
-                    <p class="contact-item location-info">
-                        <strong>Adresse de Retrait :</strong><br>
-                        5 impasse les Rochebruyeres<br>
-                        49140 RIVES DU LOIR EN ANJOU
-                    </p>
+                    <p><strong>Téléphone :</strong> 06 52 98 23 48</p>
+                    <p><strong>Email :</strong> maboitealocangevine@gmail.com</p>
+                    <p><strong>Adresse de Retrait :</strong> 5 impasse les Rochebruyeres, 49140 RIVES DU LOIR EN ANJOU</p>
                 </div>
-                
                 <div class="map-container">
-                    <h4 style="margin-top: 0;">Où nous trouver ?</h4>
-                    <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2703.189447190117!2d-0.456637887199464!3d47.530365825316325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48087fc7674e2d27%3A0xf635031b26c2718e!2s5%20Imp.%20les%20Rochebruy%C3%A8res%2C%2049140%20Rives-du-Loir-en-Anjou!5e0!3m2!1sfr!2sfr!4v1702130000000!5m2!1sfr!2sfr" 
-                        width="100%" 
-                        height="300" 
-                        style="border:0;" 
-                        allowfullscreen="" 
-                        loading="lazy" 
-                        referrerpolicy="no-referrer-when-downgrade"
-                        title="Localisation Ma boîte à loc' Angevine à Rives du Loir en Anjou">
-                    </iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2703.189447190117!2d-0.456637887199464!3d47.530365825316325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48087fc7674e2d27%3A0xf635031b26c2718e!2s5%20Imp.%20les%20Rochebruy%C3%A8res%2C%2049140%20Rives-du-Loir-en-Anjou!5e0!3m2!1sfr!2sfr!4v1702130000000!5m2!1sfr!2sfr" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                 </div>
-            </div>
-
-            <div class="social-links">
-                <h3>Suivez-nous :</h3>
-                <p>
-                    <a href="https://www.facebook.com/maboitealocangevine" target="_blank" class="social-btn facebook">Facebook</a>
-                    <a href="https://www.instagram.com/maboitealocangevine" target="_blank" class="social-btn instagram">Instagram</a>
-                    <a href="https://share.google/VGKCCYhKCwpdnQ7Ro" target="_blank" class="social-btn google">Google Maps</a>
-                </p>
             </div>
         </div>
     </main>
@@ -213,39 +145,35 @@
     <div id="product-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modal-title">Nom du Produit</h3>
+                <h3 id="modal-title">Produit</h3>
                 <span class="close-btn" onclick="closeModal()">×</span>
             </div>
             <div class="modal-body">
-                <img id="modal-image" src="" alt="Image Produit">
-                <p id="modal-description">Description détaillée du produit.</p>
-                
-                <p id="modal-price">Prix: <strong id="modal-product-price-value">X € TTC</strong></p>
-                
-                <p id="modal-caution">Caution: <strong id="modal-product-caution-value">X € TTC</strong></p>
-                
-                <p class="max-qty-info" id="modal-max-quantity-info">Max disponible : X</p>
-                
+                <img id="modal-image" src="" alt="Produit">
+                <p id="modal-description"></p>
+                <p id="modal-price">Prix: <strong id="modal-product-price-value"></strong></p>
+                <p id="modal-caution">Caution: <strong id="modal-product-caution-value"></strong></p>
+                <p id="modal-max-quantity-info"></p>
                 <div class="modal-form">
-                    <label for="modal-quantity">Quantité:</label>
-                    <input type="number" id="modal-quantity" value="1" min="1" max="10">
-                    <label for="modal-start-date">Date de début:</label>
+                    <label>Quantité:</label>
+                    <input type="number" id="modal-quantity" value="1" min="1">
+                    <label>Début:</label>
                     <input type="date" id="modal-start-date">
-                    <label for="modal-end-date">Date de fin:</label>
+                    <label>Fin:</label>
                     <input type="date" id="modal-end-date">
                 </div>
-                
-                <button id="modal-add-to-cart" onclick="addToCartFromModal()">Ajouter à la Demande de Réservation</button>
+                <button id="modal-add-to-cart" onclick="addToCartFromModal()">Ajouter à la réservation</button>
             </div>
         </div>
     </div>
 
     <div id="toast-notification"></div>
+    <footer><p>© 2025 Ma boîte à loc' Angevine.</p></footer>
 
-    <footer>
-        <p>© 2025 Ma boîte à loc' Angevine. Tous droits réservés.</p>
-    </footer>
-
-    <script src="script.js"></script>
+    <!-- Fichiers JS découpés -->
+    <script src="app-ui.js"></script>
+    <script src="app-catalog.js"></script>
+    <script src="app-cart.js"></script>
+    <script src="app-main.js"></script>
 </body>
 </html>
