@@ -1,5 +1,4 @@
-window.allProductsData = []; // Variable globale accessible par app-ui.js
-const CATEGORIES = { 'all': 'Tous les produits', 'evenementiel': 'Événementiel', 'outillage': 'Outillage' };
+window.allProductsData = []; 
 
 function normalizeText(text) {
     if (!text) return "";
@@ -47,38 +46,39 @@ async function loadProductsFromCSVFile() {
         renderCategoryButtons();
         renderProductList(window.allProductsData);
         if (document.getElementById('loading-message')) document.getElementById('loading-message').style.display = 'none';
+        
         const carImgs = window.allProductsData.filter(p => p.carrousel?.toLowerCase().trim() === 'oui').map(p => p.image_url);
-        if (typeof initCarouselUI === "function") initCarouselUI(carImgs);
-    } catch (e) { console.error("Erreur chargement catalogue:", e); }
+        if (window.initCarouselUI) window.initCarouselUI(carImgs);
+    } catch (e) { console.error("Erreur catalogue:", e); }
 }
 
 function renderProductList(products) {
     const container = document.getElementById('product-list-container');
     if (!container) return;
-    container.innerHTML = products.length ? '' : '<div class="empty-state">Aucun produit trouvé pour cette recherche.</div>';
+    container.innerHTML = products.length ? '' : '<div class="empty-state">Aucun produit trouvé.</div>';
     
     products.forEach(p => {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
-            <div class="product-image-wrapper" onclick="openModal(${p.id})">
-                <img src="${p.image_url || 'images/placeholder.jpg'}" alt="${p.name}" loading="lazy">
+            <div class="product-image-wrapper" onclick="window.openModal(${p.id})">
+                <img src="${p.image_url || 'images/placeholder.jpg'}" alt="${p.name}">
                 <div class="image-overlay"><span>Voir détails</span></div>
             </div>
             <div class="product-card-body">
-                <h4 onclick="openModal(${p.id})">${p.name}</h4>
+                <h4 onclick="window.openModal(${p.id})">${p.name}</h4>
                 <p class="product-price">${p.price}</p>
-                <button class="primary-action-btn card-btn" onclick="openModal(${p.id})">Détails & Réservation</button>
+                <button class="primary-action-btn card-btn" onclick="window.openModal(${p.id})">Détails & Réservation</button>
             </div>`;
         container.appendChild(card);
     });
 }
 
-function searchProducts() {
+window.searchProducts = function() {
     const term = normalizeText(document.getElementById('product-search').value);
     const filtered = window.allProductsData.filter(p => normalizeText(p.name).includes(term) || normalizeText(p.description).includes(term));
     renderProductList(filtered);
-}
+};
 
 function renderCategoryButtons() {
     const nav = document.getElementById('catalogue-nav');
