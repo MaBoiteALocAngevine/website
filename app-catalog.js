@@ -1,25 +1,9 @@
-let allProductsData = [];
+window.allProductsData = []; // Variable globale accessible par app-ui.js
 const CATEGORIES = { 'all': 'Tous les produits', 'evenementiel': 'Événementiel', 'outillage': 'Outillage' };
 
 function normalizeText(text) {
     if (!text) return "";
     return text.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
-
-function levenshteinDistance(a, b) {
-    const tmp = [];
-    for (let i = 0; i <= a.length; i++) tmp[i] = [i];
-    for (let j = 0; j <= b.length; j++) tmp[0][j] = j;
-    for (let i = 1; i <= a.length; i++) {
-        for (let j = 1; j <= b.length; j++) {
-            tmp[i][j] = Math.min(
-                tmp[i - 1][j] + 1,
-                tmp[i][j - 1] + 1,
-                tmp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
-            );
-        }
-    }
-    return tmp[a.length][b.length];
 }
 
 function parseCSVLine(line) {
@@ -59,30 +43,32 @@ async function loadProductsFromCSVFile() {
                 products.push(p);
             }
         }
-        allProductsData = products;
+        window.allProductsData = products;
         renderCategoryButtons();
-        renderProductList(allProductsData);
+        renderProductList(window.allProductsData);
         if (document.getElementById('loading-message')) document.getElementById('loading-message').style.display = 'none';
-        const carImgs = allProductsData.filter(p => p.carrousel?.toLowerCase().trim() === 'oui').map(p => p.image_url);
+        const carImgs = window.allProductsData.filter(p => p.carrousel?.toLowerCase().trim() === 'oui').map(p => p.image_url);
         if (typeof initCarouselUI === "function") initCarouselUI(carImgs);
-    } catch (e) { console.error(e); }
+    } catch (e) { console.error("Erreur chargement catalogue:", e); }
 }
 
 function renderProductList(products) {
     const container = document.getElementById('product-list-container');
     if (!container) return;
-    container.innerHTML = products.length ? '' : '<p>Aucun produit trouvé.</p>';
+    container.innerHTML = products.length ? '' : '<div class="empty-state">Aucun produit trouvé pour cette recherche.</div>';
     
     products.forEach(p => {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
-            <img src="${p.image_url || 'images/placeholder.jpg'}" alt="${p.name}" onclick="openModal(${p.id})">
+            <div class="product-image-wrapper" onclick="openModal(${p.id})">
+                <img src="${p.image_url || 'images/placeholder.jpg'}" alt="${p.name}" loading="lazy">
+                <div class="image-overlay"><span>Voir détails</span></div>
+            </div>
             <div class="product-card-body">
                 <h4 onclick="openModal(${p.id})">${p.name}</h4>
-                <p class="description-snippet">${p.description ? p.description.substring(0, 80) : ''}...</p>
-                <p class="product-price">${p.price} <span style="font-size:0.8em">TTC</span></p>
-                <button class="primary-action-btn" onclick="openModal(${p.id})">Détails & Réservation</button>
+                <p class="product-price">${p.price}</p>
+                <button class="primary-action-btn card-btn" onclick="openModal(${p.id})">Détails & Réservation</button>
             </div>`;
         container.appendChild(card);
     });
@@ -90,21 +76,7 @@ function renderProductList(products) {
 
 function searchProducts() {
     const term = normalizeText(document.getElementById('product-search').value);
-    if (term.length < 2) { 
-        renderProductList(allProductsData);
-        return;
-    }
-    const filtered = allProductsData.filter(p => {
-        const name = normalizeText(p.name);
-        const desc = normalizeText(p.description);
-        if (name.includes(term) || desc.includes(term)) return true;
-        const words = name.split(' ');
-        return words.some(word => {
-            if (word.length < 3) return false;
-            const maxErrors = word.length > 5 ? 2 : 1;
-            return levenshteinDistance(word, term) <= maxErrors;
-        });
-    });
+    const filtered = window.allProductsData.filter(p => normalizeText(p.name).includes(term) || normalizeText(p.description).includes(term));
     renderProductList(filtered);
 }
 
@@ -118,7 +90,7 @@ function renderCategoryButtons() {
         btn.onclick = () => {
             document.querySelectorAll('.cat-nav button').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            renderProductList(key === 'all' ? allProductsData : allProductsData.filter(p => p.category === key));
+            renderProductList(key === 'all' ? window.allProductsData : window.allProductsData.filter(p => p.category === key));
         };
         if (key === 'all') btn.classList.add('active');
         nav.appendChild(btn);

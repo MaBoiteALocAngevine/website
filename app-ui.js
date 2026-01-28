@@ -15,7 +15,12 @@ function showToast(message) {
 // --- GESTION DE LA MODALE PRODUIT ---
 function openModal(productId) { 
     const modal = document.getElementById('product-modal');
-    if (typeof allProductsData === 'undefined' || !allProductsData) return;
+    
+    // On récupère les données depuis le fichier catalogue (allProductsData est global)
+    if (typeof allProductsData === 'undefined' || !allProductsData) {
+        console.error("Données du catalogue non chargées.");
+        return;
+    }
 
     const product = allProductsData.find(p => p.id == productId);
     if (product) {
@@ -33,14 +38,22 @@ function openModal(productId) {
         document.getElementById('modal-start-date').value = '';
         document.getElementById('modal-end-date').value = '';
         modal.style.display = "flex";
+        document.body.style.overflow = 'hidden'; // Empêche le scroll derrière
     }
 }
 
 function closeModal() {
     const modal = document.getElementById('product-modal');
     if (modal) modal.style.display = "none";
+    document.body.style.overflow = 'auto';
     selectedProductForModal = null;
 }
+
+// Fermeture au clic à l'extérieur
+window.onclick = function(event) {
+    const modal = document.getElementById('product-modal');
+    if (event.target == modal) closeModal();
+};
 
 // --- CARROUSEL ---
 function initCarouselUI(images) {
@@ -53,7 +66,7 @@ function initCarouselUI(images) {
     images.forEach((imgSrc, index) => {
         const slide = document.createElement('div');
         slide.className = 'carousel-slide';
-        slide.innerHTML = `<img src="${imgSrc}" alt="Slide ${index + 1}">`;
+        slide.innerHTML = `<img src="${imgSrc}" alt="Aperçu ${index + 1}">`;
         track.appendChild(slide);
         const indicator = document.createElement('span');
         indicator.onclick = () => showSlide(index, images.length);
@@ -65,7 +78,7 @@ function initCarouselUI(images) {
     carouselInterval = setInterval(() => {
         const total = document.querySelectorAll('.carousel-slide').length;
         if (total > 0) showSlide(slideIndex + 1, total);
-    }, 4000);
+    }, 5000);
 }
 
 function showSlide(index, total) {
