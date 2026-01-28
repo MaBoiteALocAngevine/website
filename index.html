@@ -64,7 +64,6 @@
     <main>
         <nav class="cat-nav" id="catalogue-nav" style="display: none;"></nav>
 
-        <!-- SECTION ACCUEIL -->
         <div id="accueil-section" class="content-section">
             <div class="hero-content">
                 <h2>Votre Partenaire Confiance pour la Location de Matériel en Maine-et-Loire</h2>
@@ -86,7 +85,7 @@
                 </div>
                 <div class="modality-card">
                     <h4>Livraison & Montage</h4>
-                    <p>Pour votre confort, nous proposons un service de <strong>livraison</strong> directement sur votre lieu de rendez-vous (sur devis).</p>
+                    <p>Service de <strong>livraison</strong> directement sur votre lieu de rendez-vous (sur devis).</p>
                 </div>
                 <div class="modality-card">
                     <h4>Facturation</h4>
@@ -95,7 +94,6 @@
             </div>
         </div>
 
-        <!-- SECTION CATALOGUE -->
         <div id="catalogue-section" class="content-section">
             <h2>Notre Catalogue</h2>
             <div id="search-bar">
@@ -106,7 +104,6 @@
             </div>
         </div>
 
-        <!-- SECTION PANIER -->
         <div id="panier-section" class="content-section">
             <h2>Votre Demande de Réservation</h2>
             <div id="cart-items-container"></div>
@@ -118,4 +115,75 @@
                     <div id="delivery-address-group" class="form-group" style="display: none;">
                         <textarea id="delivery-address" name="Adresse de livraison" placeholder="Adresse complète"></textarea>
                     </div>
-                    <p class=
+                    <p class="cart-total-line">Total estimé : <strong id="cart-total-estimate">0,00 € TTC</strong></p>
+                    <p class="cart-total-line">Total Cautions : <strong id="cart-total-caution">0,00 € TTC</strong></p>
+                    
+                    <div class="form-group">
+                        <label>Votre Email :</label>
+                        <input type="email" id="user-email" name="Email" required placeholder="votre@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Précisions :</label>
+                        <textarea id="reservation-message" name="Message" placeholder="Horaires, accès..."></textarea>
+                    </div>
+
+                    <input type="hidden" name="_next" value="https://maboitealocangevine.github.io/website/merci.html">
+                    <input type="hidden" name="_replyto" id="hidden-replyto">
+                    <input type="hidden" name="_subject" id="hidden-subject">
+                    <textarea name="Récapitulatif" id="email-body-content" style="display: none;"></textarea>
+                    
+                    <button type="submit" class="validate-btn primary-action-btn" disabled>Envoyer la demande</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="contact-section" class="content-section">
+            <h2>Contact & Localisation</h2>
+            <div class="contact-grid">
+                <div class="contact-details">
+                    <p><strong>📞 Téléphone :</strong> <a href="tel:+33652982348">06 52 98 23 48</a></p>
+                    <p><strong>📧 Email :</strong> <a href="mailto:maboitealocangevine@gmail.com">maboitealocangevine@gmail.com</a></p>
+                    <p><strong>📍 Retrait :</strong> 5 imp. les Rochebruyeres, 49140 RIVES-DU-LOIR</p>
+                    
+                    <div class="service-area">
+                        <p><strong>🌍 Zone d'intervention :</strong></p>
+                        <p class="small-text">Rives-du-Loir-en-Anjou, Angers, Seiches-sur-le-Loir, Villevêque, Pellouailles-les-Vignes et communes alentours (49).</p>
+                    </div>
+                </div>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2703.189447190117!2d-0.456637887199464!3d47.530365825316325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48087fc7674e2d27%3A0xf635031b26c2718e!2s5%20Imp.%20les%20Rochebruy%C3%A8res%2C%2049140%20Rives-du-Loir-en-Anjou!5e0!3m2!1sfr!2sfr!4v1702130000000!5m2!1sfr!2sfr" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <a href="https://wa.me/33652982348" class="whatsapp-btn" target="_blank">
+        <span class="whatsapp-icon">💬</span>
+        <span class="whatsapp-text">WhatsApp</span>
+    </a>
+
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">×</span>
+            <h3 id="modal-title"></h3>
+            <div class="modal-body">
+                <img id="modal-image" src="">
+                <p id="modal-description"></p>
+                <div class="modal-form">
+                    <label>Quantité : <input type="number" id="modal-quantity" value="1" min="1"></label>
+                    <label>Début : <input type="date" id="modal-start-date"></label>
+                    <label>Fin : <input type="date" id="modal-end-date"></label>
+                </div>
+                <button onclick="addToCartFromModal()">Ajouter à la réservation</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-notification"></div>
+
+    <script src="app-ui.js"></script>
+    <script src="app-catalog.js"></script>
+    <script src="app-cart.js"></script>
+    <script src="app-main.js"></script>
+</body>
+</html>

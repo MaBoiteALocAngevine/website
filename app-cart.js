@@ -49,7 +49,6 @@ function renderCartSummary() {
         totalCaution += parsePrice(item.product.caution) * item.quantity;
     });
 
-    document.getElementById('cart-total-price').textContent = `${totalQty} article(s)`;
     document.getElementById('cart-total-estimate').textContent = `${totalRent.toFixed(2).replace('.', ',')} € TTC`;
     document.getElementById('cart-total-caution').textContent = `${totalCaution.toFixed(2).replace('.', ',')} € TTC`;
     
@@ -70,12 +69,14 @@ function renderCart() {
         const div = document.createElement('div');
         div.className = 'cart-item';
         div.innerHTML = `
-            <img src="${item.product.image_url}" style="width:80px; height:80px; object-fit:cover; border-radius:5px;">
-            <div class="item-details" style="flex-grow:1; margin-left:15px;">
-                <h4>${item.product.name}</h4>
-                <p>Qté: ${item.quantity} | Total: ${calc.total.toFixed(2)} €</p>
-            </div>
-            <button class="remove-btn" onclick="removeFromCart(${item.id})" style="background:#ff4757; color:white; border:none; padding:5px 10px; border-radius:3px; cursor:pointer;">Supprimer</button>`;
+            <div style="display:flex; align-items:center; margin-bottom:15px; background:white; padding:10px; border-radius:8px; border:1px solid #eee;">
+                <img src="${item.product.image_url}" style="width:60px; height:60px; object-fit:cover; border-radius:5px;">
+                <div style="flex-grow:1; margin-left:15px;">
+                    <h4 style="margin:0">${item.product.name}</h4>
+                    <p style="margin:5px 0; font-size:0.9rem">Qté: ${item.quantity} | Total: ${calc.total.toFixed(2)} €</p>
+                </div>
+                <button onclick="removeFromCart(${item.id})" style="background:#ff4757; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">X</button>
+            </div>`;
         container.appendChild(div);
     });
 }
