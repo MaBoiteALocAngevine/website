@@ -209,36 +209,36 @@
     <!-- BOUTON WHATSAPP FLOTTANT -->
     <a href="https://wa.me/33652982348" class="whatsapp-btn" target="_blank">💬 WhatsApp</a>
 
-    <!-- ========================================== -->
+<!-- ========================================== -->
     <!-- COMPOSANTS : MODALE PRODUIT                -->
     <!-- ========================================== -->
     <div id="product-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="window.closeModal()">×</span>
-            <h3 id="modal-title">Détails du produit</h3>
+            <h3 id="modal-title" style="margin-top:0; padding-right:30px;">Détails du produit</h3>
             <div class="modal-body">
                 <img id="modal-image" src="" alt="Produit">
-                <p id="modal-description"></p>
+                <p id="modal-description" style="font-size: 0.95rem; color: var(--text-muted);"></p>
                 
-                <div style="background: var(--bg); padding: 15px; border-radius: 15px; margin: 20px 0;">
-                    <p style="margin: 0 0 5px 0;">Prix : <strong id="modal-product-price-value" style="color:var(--primary);"></strong></p>
-                    <p style="margin: 0;">Caution : <strong id="modal-product-caution-value"></strong></p>
+                <div style="background: var(--bg); padding: 15px; border-radius: 15px; margin: 20px 0; display: flex; justify-content: space-around; border: 1px solid var(--border);">
+                    <p style="margin:0;">Prix : <strong id="modal-product-price-value" style="color:var(--primary);"></strong></p>
+                    <p style="margin:0;">Caution : <strong id="modal-product-caution-value"></strong></p>
                 </div>
 
                 <div class="modal-form">
                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                         <div>
-                            <label style="display:block; margin-bottom:5px; font-size:0.8rem; font-weight:600;">Quantité</label>
-                            <input type="number" id="modal-quantity" value="1" min="1" style="width:100%; padding:10px; border-radius:8px; border: 1px solid var(--border);">
+                            <label style="display:block; margin-bottom:8px; font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Quantité</label>
+                            <input type="number" id="modal-quantity" value="1" min="1">
                         </div>
                         <div>
-                            <label style="display:block; margin-bottom:5px; font-size:0.8rem; font-weight:600;">Début</label>
-                            <input type="date" id="modal-start-date" style="width:100%; padding:10px; border-radius:8px; border: 1px solid var(--border);">
+                            <label style="display:block; margin-bottom:8px; font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Début</label>
+                            <input type="date" id="modal-start-date">
                         </div>
                     </div>
                     <div style="margin-top:15px;">
-                        <label style="display:block; margin-bottom:5px; font-size:0.8rem; font-weight:600;">Fin de location</label>
-                        <input type="date" id="modal-end-date" style="width:100%; padding:10px; border-radius:8px; border: 1px solid var(--border);">
+                        <label style="display:block; margin-bottom:8px; font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Fin de location</label>
+                        <input type="date" id="modal-end-date">
                     </div>
                 </div>
                 
