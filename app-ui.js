@@ -1,88 +1,49 @@
-// --- NOTIFICATION TOAST ---
-window.showToast = function(message) {
-    const toast = document.getElementById("toast-notification");
-    if (!toast) return;
-    toast.textContent = message;
-    toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 3000);
-};
+window.allProductsData = [];
 
-// --- GESTION DE LA MODALE PRODUIT ---
-window.openModal = function(productId) { 
-    const modal = document.getElementById('product-modal');
-    
-    // On cherche dans la variable globale définie dans app-catalog.js
-    if (!window.allProductsData || window.allProductsData.length === 0) {
-        console.error("Les données ne sont pas prêtes.");
-        return;
-    }
-
-    const product = window.allProductsData.find(p => p.id == productId);
-    if (product) {
-        window.selectedProductForModal = product;
-        document.getElementById('modal-title').textContent = product.name;
-        document.getElementById('modal-image').src = product.image_url; 
-        document.getElementById('modal-description').innerHTML = product.description; 
-        document.getElementById('modal-product-price-value').innerHTML = `${product.price} <span style="font-size: 0.8em; opacity: 0.7;">TTC</span>`;
-        document.getElementById('modal-product-caution-value').innerHTML = `${product.caution} <span style="font-size: 0.8em; opacity: 0.7;">TTC</span>`;
+async function loadProductsFromCSVFile() {
+    try {
+        const response = await fetch('data.csv');
+        const csvData = await response.text();
+        const lines = csvData.split(/\r?\n/);
+        const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
         
-        const qtyInput = document.getElementById('modal-quantity');
-        qtyInput.value = 1;
-        qtyInput.max = product.max_quantity;
-        
-        document.getElementById('modal-start-date').value = '';
-        document.getElementById('modal-end-date').value = '';
-        modal.style.display = "flex";
-        document.body.style.overflow = 'hidden'; 
-    }
-};
+        window.allProductsData = lines.slice(1).filter(l => l.trim()).map(line => {
+            const values = line.match(/(".*?"|[^",\r\n]+)(?=\s*,|\s*$)/g).map(v => v.trim().replace(/^"|"$/g, ''));
+            let p = {};
+            headers.forEach((h, i) => p[h] = values[i]);
+            p.id = parseInt(p.id);
+            return p;
+        }).filter(p => p.publication?.toLowerCase() !== 'non');
 
-window.closeModal = function() {
-    const modal = document.getElementById('product-modal');
-    if (modal) modal.style.display = "none";
-    document.body.style.overflow = 'auto';
-};
+        renderProductList(window.allProductsData);
+        if (window.initCarouselUI) {
+            const imgs = window.allProductsData.filter(p => p.carrousel?.toLowerCase() === 'oui').map(p => p.image_url);
+            window.initCarouselUI(imgs);
+        }
+        document.getElementById('loading-message').style.display = 'none';
+    } catch (e) { console.error(e); }
+}
 
-// --- CARROUSEL ---
-let slideIndex = 0;
-let carouselInterval;
+function renderProductList(products) {
+    const container = document.getElementById('product-list-container');
+    if (!container) return;
+    container.innerHTML = products.map(p => `
+        <div class="product-card">
+            <div class="product-image-wrapper" onclick="window.openModal(${p.id})">
+                <img src="${p.image_url}" loading="lazy">
+                <div class="image-overlay"><span>VOIR DÉTAILS</span></div>
+            </div>
+            <div class="product-card-body">
+                <h4 onclick="window.openModal(${p.id})">${p.name}</h4>
+                <p class="product-price">${p.price}</p>
+                <button class="primary-action-btn card-btn" onclick="window.openModal(${p.id})">Détails & Réservation</button>
+            </div>
+        </div>
+    `).join('');
+}
 
-window.initCarouselUI = function(images) {
-    const track = document.getElementById('carousel-track');
-    const indicators = document.getElementById('carousel-indicators');
-    if (!track || !images || images.length === 0) return;
-
-    track.innerHTML = '';
-    indicators.innerHTML = '';
-    images.forEach((imgSrc, index) => {
-        const slide = document.createElement('div');
-        slide.className = 'carousel-slide';
-        slide.innerHTML = `<img src="${imgSrc}" alt="Aperçu">`;
-        track.appendChild(slide);
-        const indicator = document.createElement('span');
-        indicator.onclick = () => window.showSlide(index, images.length);
-        indicators.appendChild(indicator);
-    });
-    window.showSlide(0, images.length);
-    
-    clearInterval(carouselInterval);
-    carouselInterval = setInterval(() => {
-        const total = document.querySelectorAll('.carousel-slide').length;
-        window.showSlide(slideIndex + 1, total);
-    }, 5000);
-};
-
-window.showSlide = function(index, total) {
-    slideIndex = index;
-    if (slideIndex >= total) slideIndex = 0;
-    if (slideIndex < 0) slideIndex = total - 1;
-    const track = document.getElementById('carousel-track');
-    const indicators = document.querySelectorAll('#carousel-indicators span');
-    if (track) track.style.transform = `translateX(-${slideIndex * 100}%)`;
-    indicators.forEach((ind, i) => ind.classList.toggle('active', i === slideIndex));
-};
-
-window.moveCarousel = function(n) {
-    const total = document.querySelectorAll('.carousel-slide').length;
-    window.showSlide(slideIndex + n, total);
+window.searchProducts = function() {
+    const term = document.getElementById('product-search').value.toLowerCase();
+    const filtered = window.allProductsData.filter(p => p.name.toLowerCase().includes(term) || p.description.toLowerCase().includes(term));
+    renderProductList(filtered);
 };

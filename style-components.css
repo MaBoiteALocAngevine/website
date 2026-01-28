@@ -1,49 +1,42 @@
 /* BOUTONS */
 .primary-action-btn { 
-    background: var(--primary-color); color: white; border: none; 
-    padding: 14px 28px; border-radius: 50px; cursor: pointer; 
+    background: var(--primary); color: white; border: none; 
+    padding: 12px 24px; border-radius: 50px; cursor: pointer; 
     font-family: 'Poppins', sans-serif; font-weight: 600; 
-    font-size: 0.9rem; transition: 0.3s; box-shadow: 0 4px 15px rgba(164, 76, 58, 0.2);
+    font-size: 0.9rem; transition: 0.3s; border: 1px solid var(--primary);
 }
-.primary-action-btn:hover { background: var(--primary-hover); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(164, 76, 58, 0.3); }
-.primary-action-btn:disabled { background: #d1c7c5; cursor: not-allowed; transform: none; box-shadow: none; }
+.primary-action-btn:hover { background: var(--primary-light); transform: translateY(-2px); }
+.primary-action-btn:disabled { background: #ccc; border-color: #ccc; cursor: not-allowed; }
 
-/* CARROUSEL MODERNE */
-.carousel-container { position: relative; overflow: hidden; border-radius: var(--radius); margin: 30px 0; background: #000; height: 450px; box-shadow: var(--shadow-soft); }
-.carousel-track { display: flex; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
+/* CARROUSEL */
+.carousel-container { position: relative; overflow: hidden; border-radius: var(--radius); margin: 30px 0; background: #000; height: 400px; box-shadow: var(--shadow); }
+.carousel-track { display: flex; transition: transform 0.6s ease-in-out; height: 100%; }
 .carousel-slide { min-width: 100%; display: flex; justify-content: center; align-items: center; }
 .carousel-slide img { width: 100%; height: 100%; object-fit: contain; }
 .carousel-nav-btn { 
     position: absolute; top: 50%; transform: translateY(-50%); 
     background: rgba(255,255,255,0.2); color: white; border: none; 
-    width: 45px; height: 45px; border-radius: 50%; cursor: pointer; 
-    backdrop-filter: blur(5px); transition: 0.3s; font-size: 1.2rem;
+    width: 40px; height: 40px; border-radius: 50%; cursor: pointer; backdrop-filter: blur(5px);
 }
-.carousel-nav-btn:hover { background: var(--primary-color); }
-#prev-btn { left: 20px; } #next-btn { right: 20px; }
+#prev-btn { left: 15px; } #next-btn { right: 15px; }
 
-/* MODALE ÉLÉGANTE */
-.modal { display: none; position: fixed; z-index: 3000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(45, 36, 36, 0.8); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px; }
+/* MODALE */
+.modal { display: none; position: fixed; z-index: 3000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); align-items: center; justify-content: center; padding: 20px; }
 .modal-content { 
-    background: var(--card-bg); padding: 40px; border-radius: 20px; 
-    width: 100%; max-width: 600px; position: relative; 
-    box-shadow: var(--shadow-strong); animation: modalSlide 0.4s ease-out;
+    background: var(--surface); padding: 30px; border-radius: var(--radius); 
+    width: 100%; max-width: 550px; position: relative; max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
 }
-@keyframes modalSlide { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-.close-btn { position: absolute; right: 25px; top: 20px; font-size: 2rem; cursor: pointer; color: var(--text-muted); transition: 0.3s; }
-.close-btn:hover { color: var(--primary-color); }
+.close-btn { position: absolute; right: 20px; top: 15px; font-size: 1.8rem; cursor: pointer; color: var(--text-muted); }
 
 /* WHATSAPP */
 .whatsapp-btn { 
-    position: fixed; bottom: 30px; right: 30px; background: #25D366; 
-    color: white; padding: 12px 25px; border-radius: 50px; font-weight: 700; 
-    z-index: 2000; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3); 
-    text-decoration: none; display: flex; align-items: center; gap: 10px; transition: 0.3s;
+    position: fixed; bottom: 25px; right: 25px; background: #25D366; 
+    color: white; padding: 12px 20px; border-radius: 50px; font-weight: 700; 
+    z-index: 2000; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-decoration: none;
 }
-.whatsapp-btn:hover { transform: scale(1.1); background: #20ba5a; }
 
 @media (max-width: 768px) {
-    .carousel-container { height: 280px; }
-    .whatsapp-btn { width: 55px; height: 55px; padding: 0; justify-content: center; border-radius: 50%; font-size: 0; bottom: 20px; right: 20px; }
-    .modal-content { padding: 25px; }
+    .carousel-container { height: 250px; }
+    .whatsapp-btn { padding: 15px; border-radius: 50%; font-size: 0; }
 }
