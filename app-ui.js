@@ -1,6 +1,9 @@
 // --- MODE SOMBRE ---
-function toggleDarkMode() {
-    document.body.classList.toggle("dark-mode");
+function initDarkMode() {
+    const toggle = document.getElementById("dark-mode-toggle");
+    if (toggle) {
+        toggle.onclick = () => document.body.classList.toggle("dark-mode");
+    }
 }
 
 // --- NOTIFICATION TOAST ---
@@ -17,6 +20,7 @@ let selectedProductForModal = null;
 
 function openModal(productId) { 
     const modal = document.getElementById('product-modal');
+    // On cherche dans allProductsData (défini dans app-catalog.js)
     const product = allProductsData.find(p => p.id == productId);
     if (product) {
         selectedProductForModal = product;
@@ -25,8 +29,11 @@ function openModal(productId) {
         document.getElementById('modal-description').innerHTML = product.description; 
         document.getElementById('modal-product-price-value').innerHTML = `${product.price} <span style="font-size: 0.8em; color: var(--text-muted);">TTC</span>`;
         document.getElementById('modal-product-caution-value').innerHTML = `${product.caution} <span style="font-size: 0.8em; color: var(--text-muted);">TTC</span>`;
-        document.getElementById('modal-quantity').value = 1;
-        document.getElementById('modal-quantity').max = product.max_quantity;
+        
+        const qtyInput = document.getElementById('modal-quantity');
+        qtyInput.value = 1;
+        qtyInput.max = product.max_quantity;
+        
         document.getElementById('modal-start-date').value = '';
         document.getElementById('modal-end-date').value = '';
         document.getElementById('modal-max-quantity-info').textContent = `Max disponible : ${product.max_quantity}`;
@@ -43,10 +50,10 @@ function closeModal() {
 let slideIndex = 0;
 let carouselInterval;
 
-function initCarousel(images) {
+function initCarouselUI(images) {
     const track = document.getElementById('carousel-track');
     const indicators = document.getElementById('carousel-indicators');
-    if (!track || images.length === 0) return;
+    if (!track || !images || images.length === 0) return;
 
     track.innerHTML = '';
     indicators.innerHTML = '';
@@ -60,6 +67,13 @@ function initCarousel(images) {
         indicators.appendChild(indicator);
     });
     showSlide(0, images.length);
+    
+    // Auto-scroll
+    clearInterval(carouselInterval);
+    carouselInterval = setInterval(() => {
+        const total = document.querySelectorAll('.carousel-slide').length;
+        showSlide(slideIndex + 1, total);
+    }, 4000);
 }
 
 function showSlide(index, total) {
@@ -70,4 +84,9 @@ function showSlide(index, total) {
     const indicators = document.querySelectorAll('#carousel-indicators span');
     if (track) track.style.transform = `translateX(-${slideIndex * 100}%)`;
     indicators.forEach((ind, i) => ind.classList.toggle('active', i === slideIndex));
+}
+
+function moveCarousel(n) {
+    const total = document.querySelectorAll('.carousel-slide').length;
+    showSlide(slideIndex + n, total);
 }

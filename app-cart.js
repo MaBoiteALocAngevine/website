@@ -1,26 +1,25 @@
 let panier = [];
 const BUSINESS_EMAIL = "maboitealocangevine@gmail.com";
 
-function parsePrice(priceString) {
-    if (!priceString) return 0;
-    const match = priceString.replace(/\s/g, '').match(/(\d+([,\.]\d+)?)/);
+function parsePrice(str) {
+    if (!str) return 0;
+    const match = str.replace(/\s/g, '').match(/(\d+([,\.]\d+)?)/);
     return match ? parseFloat(match[0].replace(',', '.')) : 0;
 }
 
 function calculateItemPrice(item) {
-    const priceValue = parsePrice(item.product.price);
+    const val = parsePrice(item.product.price);
     const isDaily = item.product.price.toLowerCase().includes('jour');
-    let multiplier = 1;
-
+    let mult = 1;
     if (isDaily && item.startDate && item.endDate) {
-        const diffTime = Math.abs(new Date(item.endDate) - new Date(item.startDate));
-        multiplier = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        const diff = Math.abs(new Date(item.endDate) - new Date(item.startDate));
+        mult = Math.ceil(diff / (1000 * 60 * 60 * 24)) + 1;
     }
-    return { total: priceValue * multiplier * item.quantity, multiplier, isDaily };
+    return { total: val * mult * item.quantity, multiplier: mult, isDaily };
 }
 
 function addToCartFromModal() {
-    const qty = parseInt(document.getElementById('modal-quantity').value);
+    const qty = parseInt(document.getElementById('modal-quantity').value) || 1;
     const start = document.getElementById('modal-start-date').value;
     const end = document.getElementById('modal-end-date').value;
 
@@ -36,7 +35,8 @@ function addToCartFromModal() {
 }
 
 function updateCartUI() {
-    document.getElementById('cart-count').textContent = panier.length;
+    const count = document.getElementById('cart-count');
+    if (count) count.textContent = panier.length;
     renderCartSummary();
 }
 
@@ -53,7 +53,62 @@ function renderCartSummary() {
     document.getElementById('cart-total-estimate').textContent = `${totalRent.toFixed(2).replace('.', ',')} € TTC`;
     document.getElementById('cart-total-caution').textContent = `${totalCaution.toFixed(2).replace('.', ',')} € TTC`;
     
-    document.querySelector('#reservation-form .validate-btn').disabled = (panier.length === 0 || !document.getElementById('user-email').value.includes('@'));
+    const validateBtn = document.querySelector('#reservation-form .validate-btn');
+    if (validateBtn) {
+        const email = document.getElementById('user-email').value;
+        validateBtn.disabled = (panier.length === 0 || !email.includes('@'));
+    }
 }
 
-// Ajoutez ici vos fonctions removeFromCart, updateCartQuantity et handleSubmitReservation (le code est identique à votre script.js initial)
+function renderCart() {
+    const container = document.getElementById('cart-items-container');
+    if (!container) return;
+    container.innerHTML = panier.length ? '' : '<p>Votre panier est vide.</p>';
+    
+    panier.forEach(item => {
+        const calc = calculateItemPrice(item);
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+            <img src="${item.product.image_url}" style="width:80px; height:80px; object-fit:cover; border-radius:5px;">
+            <div class="item-details" style="flex-grow:1; margin-left:15px;">
+                <h4>${item.product.name}</h4>
+                <p>Qté: ${item.quantity} | Total: ${calc.total.toFixed(2)} €</p>
+            </div>
+            <button class="remove-btn" onclick="removeFromCart(${item.id})" style="background:#ff4757; color:white; border:none; padding:5px 10px; border-radius:3px; cursor:pointer;">Supprimer</button>`;
+        container.appendChild(div);
+    });
+}
+
+function removeFromCart(id) {
+    panier = panier.filter(i => i.id !== id);
+    renderCart();
+    updateCartUI();
+}
+
+function handleDeliveryChange() {
+    const check = document.getElementById('delivery-checkbox').checked;
+    const addr = document.getElementById('delivery-address-group');
+    if (addr) addr.style.display = check ? 'block' : 'none';
+}
+
+function handleSubmitReservation(e) {
+    e.preventDefault();
+    const email = document.getElementById('user-email').value;
+    const message = document.getElementById('reservation-message').value;
+    const delivery = document.getElementById('delivery-checkbox').checked;
+    const address = delivery ? document.getElementById('delivery-address').value : 'N/A';
+    
+    let body = "RECAPITULATIF DE LA DEMANDE :\n";
+    panier.forEach(i => {
+        const c = calculateItemPrice(i);
+        body += `- ${i.product.name} (x${i.quantity}) | Période: ${i.startDate || 'N/A'} au ${i.endDate || 'N/A'} | Est: ${c.total.toFixed(2)}€\n`;
+    });
+    
+    body += `\nEmail client: ${email}\nLivraison: ${delivery ? 'OUI' : 'NON'}\nAdresse: ${address}\nMessage: ${message}`;
+
+    document.getElementById('hidden-replyto').value = email;
+    document.getElementById('hidden-subject').value = `Nouvelle demande de réservation - ${email}`;
+    document.getElementById('email-body-content').value = body;
+    e.target.submit();
+}
