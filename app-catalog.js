@@ -6,7 +6,6 @@ function normalizeText(text) {
     return text.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-// Calcule la distance entre deux mots (Fuzzy Search)
 function levenshteinDistance(a, b) {
     const tmp = [];
     for (let i = 0; i <= a.length; i++) tmp[i] = [i];
@@ -15,7 +14,7 @@ function levenshteinDistance(a, b) {
         for (let j = 1; j <= b.length; j++) {
             tmp[i][j] = Math.min(
                 tmp[i - 1][j] + 1,
-                tmp[i][j - 1] + 1,
+                tmp[i][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1),
                 tmp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
             );
         }
@@ -65,7 +64,7 @@ async function loadProductsFromCSVFile() {
         renderProductList(allProductsData);
         if (document.getElementById('loading-message')) document.getElementById('loading-message').style.display = 'none';
         const carImgs = allProductsData.filter(p => p.carrousel?.toLowerCase().trim() === 'oui').map(p => p.image_url);
-        initCarouselUI(carImgs);
+        if (typeof initCarouselUI === "function") initCarouselUI(carImgs);
     } catch (e) { console.error(e); }
 }
 
@@ -73,16 +72,17 @@ function renderProductList(products) {
     const container = document.getElementById('product-list-container');
     if (!container) return;
     container.innerHTML = products.length ? '' : '<p>Aucun produit trouvé.</p>';
+    
     products.forEach(p => {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
-            <img src="${p.image_url || 'images/placeholder.jpg'}" alt="${p.name}">
+            <img src="${p.image_url || 'images/placeholder.jpg'}" alt="${p.name}" onclick="openModal(${p.id})" style="cursor: pointer;">
             <div class="product-card-body">
-                <h4>${p.name}</h4>
+                <h4 onclick="openModal(${p.id})" style="cursor: pointer;">${p.name}</h4>
                 <p class="description-snippet">${p.description ? p.description.substring(0, 80) : ''}...</p>
                 <p class="product-price">${p.price} <span style="font-size:0.8em">TTC</span></p>
-                <button onclick="openModal(${p.id})">Détails et Location</button>
+                <button class="primary-action-btn" onclick="openModal(${p.id})">Détails & Réservation</button>
             </div>`;
         container.appendChild(card);
     });
@@ -90,28 +90,21 @@ function renderProductList(products) {
 
 function searchProducts() {
     const term = normalizeText(document.getElementById('product-search').value);
-    if (term.length < 2) { // Si moins de 2 lettres, on affiche tout
+    if (term.length < 2) { 
         renderProductList(allProductsData);
         return;
     }
-
     const filtered = allProductsData.filter(p => {
         const name = normalizeText(p.name);
         const desc = normalizeText(p.description);
-        
-        // 1. Test classique (contient le mot)
         if (name.includes(term) || desc.includes(term)) return true;
-
-        // 2. Test Fuzzy (mot à mot pour être précis)
         const words = name.split(' ');
         return words.some(word => {
             if (word.length < 3) return false;
-            // On autorise 1 erreur si le mot est court, 2 si le mot est long
             const maxErrors = word.length > 5 ? 2 : 1;
             return levenshteinDistance(word, term) <= maxErrors;
         });
     });
-    
     renderProductList(filtered);
 }
 
