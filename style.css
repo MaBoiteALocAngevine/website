@@ -1,89 +1,47 @@
-﻿/* --- GÉNÉRAL --- */
+﻿/* --- VARIABLES ET THÈME --- */
 :root {
-    /* Couleurs chaleureuses (Terra Cotta) */
-    --primary-color: #a44c3a;   /* Terra Cotta / Rouge Brique Doux */
-    --secondary-color: #f7a76c; /* Orange Doux / Abricot, pour l'accent */
-    --background-light: #fcf7f4;/* Crème très clair/beige chaleureux */
-    --background-dark: #3a2e2e; /* Brun foncé */
+    --primary-color: #a44c3a;   
+    --secondary-color: #f7a76c; 
+    --background-light: #fcf7f4;
     --text-dark: #4a3a3a;
-    --text-light: #fcf7f4;
     --text-muted: #887a7a;
     --card-bg: #fff;
     --border-color: #e6dede;
     --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08); 
     --shadow-hover: 0 8px 16px rgba(0, 0, 0, 0.12);
-    --carousel-background: #eae4e0; /* Couleur de fond harmonieuse pour les barres du carrousel */
 }
 
-/* Mode sombre */
-body.dark-mode {
-    background-color: var(--background-dark);
-    color: var(--text-light);
-}
-body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4 {
-    color: var(--secondary-color);
-}
-body.dark-mode header {
-    background-color: #4a3a3a; 
-    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
-}
-body.dark-mode .logo-brand h1 {
-    color: var(--text-light);
-}
-body.dark-mode .product-card, 
-body.dark-mode .modal-content,
-body.dark-mode .modality-card,
-body.dark-mode .contact-details,
-body.dark-mode .map-container {
-    background-color: #4a3a3a;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); 
-    border: 1px solid #5d4d4d;
-}
-body.dark-mode .disclaimer-box {
-    background-color: #4a3a3a;
-    border-color: var(--secondary-color);
-    border-left: 5px solid var(--secondary-color);
-    color: var(--text-light);
-}
-body.dark-mode .disclaimer-box h4 {
-    color: var(--secondary-color);
+/* --- DARK MODE AUTOMATIQUE (Paramètres Navigateur) --- */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-light: #2d2424; /* Fond sombre */
+        --text-dark: #fcf7f4;        /* Texte clair */
+        --card-bg: #3a2e2e;          /* Cartes sombres */
+        --border-color: #4a3a3a;
+    }
+    body { background-color: var(--background-light); color: var(--text-dark); }
+    header { background-color: #3a2e2e !important; box-shadow: 0 2px 4px rgba(0,0,0,0.5) !important; }
+    .product-card, .modal-content, .modality-card, .contact-details {
+        background-color: #3a2e2e !important;
+        border: 1px solid #4a3a3a !important;
+    }
 }
 
-/* Styles de base */
+/* --- GÉNÉRAL --- */
 body {
     font-family: 'Lora', serif; 
     margin: 0;
-    padding-top: 60px; 
+    padding-top: 80px; /* Espace pour le header fixe */
     background-color: var(--background-light);
     color: var(--text-dark);
-    transition: background-color 0.3s, color 0.3s;
     line-height: 1.6;
 }
 
-main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
+main { max-width: 1200px; margin: 0 auto; padding: 20px; }
+h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: var(--primary-color); }
+a { color: var(--primary-color); text-decoration: none; }
 
-h1, h2, h3, h4 {
-    font-family: 'Poppins', sans-serif; 
-    color: var(--primary-color);
-    line-height: 1.2;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-
-a {
-    color: var(--primary-color);
-    text-decoration: none;
-    transition: color 0.3s;
-}
-a:hover {
-    color: var(--secondary-color);
-}
-
-/* --- HEADER ET NAVIGATION FIXES --- */
+/* --- HEADER FIXE --- */
 header {
     display: flex;
     justify-content: space-between;
@@ -92,577 +50,68 @@ header {
     background-color: var(--card-bg);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: fixed;
-    top: 0;
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 1000;
+    top: 0; width: 100%; box-sizing: border-box; z-index: 1000;
 }
-.logo-brand {
-    display: flex;
-    align-items: center;
-}
-.logo-icon {
-    display: none; /* EMOJI REMOVED */
-}
-.logo-brand h1 {
-    font-size: 1.4rem;
-    margin: 0;
-    color: var(--text-dark);
-}
-.main-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex; 
-}
-.main-nav li {
-    margin: 0 15px;
-}
-.main-nav a {
-    display: block;
-    padding: 18px 0;
-    font-weight: 500;
-    transition: all 0.2s ease-in-out;
-}
-.main-nav a:hover {
-    color: var(--secondary-color);
-}
-.main-nav a.active {
-    color: var(--secondary-color);
-    border-bottom: 3px solid var(--secondary-color);
-    font-weight: 600;
-}
+.logo-brand h1 { font-size: 1.4rem; margin: 0; }
+.main-nav ul { list-style: none; padding: 0; margin: 0; display: flex; }
+.main-nav li { margin: 0 15px; }
+.main-nav a { display: block; padding: 20px 0; font-weight: 500; border-bottom: 3px solid transparent; }
+.main-nav a.active { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); font-weight: 700; }
 
-.utility-icons {
-    display: flex;
-    align-items: center;
-}
-#dark-mode-toggle {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    margin-right: 15px;
-    padding: 5px;
-    color: var(--text-dark);
-}
-body.dark-mode #dark-mode-toggle {
-    color: var(--text-light);
-}
 #cart-link {
-    font-weight: 600;
-    color: var(--primary-color);
-    padding: 5px 10px;
-    border: 1px solid var(--primary-color);
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-#cart-link:hover {
-    background-color: var(--primary-color);
-    color: var(--text-light);
-}
-body.dark-mode #cart-link {
-    color: var(--secondary-color);
-    border-color: var(--secondary-color);
+    font-weight: 600; padding: 5px 12px; border: 1px solid var(--primary-color); border-radius: 5px;
 }
 
-
-/* --- BOUTONS D'ACTION --- */
-.validate-btn, .primary-action-btn, .product-card button, #modal-add-to-cart {
-    background-color: var(--primary-color);
-    color: var(--text-light);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px; 
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: var(--shadow-light);
-}
-.validate-btn:hover, .primary-action-btn:hover, .product-card button:hover, #modal-add-to-cart:hover {
-    background-color: #c46452; 
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-hover);
-}
-.validate-btn:disabled, .primary-action-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
-}
-.product-card button, #modal-add-to-cart {
-    width: 100%;
-    padding: 10px 15px;
-    font-size: 0.95rem;
-    text-transform: none; 
-}
-
-
-/* --- SECTION GÉNÉRALE DU CONTENU --- */
-.content-section {
-    display: none;
-    padding-top: 20px;
-    animation: fadeIn 0.5s ease-out;
-}
-.content-section.active {
-    display: block;
-}
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* --- ACCUEIL & CAROUSEL --- */
-.hero-content {
-    text-align: center;
-    padding: 40px 20px;
-    background: linear-gradient(135deg, var(--background-light) 0%, #f4eee9 100%);
-    border-radius: 10px;
-    margin-bottom: 30px;
-    box-shadow: var(--shadow-light);
-}
-
-.carousel-container {
-    position: relative;
-    overflow: hidden;
-    margin: 30px 0;
-    border-radius: 10px;
-    box-shadow: var(--shadow-light);
-}
-.carousel-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-}
-.carousel-slide {
-    min-width: 100%;
-    flex-shrink: 0; 
-    box-sizing: border-box;
-    background-color: var(--carousel-background); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.carousel-slide img {
-    width: auto; 
-    max-width: 100%;
-    height: 400px;
-    object-fit: contain; 
-    display: block;
-}
-
-/* FIX: Flèches du Carrousel de chaque côté */
-.carousel-nav-btn {
-    position: absolute;
-    top: 50%; 
-    transform: translateY(-50%);
-    background: rgba(164, 76, 58, 0.7); 
-    color: white;
-    border: none;
-    padding: 15px 10px;
-    cursor: pointer;
-    z-index: 10;
-    font-size: 1.2rem;
-    transition: background 0.3s;
-    width: 40px; 
-    height: 60px;
-}
-.carousel-nav-btn:hover {
-    background: rgba(164, 76, 58, 1);
-}
-#prev-btn { 
-    left: 0; 
-    border-radius: 0 5px 5px 0; 
-}
-#next-btn { 
-    right: 0; 
-    border-radius: 5px 0 0 5px; 
-}
-
-/* --- Cartes de Modalités (3 rect. côte à côte) --- */
-.modality-cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-    gap: 20px;
-    margin-top: 20px;
-}
-.modality-card {
-    background-color: var(--card-bg);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: var(--shadow-light);
-    border-left: 5px solid var(--primary-color);
-}
-.modality-card h4 {
-    margin-top: 0;
-    color: var(--secondary-color);
-    display: flex;
-    align-items: center;
-}
-/* Style pour remplacer l'emoji par un point coloré professionnel */
-.modality-card h4::before {
-    content: ''; 
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: var(--primary-color);
-    margin-right: 10px;
-    flex-shrink: 0;
-}
-.card-icon {
-    display: none; 
-}
-
-
-/* --- CATALOGUE & CATEGORIES --- */
-.cat-nav {
-    display: flex;
-    justify-content: center;
-    gap: 0px; 
-    margin-bottom: 20px;
-    border-bottom: 2px solid var(--border-color); 
-    background-color: #f0ebeb; 
-    border-radius: 5px;
-    overflow: hidden;
-}
-.cat-nav button {
-    background-color: transparent; 
-    color: var(--text-dark);
-    border: none;
-    border-radius: 0; 
-    padding: 10px 20px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s;
-    border-bottom: 3px solid transparent; 
-    box-shadow: none; 
-    text-transform: capitalize;
-    margin: 0;
-}
-
-.cat-nav button:hover {
-    color: var(--primary-color);
-    background-color: var(--background-light);
-    transform: none;
-}
-
-.cat-nav button.active {
-    background-color: var(--background-light); 
-    color: var(--primary-color);
-    border-bottom: 3px solid var(--primary-color); 
-    font-weight: 700;
-    transform: none;
-}
-
-/* FIX: Champ de recherche esthétique */
-#search-bar {
-    margin: 20px auto;
-    max-width: 600px;
-    text-align: center;
-}
-#product-search {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid var(--border-color);
-    border-radius: 25px; 
-    font-size: 1rem;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
-    transition: border-color 0.3s, box-shadow 0.3s;
-    box-sizing: border-box;
-}
-#product-search:focus {
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 5px rgba(247, 167, 108, 0.5);
-    outline: none;
-}
-
-/* --- PRODUITS --- */
-#product-list-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 30px;
-    padding: 20px 0;
-}
-
-.product-card {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: var(--shadow-light);
-    transition: transform 0.3s, box-shadow 0.3s;
-    display: flex; 
-    flex-direction: column;
-}
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-hover);
-}
-.product-card img {
-    height: 200px;
-    object-fit: cover;
-    width: 100%;
-}
-.product-card-body {
-    padding: 15px;
-    flex-grow: 1; 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-/* FIX: Uniformise la hauteur de l'extrait de description pour aligner les boutons */
-.description-snippet {
-    min-height: 4.5em; /* Environ 3 lignes de texte */
-    max-height: 4.5em;
-    overflow: hidden; 
-    margin-bottom: 15px;
-    color: var(--text-muted);
-}
-
-
-/* --- MODALE (Correction du problème de fluidité et de proportion) --- */
-.modal {
-    display: none; 
-    position: fixed; 
-    z-index: 2000; 
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto; /* Permet le défilement si le contenu dépasse */
-    background-color: rgba(0, 0, 0, 0.6); 
-    align-items: center;
-    justify-content: center;
-    padding: 10px; /* Ajout d'un padding pour éviter que la modale ne touche les bords */
-    box-sizing: border-box;
-}
-.modal-content {
-    background-color: var(--card-bg);
-    /* Modification: Réduction de la marge et ajout de max-height/overflow */
-    margin: 30px auto; 
-    padding: 30px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 550px; 
-    max-height: 90vh; /* La modale ne prendra pas plus de 90% de la hauteur de l'écran */
-    overflow-y: auto; /* Permet de scroller le contenu si max-height est atteinte */
-    box-shadow: var(--shadow-hover);
-    animation: slideIn 0.3s ease-out;
-}
-.modal-body img {
-    max-width: 100%; 
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    object-fit: cover;
-}
-
-/* --- AMÉLIORATION DES CHAMPS DE SAISIE DE LA MODALE --- */
-.modal-form {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    display: grid;
-    /* Aligne les labels et les inputs sur une grille simple */
-    grid-template-columns: 1fr; 
-    gap: 10px;
-}
-
-.modal-form label {
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-top: 5px;
-    display: block; /* S'assure que le label prend toute la ligne */
-}
-
-.modal-form input[type="number"],
-.modal-form input[type="date"] {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px; 
-    font-size: 1rem;
-    box-sizing: border-box; 
-    transition: border-color 0.3s, box-shadow 0.3s;
-    background-color: var(--background-light); 
-    color: var(--text-dark);
-}
-
-.modal-form input[type="number"]:focus,
-.modal-form input[type="date"]:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 5px rgba(164, 76, 58, 0.3);
-    outline: none;
-}
-/* Mode sombre pour les inputs */
-body.dark-mode .modal-form input[type="number"],
-body.dark-mode .modal-form input[type="date"] {
-    background-color: #5a4b4b; 
-    color: var(--text-light);
-    border-color: #6a5c5c;
-}
-body.dark-mode .modal-form label {
-    color: var(--secondary-color);
-}
-/* --- FIN AMÉLIORATION CHAMPS SAISIE MODALE --- */
-
-
-/* --- CONTACT --- */
-.disclaimer-box {
-    margin-bottom: 30px; 
-    background-color: #ffe0b2; 
-    border: 1px solid var(--secondary-color);
-    border-left: 5px solid var(--secondary-color);
-    padding: 15px;
-    border-radius: 8px;
-    color: var(--text-dark);
-}
-.disclaimer-box h4 {
-    margin-bottom: 5px;
-    color: var(--primary-color);
-    display: flex;
-    align-items: center;
-}
-/* Style pour remplacer l'emoji d'alerte */
-.disclaimer-box h4::before {
-    content: '!'; 
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: var(--secondary-color);
-    color: white;
-    font-weight: 700;
-    font-family: sans-serif;
-    margin-right: 10px;
-    flex-shrink: 0;
-}
-
-/* Boutons sociaux */
-.social-btn {
-    padding: 8px 15px;
-    margin: 5px;
-    border-radius: 5px;
-    color: white;
-    font-weight: 600;
-    display: inline-block;
-    transition: opacity 0.3s;
-}
-.social-btn:hover {
-    opacity: 0.8;
-}
-.facebook { background-color: #3b5998; }
-.instagram { background-color: #e1306c; }
-.google { background-color: #db4437; }
-
-
-/* --- Media Queries pour la Responsivité --- */
+/* --- RESPONSIVITÉ MOBILE (Header plus petit) --- */
 @media (max-width: 768px) {
+    body { padding-top: 60px; } /* Moins d'espace car header plus fin */
+
     header {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 1rem;
+        padding: 5px 10px; /* Réduction drastique du padding */
+        min-height: 50px;
     }
 
-    .main-nav ul {
-        width: 100%;
-        justify-content: space-around;
-        margin-bottom: 10px;
+    .logo-brand h1 {
+        font-size: 1rem; /* Titre plus discret */
     }
-    .carousel-slide img {
-        height: 300px; 
+
+    .main-nav li { margin: 0 5px; } /* Rapproche les onglets */
+    
+    .main-nav a {
+        padding: 12px 5px; /* Réduction hauteur cliquable */
+        font-size: 0.85rem; /* Texte plus petit */
     }
-    .cat-nav {
-        justify-content: flex-start;
-        overflow-x: auto;
-        white-space: nowrap;
-        padding-bottom: 5px;
-        border-radius: 0;
+
+    #cart-link {
+        font-size: 0.8rem;
+        padding: 4px 8px;
     }
-    .cat-nav button {
-        flex-shrink: 0;
-        margin: 0;
-    }
-    .modality-cards-container {
-        grid-template-columns: 1fr;
-    }
-    .cart-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .item-controls {
-        flex-direction: row;
-        width: 100%;
-        justify-content: space-between;
-    }
-    /* S'assurer que le contenu de la modale ne déborde pas sur mobile */
-    .modal-content {
-        margin: 10px auto; 
-    }
+
+    .carousel-container { margin: 10px 0; }
+    .hero-content { padding: 20px 10px; }
 }
 
-/* Indicateur d'onglet actif */
-.main-nav a.active {
-    color: var(--primary-color) !important;
-    border-bottom: 3px solid var(--primary-color);
-    font-weight: 700;
+/* --- BOUTONS ET COMPOSANTS --- */
+.validate-btn, .primary-action-btn, .product-card button {
+    background-color: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: 600;
 }
-body.dark-mode .main-nav a.active {
-    color: var(--secondary-color) !important;
-    border-bottom: 3px solid var(--secondary-color);
-}
+.validate-btn:disabled { background-color: #ccc; cursor: not-allowed; }
 
-/* --- BOUTON WHATSAPP FLOTTANT --- */
+.product-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+.product-card img { width: 100%; height: 200px; object-fit: cover; }
+.product-card-body { padding: 15px; }
+
+/* --- MODALE --- */
+.modal { display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; }
+.modal-content { background: var(--card-bg); padding: 20px; border-radius: 10px; width: 90%; max-width: 500px; position: relative; max-height: 90vh; overflow-y: auto; }
+.close-btn { position: absolute; right: 15px; top: 10px; font-size: 1.5rem; cursor: pointer; }
+
+/* --- WHATSAPP --- */
 .whatsapp-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #25D366; /* Couleur WhatsApp officielle */
-    color: white;
-    padding: 10px 20px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    z-index: 999;
-    transition: transform 0.3s, background-color 0.3s;
+    position: fixed; bottom: 20px; right: 20px; background-color: #25D366; color: white; padding: 10px 20px; border-radius: 50px; display: flex; align-items: center; gap: 10px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999;
 }
-.whatsapp-btn:hover {
-    transform: scale(1.05);
-    background-color: #128C7E;
-    color: white;
-}
-.whatsapp-icon {
-    font-size: 1.5rem;
-}
+@media (max-width: 768px) { .whatsapp-text { display: none; } .whatsapp-btn { padding: 15px; border-radius: 50%; } }
 
-/* --- ZONE SEO CONTACT --- */
-.service-area {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid var(--border-color);
-}
-.small-text {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    line-height: 1.4;
-}
-
-/* Responsivité Mobile pour WhatsApp */
-@media (max-width: 768px) {
-    .whatsapp-text {
-        display: none; /* On cache le texte sur mobile pour ne garder que l'icône */
-    }
-    .whatsapp-btn {
-        padding: 15px;
-        border-radius: 50%;
-        bottom: 15px;
-        right: 15px;
-    }
-}
+/* --- GRID --- */
+.modality-cards-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+.modality-card { padding: 15px; border-radius: 8px; border-left: 5px solid var(--primary-color); background: var(--card-bg); }

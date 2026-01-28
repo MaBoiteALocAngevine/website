@@ -1,10 +1,7 @@
-// --- MODE SOMBRE ---
-function initDarkMode() {
-    const toggle = document.getElementById("dark-mode-toggle");
-    if (toggle) {
-        toggle.onclick = () => document.body.classList.toggle("dark-mode");
-    }
-}
+// --- VARIABLES GLOBALES UI ---
+let slideIndex = 0;
+let carouselInterval;
+let selectedProductForModal = null;
 
 // --- NOTIFICATION TOAST ---
 function showToast(message) {
@@ -16,11 +13,11 @@ function showToast(message) {
 }
 
 // --- GESTION DE LA MODALE PRODUIT ---
-let selectedProductForModal = null;
-
 function openModal(productId) { 
     const modal = document.getElementById('product-modal');
-    // On cherche dans allProductsData (défini dans app-catalog.js)
+    // Vérification de sécurité si les données ne sont pas encore chargées
+    if (typeof allProductsData === 'undefined') return;
+
     const product = allProductsData.find(p => p.id == productId);
     if (product) {
         selectedProductForModal = product;
@@ -42,14 +39,12 @@ function openModal(productId) {
 }
 
 function closeModal() {
-    document.getElementById('product-modal').style.display = "none";
+    const modal = document.getElementById('product-modal');
+    if (modal) modal.style.display = "none";
     selectedProductForModal = null;
 }
 
 // --- CARROUSEL ---
-let slideIndex = 0;
-let carouselInterval;
-
 function initCarouselUI(images) {
     const track = document.getElementById('carousel-track');
     const indicators = document.getElementById('carousel-indicators');
@@ -68,11 +63,11 @@ function initCarouselUI(images) {
     });
     showSlide(0, images.length);
     
-    // Auto-scroll
+    // Auto-scroll (défilement automatique)
     clearInterval(carouselInterval);
     carouselInterval = setInterval(() => {
         const total = document.querySelectorAll('.carousel-slide').length;
-        showSlide(slideIndex + 1, total);
+        if (total > 0) showSlide(slideIndex + 1, total);
     }, 4000);
 }
 
@@ -88,5 +83,5 @@ function showSlide(index, total) {
 
 function moveCarousel(n) {
     const total = document.querySelectorAll('.carousel-slide').length;
-    showSlide(slideIndex + n, total);
+    if (total > 0) showSlide(slideIndex + n, total);
 }
