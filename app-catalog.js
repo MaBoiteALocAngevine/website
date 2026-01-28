@@ -14,7 +14,7 @@ function levenshteinDistance(a, b) {
         for (let j = 1; j <= b.length; j++) {
             tmp[i][j] = Math.min(
                 tmp[i - 1][j] + 1,
-                tmp[i][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1),
+                tmp[i][j - 1] + 1,
                 tmp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
             );
         }
@@ -77,9 +77,9 @@ function renderProductList(products) {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
-            <img src="${p.image_url || 'images/placeholder.jpg'}" alt="${p.name}" onclick="openModal(${p.id})" style="cursor: pointer;">
+            <img src="${p.image_url || 'images/placeholder.jpg'}" alt="${p.name}" onclick="openModal(${p.id})">
             <div class="product-card-body">
-                <h4 onclick="openModal(${p.id})" style="cursor: pointer;">${p.name}</h4>
+                <h4 onclick="openModal(${p.id})">${p.name}</h4>
                 <p class="description-snippet">${p.description ? p.description.substring(0, 80) : ''}...</p>
                 <p class="product-price">${p.price} <span style="font-size:0.8em">TTC</span></p>
                 <button class="primary-action-btn" onclick="openModal(${p.id})">Détails & Réservation</button>

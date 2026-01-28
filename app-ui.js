@@ -15,8 +15,7 @@ function showToast(message) {
 // --- GESTION DE LA MODALE PRODUIT ---
 function openModal(productId) { 
     const modal = document.getElementById('product-modal');
-    // Vérification de sécurité si les données ne sont pas encore chargées
-    if (typeof allProductsData === 'undefined') return;
+    if (typeof allProductsData === 'undefined' || !allProductsData) return;
 
     const product = allProductsData.find(p => p.id == productId);
     if (product) {
@@ -33,7 +32,6 @@ function openModal(productId) {
         
         document.getElementById('modal-start-date').value = '';
         document.getElementById('modal-end-date').value = '';
-        document.getElementById('modal-max-quantity-info').textContent = `Max disponible : ${product.max_quantity}`;
         modal.style.display = "flex";
     }
 }
@@ -63,7 +61,6 @@ function initCarouselUI(images) {
     });
     showSlide(0, images.length);
     
-    // Auto-scroll (défilement automatique)
     clearInterval(carouselInterval);
     carouselInterval = setInterval(() => {
         const total = document.querySelectorAll('.carousel-slide').length;
