@@ -614,3 +614,55 @@ body.dark-mode .main-nav a.active {
     color: var(--secondary-color) !important;
     border-bottom: 3px solid var(--secondary-color);
 }
+
+/* --- BOUTON WHATSAPP FLOTTANT --- */
+.whatsapp-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25D366; /* Couleur WhatsApp officielle */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 999;
+    transition: transform 0.3s, background-color 0.3s;
+}
+.whatsapp-btn:hover {
+    transform: scale(1.05);
+    background-color: #128C7E;
+    color: white;
+}
+.whatsapp-icon {
+    font-size: 1.5rem;
+}
+
+/* --- ZONE SEO CONTACT --- */
+.service-area {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+.small-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* Responsivité Mobile pour WhatsApp */
+@media (max-width: 768px) {
+    .whatsapp-text {
+        display: none; /* On cache le texte sur mobile pour ne garder que l'icône */
+    }
+    .whatsapp-btn {
+        padding: 15px;
+        border-radius: 50%;
+        bottom: 15px;
+        right: 15px;
+    }
+}

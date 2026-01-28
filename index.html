@@ -15,22 +15,10 @@
     
     <!-- SEO : RÉFÉRENCEMENT NATUREL -->
     <title>Ma boîte à loc' Angevine | Location de matériel à Rives-du-Loir et Angers</title>
-    <meta name="description" content="Location de matériel de réception et d'équipement de qualité à Rives-du-Loir-en-Anjou. Solutions de proximité pour particuliers et professionnels près d'Angers (49).">
-    <meta name="keywords" content="location matériel, Angers, Rives du Loir, Maine et Loire, 49, Seiches-sur-le-Loir, Villevêque, réception, outils">
+    <meta name="description" content="Location d'équipements de réception et matériel de qualité à Rives-du-Loir-en-Anjou. Solutions de proximité pour particuliers et professionnels dans le Maine-et-Loire.">
     <link rel="canonical" href="https://maboitealocangevine.github.io/website/">
 
-    <!-- OPEN GRAPH (Réseaux sociaux & WhatsApp) -->
-    <meta property="og:title" content="Ma boîte à loc' Angevine | Location de matériel de proximité">
-    <meta property="og:description" content="Besoin de matériel ? Découvrez notre catalogue à Rives-du-Loir-en-Anjou. Service pro et compétitif.">
-    <meta property="og:image" content="images/table.jpg"> 
-    <meta property="og:url" content="https://maboitealocangevine.github.io/website/">
-    <meta property="og:type" content="website">
-
-    <!-- STYLE & POLICES -->
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
-
-    <!-- DONNÉES STRUCTURÉES (JSON-LD) POUR GOOGLE MAPS -->
+    <!-- DONNÉES STRUCTURÉES (JSON-LD) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -46,15 +34,12 @@
         "postalCode": "49140",
         "addressRegion": "Pays de la Loire",
         "addressCountry": "FR"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 47.530365,
-        "longitude": -0.456637
-      },
-      "areaServed": ["Rives-du-Loir-en-Anjou", "Angers", "Seiches-sur-le-Loir", "Villevêque"]
+      }
     }
     </script>
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -63,7 +48,6 @@
         </div>
         <nav class="main-nav">
             <ul>
-                <!-- Navigation avec IDs pour l'effet "onglet actif" -->
                 <li><a href="#" onclick="showSection('accueil')" id="nav-accueil">Accueil</a></li>
                 <li><a href="#" onclick="showSection('catalogue')" id="nav-catalogue">Catalogue</a></li>
                 <li><a href="#" onclick="showSection('contact')" id="nav-contact">Contact</a></li>
@@ -78,14 +62,13 @@
     </header>
 
     <main>
-        <!-- Navigation par catégories (affichée uniquement dans le catalogue) -->
         <nav class="cat-nav" id="catalogue-nav" style="display: none;"></nav>
 
         <!-- SECTION ACCUEIL -->
         <div id="accueil-section" class="content-section">
             <div class="hero-content">
                 <h2>Votre Partenaire Confiance pour la Location de Matériel en Maine-et-Loire</h2>
-                <p>Situés à <strong>Rives-du-Loir-en-Anjou</strong>, nous proposons aux particuliers et professionnels un service local de location d'équipements de qualité. Que vous soyez à <strong>Angers</strong>, <strong>Seiches-sur-le-Loir</strong> ou <strong>Villevêque</strong>, simplifiez vos projets avec nos solutions compétitives de proximité.</p>
+                <p>Basés à <strong>Rives-du-Loir-en-Anjou</strong>, nous proposons une sélection rigoureuse d'équipements de qualité pour tous vos projets. Simplifiez vos réceptions et vos travaux avec un service de proximité professionnel et compétitif.</p>
                 <p style="text-align:center;"><button onclick="showSection('catalogue')" class="validate-btn primary-action-btn">Découvrir le Catalogue</button></p>
             </div>
             
@@ -99,140 +82,40 @@
             <div class="modality-cards-container">
                 <div class="modality-card">
                     <h4>Paiement & Caution</h4>
-                    <p>Le règlement s'effectue par <strong>espèces</strong> ou <strong>virement bancaire instantané</strong>.</p>
+                    <p>Règlement par <strong>espèces</strong> ou <strong>virement bancaire instantané</strong>. Caution restituée après vérification.</p>
                 </div>
                 <div class="modality-card">
                     <h4>Livraison & Montage</h4>
-                    <p>Service de <strong>livraison</strong> disponible sur votre lieu d'événement ou de chantier (sur devis).</p>
+                    <p>Pour votre confort, nous proposons un service de <strong>livraison</strong> directement sur votre lieu de rendez-vous (sur devis).</p>
                 </div>
                 <div class="modality-card">
-                    <h4>Proximité</h4>
-                    <p>Un service réactif basé à <strong>Rives du Loir</strong> pour répondre au mieux à vos besoins locaux.</p>
+                    <h4>Facturation</h4>
+                    <p>Une <strong>facture détaillée</strong> peut être émise pour chaque prestation sur simple demande.</p>
                 </div>
             </div>
         </div>
 
         <!-- SECTION CATALOGUE -->
         <div id="catalogue-section" class="content-section">
-            <h2>Notre Catalogue de Location</h2>
+            <h2>Notre Catalogue</h2>
             <div id="search-bar">
-                <input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Rechercher un produit (ex: table, video, tente...)">
+                <input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Rechercher un produit (ex: table, video...)">
             </div>
             <div id="product-list-container">
-                <p id="loading-message">Chargement des équipements...</p>
+                <p id="loading-message">Chargement du catalogue...</p>
             </div>
         </div>
 
-        <!-- SECTION PANIER / RÉSERVATION -->
+        <!-- SECTION PANIER -->
         <div id="panier-section" class="content-section">
-            <h2>Finaliser votre Demande de Réservation</h2>
+            <h2>Votre Demande de Réservation</h2>
             <div id="cart-items-container"></div>
-            
             <div id="cart-summary">
                 <form id="reservation-form" method="POST" action="https://formsubmit.co/maboitealocangevine@gmail.com">
                     <div class="form-group">
-                        <label><input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()" name="Demande de Livraison"> Demander Livraison & Montage (Coût sur devis)</label>
+                        <label><input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()" name="Demande de Livraison"> Demander Livraison & Montage (Sur devis)</label>
                     </div>
-
                     <div id="delivery-address-group" class="form-group" style="display: none;">
-                        <textarea id="delivery-address" name="Adresse de livraison" placeholder="Indiquez l'adresse complète pour la livraison"></textarea>
+                        <textarea id="delivery-address" name="Adresse de livraison" placeholder="Adresse complète"></textarea>
                     </div>
-                    
-                    <p class="cart-total-line">Articles : <strong id="cart-total-price">0 article(s)</strong></p>
-                    <p class="cart-total-line estimate">Estimation Location : <strong id="cart-total-estimate">0,00 € TTC</strong></p>
-                    <p class="cart-total-line caution-summary">Montant Cautions : <strong id="cart-total-caution">0,00 € TTC</strong></p>
-
-                    <h3>Vos Coordonnées</h3>
-                    <div class="form-group">
-                        <label>Votre Email (Obligatoire) :</label>
-                        <input type="email" id="user-email" name="Email du Client" required placeholder="exemple@mail.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Précisions supplémentaires :</label>
-                        <textarea id="reservation-message" name="Message du Client" placeholder="Horaires souhaités, contraintes d'accès..."></textarea>
-                    </div>
-
-                    <!-- Configuration FormSubmit -->
-                    <input type="hidden" name="_next" value="https://maboitealocangevine.github.io/website/merci.html">
-                    <input type="hidden" name="_replyto" id="hidden-replyto">
-                    <input type="hidden" name="_subject" id="hidden-subject">
-                    <textarea name="Récapitulatif" id="email-body-content" style="display: none;"></textarea>
-                
-                    <button type="submit" class="validate-btn primary-action-btn" disabled>Envoyer la demande</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- SECTION CONTACT -->
-        <div id="contact-section" class="content-section">
-            <h2>Contact & Accès</h2>
-            <div class="disclaimer-box">
-                <h4>Information Retrait :</h4>
-                <p>Retrait uniquement sur rendez-vous à <strong>Rives-du-Loir-en-Anjou</strong>. Nous ne disposons pas de magasin ouvert au public.</p>
-            </div>
-            
-            <div class="contact-grid">
-                <div class="contact-details">
-                    <p><strong>📞 Téléphone :</strong> <a href="tel:+33652982348">06 52 98 23 48</a></p>
-                    <p><strong>📧 Email :</strong> <a href="mailto:maboitealocangevine@gmail.com">maboitealocangevine@gmail.com</a></p>
-                    <p class="location-info">
-                        <strong>📍 Adresse :</strong><br>
-                        5 impasse les Rochebruyeres<br>
-                        49140 RIVES DU LOIR EN ANJOU
-                    </p>
-                </div>
-                
-                <div class="map-container">
-                    <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2703.189447190117!2d-0.456637887199464!3d47.530365825316325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48087fc7674e2d27%3A0xf635031b26c2718e!2s5%20Imp.%20les%20Rochebruy%C3%A8res%2C%2049140%20Rives-du-Loir-en-Anjou!5e0!3m2!1sfr!2sfr!4v1702130000000!5m2!1sfr!2sfr" 
-                        width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy">
-                    </iframe>
-                </div>
-            </div>
-
-            <div class="social-links">
-                <a href="https://www.facebook.com/maboitealocangevine" target="_blank" class="social-btn facebook">Facebook</a>
-                <a href="https://www.instagram.com/maboitealocangevine" target="_blank" class="social-btn instagram">Instagram</a>
-            </div>
-        </div>
-    </main>
-
-    <!-- FENÊTRE MODALE PRODUIT -->
-    <div id="product-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">×</span>
-            <h3 id="modal-title">Produit</h3>
-            <div class="modal-body">
-                <img id="modal-image" src="" alt="Matériel en location">
-                <p id="modal-description"></p>
-                <p>Prix : <strong id="modal-product-price-value"></strong></p>
-                <p>Caution : <strong id="modal-product-caution-value"></strong></p>
-                <div id="modal-max-quantity-info" class="small-text"></div>
-                
-                <div class="modal-form">
-                    <label>Quantité :</label>
-                    <input type="number" id="modal-quantity" value="1" min="1">
-                    <label>Date de début :</label>
-                    <input type="date" id="modal-start-date">
-                    <label>Date de fin :</label>
-                    <input type="date" id="modal-end-date">
-                </div>
-                <button id="modal-add-to-cart" onclick="addToCartFromModal()">Ajouter à ma demande</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="toast-notification"></div>
-
-    <footer>
-        <p>© 2025 Ma boîte à loc' Angevine. Location de proximité en Anjou.</p>
-    </footer>
-
-    <!-- CHARGEMENT DES SCRIPTS MODULAIRES -->
-    <script src="app-ui.js"></script>
-    <script src="app-catalog.js"></script>
-    <script src="app-cart.js"></script>
-    <script src="app-main.js"></script>
-</body>
-</html>
+                    <p class=
