@@ -12,13 +12,19 @@ async function loadProductsFromCSVFile() {
             let p = {};
             headers.forEach((h, i) => p[h] = values[i]);
             p.id = parseInt(p.id);
+            
+            // GESTION MULTI-PHOTOS : On transforme la chaîne en liste
+            p.images = p.image_url ? p.image_url.split(';') : ['images/placeholder.jpg'];
+            // L'image principale reste la première de la liste
+            p.main_image = p.images[0]; 
+            
             return p;
         }).filter(p => p.publication?.toLowerCase() !== 'non');
 
         renderProductList(window.allProductsData);
         
         if (window.initCarouselUI) {
-            const imgs = window.allProductsData.filter(p => p.carrousel?.toLowerCase() === 'oui').map(p => p.image_url);
+            const imgs = window.allProductsData.filter(p => p.carrousel?.toLowerCase() === 'oui').map(p => p.main_image);
             window.initCarouselUI(imgs);
         }
         document.getElementById('loading-message').style.display = 'none';
@@ -31,7 +37,7 @@ function renderProductList(products) {
     container.innerHTML = products.map(p => `
         <div class="product-card">
             <div class="product-image-wrapper" onclick="window.openModal(${p.id})">
-                <img src="${p.image_url}" alt="${p.name}" loading="lazy">
+                <img src="${p.main_image}" alt="${p.name}" loading="lazy">
                 <div class="image-overlay"><span>DÉCOUVRIR</span></div>
             </div>
             <div class="product-card-body">
