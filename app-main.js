@@ -1,27 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Mode sombre
-    document.getElementById("dark-mode-toggle")?.addEventListener("click", toggleDarkMode);
-    
-    // Chargement données
+    initDarkMode();
     loadProductsFromCSVFile();
-
-    // Formulaire
     document.getElementById('reservation-form')?.addEventListener('submit', handleSubmitReservation);
-    document.getElementById('user-email')?.addEventListener('input', updateCartUI);
-
-    // Section par défaut
+    document.getElementById('user-email')?.addEventListener('input', updateCartCount);
     showSection('accueil');
 });
 
-function showSection(sectionId) {
+function showSection(id) {
+    // 1. Sections
     document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-    document.getElementById(sectionId + '-section')?.classList.add('active');
+    document.getElementById(id + '-section')?.classList.add('active');
 
-    // Menu actif
+    // 2. Navigation Active (Souligné)
     document.querySelectorAll('.main-nav a').forEach(a => a.classList.remove('active'));
-    
-    const catNav = document.getElementById('catalogue-nav');
-    catNav.style.display = (sectionId === 'catalogue') ? 'flex' : 'none';
+    document.getElementById('nav-' + id)?.classList.add('active');
 
-    if (sectionId === 'panier') renderCart();
+    // 3. Catégories Catalogue
+    const catNav = document.getElementById('catalogue-nav');
+    if (catNav) catNav.style.display = (id === 'catalogue') ? 'flex' : 'none';
+
+    if (id === 'panier') renderCart();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }

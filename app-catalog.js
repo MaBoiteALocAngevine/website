@@ -1,6 +1,13 @@
 let allProductsData = [];
 const CATEGORIES = { 'all': 'Tous les produits', 'evenementiel': 'Événementiel', 'outillage': 'Outillage' };
 
+// Nettoie le texte pour la recherche (minuscule + supprime accents)
+function normalizeText(text) {
+    return text.toLowerCase()
+               .normalize("NFD")
+               .replace(/[\u0300-\u036f]/g, "");
+}
+
 async function loadProductsFromCSVFile() {
     try {
         const response = await fetch('data.csv');
@@ -10,55 +17,51 @@ async function loadProductsFromCSVFile() {
         
         allProductsData = lines.slice(1).map(line => {
             const values = line.match(/(".*?"|[^",\r\n]+)(?=\s*,|\s*$)/g).map(val => val.trim().replace(/"/g, ''));
-            let product = {};
-            headers.forEach((header, index) => product[header.toLowerCase()] = values[index]);
-            product.id = parseInt(product.id);
-            product.max_quantity = parseInt(product.max_quantity);
-            return product;
+            let p = {};
+            headers.forEach((h, i) => p[h.toLowerCase()] = values[i]);
+            p.id = parseInt(p.id);
+            p.max_quantity = parseInt(p.max_quantity);
+            return p;
         });
 
         renderCategoryButtons();
         renderProductList(allProductsData);
         document.getElementById('loading-message').style.display = 'none';
         
-        const carouselImgs = allProductsData.filter(p => p.carrousel?.toLowerCase() === 'oui').map(p => p.image_url);
-        initCarousel(carouselImgs);
-    } catch (error) {
-        console.error("Erreur CSV:", error);
-    }
+        const carImgs = allProductsData.filter(p => p.carrousel?.toLowerCase() === 'oui').map(p => p.image_url);
+        initCarouselUI(carImgs);
+    } catch (e) { console.error("Erreur catalogue:", e); }
 }
 
 function renderProductList(products) {
     const container = document.getElementById('product-list-container');
-    container.innerHTML = products.length ? '' : '<p>Aucun produit trouvé.</p>';
-    products.forEach(product => {
+    container.innerHTML = products.length ? '' : '<p>Aucun produit ne correspond à votre recherche.</p>';
+    products.forEach(p => {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
-            <img src="${product.image_url}" alt="${product.name}">
+            <img src="${p.image_url}" alt="${p.name}">
             <div class="product-card-body">
-                <h4>${product.name}</h4>
-                <p class="description-snippet">${product.description.substring(0, 80)}...</p>
-                <p class="product-price">${product.price} <span style="font-size: 0.8em; color: var(--secondary-color);">TTC</span></p>
-                <button onclick="openModal(${product.id})">Détails et Location</button>
+                <h4>${p.name}</h4>
+                <p class="description-snippet">${p.description.substring(0, 80)}...</p>
+                <p class="product-price">${p.price} <span style="font-size:0.8em">TTC</span></p>
+                <button onclick="openModal(${p.id})">Détails et Location</button>
             </div>`;
         container.appendChild(card);
     });
 }
 
-function filterProducts(category) {
-    const filtered = category === 'all' ? allProductsData : allProductsData.filter(p => p.category === category);
-    renderProductList(filtered);
-}
-
 function searchProducts() {
-    const term = document.getElementById('product-search').value.toLowerCase();
-    const filtered = allProductsData.filter(p => p.name.toLowerCase().includes(term) || p.description.toLowerCase().includes(term));
+    const term = normalizeText(document.getElementById('product-search').value);
+    const filtered = allProductsData.filter(p => 
+        normalizeText(p.name).includes(term) || normalizeText(p.description).includes(term)
+    );
     renderProductList(filtered);
 }
 
 function renderCategoryButtons() {
     const nav = document.getElementById('catalogue-nav');
+    if (!nav) return;
     nav.innerHTML = '';
     Object.keys(CATEGORIES).forEach(key => {
         const btn = document.createElement('button');
@@ -66,7 +69,7 @@ function renderCategoryButtons() {
         btn.onclick = () => {
             document.querySelectorAll('.cat-nav button').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            filterProducts(key);
+            renderProductList(key === 'all' ? allProductsData : allProductsData.filter(p => p.category === key));
         };
         if(key === 'all') btn.classList.add('active');
         nav.appendChild(btn);

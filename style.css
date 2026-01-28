@@ -603,3 +603,14 @@ body.dark-mode .modal-form label {
         margin: 10px auto; 
     }
 }
+
+/* Indicateur d'onglet actif */
+.main-nav a.active {
+    color: var(--primary-color) !important;
+    border-bottom: 3px solid var(--primary-color);
+    font-weight: 700;
+}
+body.dark-mode .main-nav a.active {
+    color: var(--secondary-color) !important;
+    border-bottom: 3px solid var(--secondary-color);
+}

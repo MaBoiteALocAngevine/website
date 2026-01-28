@@ -1,7 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-K1WY9LK5SS"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -22,7 +21,7 @@
         </div>
         <nav class="main-nav">
             <ul>
-                <li><a href="#" onclick="showSection('accueil')" class="active" id="nav-accueil">Accueil</a></li>
+                <li><a href="#" onclick="showSection('accueil')" id="nav-accueil">Accueil</a></li>
                 <li><a href="#" onclick="showSection('catalogue')" id="nav-catalogue">Catalogue</a></li>
                 <li><a href="#" onclick="showSection('contact')" id="nav-contact">Contact</a></li>
             </ul>
@@ -38,10 +37,10 @@
     <main>
         <nav class="cat-nav" id="catalogue-nav" style="display: none;"></nav>
 
-        <div id="accueil-section" class="content-section active">
+        <div id="accueil-section" class="content-section">
             <div class="hero-content">
                 <h2>Votre Partenaire Confiance pour la Location de Matériel en Anjou</h2>
-                <p>Basés à Rives du Loir en Anjou, nous vous proposons une sélection rigoureuse d'équipements événementiels et d'outillage de qualité. Simplifiez vos projets et vos réceptions avec un service professionnel, compétitif et de proximité.</p>
+                <p>Basés à Rives du Loir en Anjou, nous vous proposons une sélection rigoureuse d'équipements de qualité. Simplifiez vos projets et vos réceptions avec un service professionnel, compétitif et de proximité.</p>
                 <p style="text-align:center;"><button onclick="showSection('catalogue')" class="validate-btn primary-action-btn">Découvrir le Catalogue</button></p>
             </div>
             
@@ -53,22 +52,18 @@
             </div>
 
             <div id="service-modalities" class="info-section">
-                <h3>Nos Modalités de Service</h3>
                 <div class="modality-cards-container">
                     <div class="modality-card">
                         <h4>Paiement & Caution</h4>
                         <p>Le règlement s'effectue par <strong>espèces</strong> ou <strong>virement bancaire instantané</strong>.</p>
-                        <p class="small-note">La caution est exigée selon les mêmes modalités et restituée dès le retour du matériel en bon état.</p>
                     </div>
                     <div class="modality-card">
                         <h4>Livraison & Montage</h4>
-                        <p>Nous proposons un service de <strong>livraison</strong> et de <strong>montage</strong> directement sur votre lieu d'événement.</p>
-                        <p class="small-note">Ces prestations sont optionnelles et sur devis. Indiquez-le lors de votre demande.</p>
+                        <p>Nous proposons un service de <strong>livraison</strong> directement sur votre lieu d'événement ou de chantier.</p>
                     </div>
                     <div class="modality-card">
                         <h4>Facturation</h4>
-                        <p>Une <strong>facture détaillée</strong> peut être émise pour votre location, notamment pour les professionnels.</p>
-                        <p class="small-note">Disponible sur simple demande au moment de la confirmation.</p>
+                        <p>Une <strong>facture détaillée</strong> peut être émise sur simple demande pour les professionnels.</p>
                     </div>
                 </div>
             </div>
@@ -77,7 +72,7 @@
         <div id="catalogue-section" class="content-section">
             <h2>Notre Catalogue</h2>
             <div id="search-bar">
-                <input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Rechercher un produit...">
+                <input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Rechercher un produit (ex: video, table...)">
             </div>
             <div id="product-list-container">
                 <p id="loading-message">Chargement du catalogue...</p>
@@ -85,37 +80,29 @@
         </div>
 
         <div id="panier-section" class="content-section">
-            <h2>Finaliser votre Réservation</h2>
+            <h2>Votre Demande de Réservation</h2>
             <div id="cart-items-container"></div>
             <div id="cart-summary">
                 <form id="reservation-form" method="POST" action="https://formsubmit.co/maboitealocangevine@gmail.com">
                     <div class="form-group">
-                        <label><input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()" name="Demande de Livraison"> Livraison & Montage (Sur devis)</label>
-                        <span id="delivery-info" style="font-style: italic; color: var(--secondary-color);"></span>
+                        <label><input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()" name="Demande de Livraison"> Demande de Livraison & Montage (Sur devis)</label>
                     </div>
                     <div id="delivery-address-group" class="form-group" style="display: none;">
-                        <label>Adresse de livraison :</label>
-                        <textarea id="delivery-address" name="Adresse de livraison"></textarea>
+                        <textarea id="delivery-address" name="Adresse de livraison" placeholder="Adresse complète"></textarea>
                     </div>
-                    <div class="form-group">
-                        <label><input type="checkbox" id="billing-request" name="Demande de Facturation"> Facturation demandée</label>
-                    </div>
-                    <p class="cart-total-line">Articles : <strong id="cart-total-price">0</strong></p>
-                    <p class="cart-total-line estimate">ESTIMATION LOCATION : <strong id="cart-total-estimate">0,00 € TTC</strong></p>
-                    <p class="cart-total-line caution-summary">TOTAL CAUTIONS : <strong id="cart-total-caution">0,00 € TTC</strong></p>
+                    <p class="cart-total-line">Total estimé : <strong id="cart-total-estimate">0,00 € TTC</strong></p>
+                    <p class="cart-total-line">Total Cautions : <strong id="cart-total-caution">0,00 € TTC</strong></p>
                     
-                    <h3>Vos Coordonnées</h3>
                     <div class="form-group">
-                        <label>Votre Email (Obligatoire) :</label>
-                        <input type="email" id="user-email" name="Email du Client" required>
+                        <label>Votre Email :</label>
+                        <input type="email" id="user-email" name="Email du Client" required placeholder="votre.email@exemple.com">
                     </div>
                     <div class="form-group">
-                        <label>Précisions supplémentaires :</label>
-                        <textarea id="reservation-message" name="Message du Client"></textarea>
+                        <label>Précisions :</label>
+                        <textarea id="reservation-message" name="Message du Client" placeholder="Horaires, accès..."></textarea>
                     </div>
                     <input type="hidden" name="_next" value="https://maboitealocangevine.github.io/website/merci.html">
                     <input type="hidden" name="_replyto" id="hidden-replyto">
-                    <input type="hidden" name="_cc" id="hidden-cc">
                     <input type="hidden" name="_subject" id="hidden-subject">
                     <textarea name="Récapitulatif" id="email-body-content" style="display: none;"></textarea>
                     <button type="submit" class="validate-btn primary-action-btn" disabled>Envoyer la demande</button>
@@ -125,15 +112,11 @@
 
         <div id="contact-section" class="content-section">
             <h2>Contact & Localisation</h2>
-            <div class="disclaimer-box">
-                <h4>Information Retrait Matériel :</h4>
-                <p>Retrait uniquement sur rendez-vous confirmés. Pas de boutique physique ouverte au public.</p>
-            </div>
             <div class="contact-grid">
                 <div class="contact-details">
                     <p><strong>Téléphone :</strong> 06 52 98 23 48</p>
                     <p><strong>Email :</strong> maboitealocangevine@gmail.com</p>
-                    <p><strong>Adresse de Retrait :</strong> 5 impasse les Rochebruyeres, 49140 RIVES DU LOIR EN ANJOU</p>
+                    <p><strong>Adresse :</strong> 5 impasse les Rochebruyeres, 49140 RIVES DU LOIR EN ANJOU</p>
                 </div>
                 <div class="map-container">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2703.189447190117!2d-0.456637887199464!3d47.530365825316325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48087fc7674e2d27%3A0xf635031b26c2718e!2s5%20Imp.%20les%20Rochebruy%C3%A8res%2C%2049140%20Rives-du-Loir-en-Anjou!5e0!3m2!1sfr!2sfr!4v1702130000000!5m2!1sfr!2sfr" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
@@ -144,33 +127,22 @@
 
     <div id="product-modal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modal-title">Produit</h3>
-                <span class="close-btn" onclick="closeModal()">×</span>
-            </div>
+            <span class="close-btn" onclick="closeModal()">×</span>
+            <h3 id="modal-title"></h3>
             <div class="modal-body">
-                <img id="modal-image" src="" alt="Produit">
+                <img id="modal-image" src="" alt="">
                 <p id="modal-description"></p>
-                <p id="modal-price">Prix: <strong id="modal-product-price-value"></strong></p>
-                <p id="modal-caution">Caution: <strong id="modal-product-caution-value"></strong></p>
-                <p id="modal-max-quantity-info"></p>
                 <div class="modal-form">
-                    <label>Quantité:</label>
-                    <input type="number" id="modal-quantity" value="1" min="1">
-                    <label>Début:</label>
-                    <input type="date" id="modal-start-date">
-                    <label>Fin:</label>
-                    <input type="date" id="modal-end-date">
+                    <label>Quantité : <input type="number" id="modal-quantity" value="1" min="1"></label>
+                    <label>Début : <input type="date" id="modal-start-date"></label>
+                    <label>Fin : <input type="date" id="modal-end-date"></label>
                 </div>
-                <button id="modal-add-to-cart" onclick="addToCartFromModal()">Ajouter à la réservation</button>
+                <button onclick="addToCartFromModal()">Ajouter à la réservation</button>
             </div>
         </div>
     </div>
 
     <div id="toast-notification"></div>
-    <footer><p>© 2025 Ma boîte à loc' Angevine.</p></footer>
-
-    <!-- Fichiers JS découpés -->
     <script src="app-ui.js"></script>
     <script src="app-catalog.js"></script>
     <script src="app-cart.js"></script>
