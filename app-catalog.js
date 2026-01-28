@@ -16,12 +16,13 @@ async function loadProductsFromCSVFile() {
         }).filter(p => p.publication?.toLowerCase() !== 'non');
 
         renderProductList(window.allProductsData);
+        
         if (window.initCarouselUI) {
             const imgs = window.allProductsData.filter(p => p.carrousel?.toLowerCase() === 'oui').map(p => p.image_url);
             window.initCarouselUI(imgs);
         }
         document.getElementById('loading-message').style.display = 'none';
-    } catch (e) { console.error(e); }
+    } catch (e) { console.error("Erreur Catalogue:", e); }
 }
 
 function renderProductList(products) {
@@ -30,8 +31,8 @@ function renderProductList(products) {
     container.innerHTML = products.map(p => `
         <div class="product-card">
             <div class="product-image-wrapper" onclick="window.openModal(${p.id})">
-                <img src="${p.image_url}" loading="lazy">
-                <div class="image-overlay"><span>VOIR DÉTAILS</span></div>
+                <img src="${p.image_url}" alt="${p.name}" loading="lazy">
+                <div class="image-overlay"><span>DÉCOUVRIR</span></div>
             </div>
             <div class="product-card-body">
                 <h4 onclick="window.openModal(${p.id})">${p.name}</h4>

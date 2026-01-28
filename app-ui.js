@@ -1,49 +1,70 @@
-window.allProductsData = [];
+// --- NOTIFICATIONS TOAST ---
+window.showToast = function(message) {
+    const toast = document.getElementById("toast-notification");
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 3000);
+};
 
-async function loadProductsFromCSVFile() {
-    try {
-        const response = await fetch('data.csv');
-        const csvData = await response.text();
-        const lines = csvData.split(/\r?\n/);
-        const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+// --- GESTION DE LA MODALE PRODUIT ---
+window.openModal = function(productId) { 
+    const modal = document.getElementById('product-modal');
+    if (!window.allProductsData) return;
+
+    const product = window.allProductsData.find(p => p.id == productId);
+    if (product) {
+        window.selectedProductForModal = product;
+        document.getElementById('modal-title').textContent = product.name;
+        document.getElementById('modal-image').src = product.image_url; 
+        document.getElementById('modal-description').innerHTML = product.description; 
+        document.getElementById('modal-product-price-value').innerHTML = `${product.price} <small style="font-weight:400; opacity:0.6;">TTC</small>`;
+        document.getElementById('modal-product-caution-value').innerHTML = `${product.caution} <small style="font-weight:400; opacity:0.6;">TTC</small>`;
         
-        window.allProductsData = lines.slice(1).filter(l => l.trim()).map(line => {
-            const values = line.match(/(".*?"|[^",\r\n]+)(?=\s*,|\s*$)/g).map(v => v.trim().replace(/^"|"$/g, ''));
-            let p = {};
-            headers.forEach((h, i) => p[h] = values[i]);
-            p.id = parseInt(p.id);
-            return p;
-        }).filter(p => p.publication?.toLowerCase() !== 'non');
+        document.getElementById('modal-quantity').value = 1;
+        modal.style.display = "flex";
+        document.body.style.overflow = 'hidden'; // Bloque le scroll
+    }
+};
 
-        renderProductList(window.allProductsData);
-        if (window.initCarouselUI) {
-            const imgs = window.allProductsData.filter(p => p.carrousel?.toLowerCase() === 'oui').map(p => p.image_url);
-            window.initCarouselUI(imgs);
-        }
-        document.getElementById('loading-message').style.display = 'none';
-    } catch (e) { console.error(e); }
-}
+window.closeModal = function() {
+    document.getElementById('product-modal').style.display = "none";
+    document.body.style.overflow = 'auto';
+};
 
-function renderProductList(products) {
-    const container = document.getElementById('product-list-container');
-    if (!container) return;
-    container.innerHTML = products.map(p => `
-        <div class="product-card">
-            <div class="product-image-wrapper" onclick="window.openModal(${p.id})">
-                <img src="${p.image_url}" loading="lazy">
-                <div class="image-overlay"><span>VOIR DÉTAILS</span></div>
-            </div>
-            <div class="product-card-body">
-                <h4 onclick="window.openModal(${p.id})">${p.name}</h4>
-                <p class="product-price">${p.price}</p>
-                <button class="primary-action-btn card-btn" onclick="window.openModal(${p.id})">Détails & Réservation</button>
-            </div>
-        </div>
-    `).join('');
-}
+// --- CARROUSEL ---
+let slideIndex = 0;
+let carouselInterval;
 
-window.searchProducts = function() {
-    const term = document.getElementById('product-search').value.toLowerCase();
-    const filtered = window.allProductsData.filter(p => p.name.toLowerCase().includes(term) || p.description.toLowerCase().includes(term));
-    renderProductList(filtered);
+window.initCarouselUI = function(images) {
+    const track = document.getElementById('carousel-track');
+    if (!track || !images.length) return;
+    track.innerHTML = images.map(img => `<div class="carousel-slide"><img src="${img}" alt="Illustration"></div>`).join('');
+    
+    const indicators = document.getElementById('carousel-indicators');
+    if (indicators) {
+        indicators.innerHTML = images.map((_, i) => `<span onclick="window.showSlide(${i}, ${images.length})"></span>`).join('');
+    }
+    
+    window.showSlide(0, images.length);
+    
+    clearInterval(carouselInterval);
+    carouselInterval = setInterval(() => {
+        window.moveCarousel(1);
+    }, 5000);
+};
+
+window.showSlide = function(index, total) {
+    const track = document.getElementById('carousel-track');
+    if (!track) return;
+    slideIndex = (index + total) % total;
+    track.style.transform = `translateX(-${slideIndex * 100}%)`;
+    
+    const dots = document.querySelectorAll('#carousel-indicators span');
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === slideIndex));
+};
+
+window.moveCarousel = function(n) {
+    const slides = document.querySelectorAll('.carousel-slide');
+    if (slides.length) window.showSlide(slideIndex + n, slides.length);
 };
