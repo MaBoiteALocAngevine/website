@@ -1,49 +1,122 @@
 let allProductsData = [];
 const CATEGORIES = { 'all': 'Tous les produits', 'evenementiel': 'Événementiel', 'outillage': 'Outillage' };
 
-// Nettoie le texte pour la recherche (minuscule + supprime accents)
+// Fonction pour enlever les accents et mettre en minuscule (pour une recherche permissive)
 function normalizeText(text) {
-    return text.toLowerCase()
+    if (!text) return "";
+    return text.toString().toLowerCase()
                .normalize("NFD")
                .replace(/[\u0300-\u036f]/g, "");
 }
 
+// Fonction robuste pour lire une ligne CSV (gère les virgules dans les guillemets)
+function parseCSVLine(line) {
+    const values = [];
+    let current = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        if (char === '"') {
+            inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+            values.push(current.trim().replace(/^"|"$/g, ''));
+            current = '';
+        } else {
+            current += char;
+        }
+    }
+    values.push(current.trim().replace(/^"|"$/g, ''));
+    return values;
+}
+
 async function loadProductsFromCSVFile() {
     try {
+        console.log("Chargement du CSV...");
         const response = await fetch('data.csv');
-        const csvData = await response.text();
-        const lines = csvData.trim().split('\n');
-        const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+        if (!response.ok) throw new Error("Fichier data.csv introuvable");
         
-        allProductsData = lines.slice(1).map(line => {
-            const values = line.match(/(".*?"|[^",\r\n]+)(?=\s*,|\s*$)/g).map(val => val.trim().replace(/"/g, ''));
-            let p = {};
-            headers.forEach((h, i) => p[h.toLowerCase()] = values[i]);
-            p.id = parseInt(p.id);
-            p.max_quantity = parseInt(p.max_quantity);
-            return p;
-        });
+        const csvData = await response.text();
+        const lines = csvData.split(/\r?\n/); // Sépare les lignes proprement
+        
+        if (lines.length < 2) throw new Error("Le fichier CSV est vide ou mal formé");
+
+        // Récupération des entêtes (id, category, name, etc.)
+        const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().trim());
+        
+        const products = [];
+        for (let i = 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line) continue; // Saute les lignes vides
+
+            const values = parseCSVLine(line);
+            
+            if (values.length >= headers.length) {
+                let p = {};
+                headers.forEach((h, index) => {
+                    p[h] = values[index];
+                });
+                
+                // Conversions de sécurité
+                p.id = parseInt(p.id);
+                p.max_quantity = parseInt(p.max_quantity) || 1;
+                
+                // On ne garde que les produits publiés (si la colonne existe)
+                if (p.publication && p.publication.toLowerCase() === 'non') {
+                    continue; 
+                }
+                
+                products.push(p);
+            }
+        }
+
+        allProductsData = products;
+        console.log("Produits chargés :", allProductsData.length);
 
         renderCategoryButtons();
         renderProductList(allProductsData);
-        document.getElementById('loading-message').style.display = 'none';
         
-        const carImgs = allProductsData.filter(p => p.carrousel?.toLowerCase() === 'oui').map(p => p.image_url);
-        initCarouselUI(carImgs);
-    } catch (e) { console.error("Erreur catalogue:", e); }
+        // Cacher le message de chargement
+        const loadingMsg = document.getElementById('loading-message');
+        if (loadingMsg) loadingMsg.style.display = 'none';
+        
+        // Initialiser le carrousel avec les images marquées "Oui"
+        const carImgs = allProductsData
+            .filter(p => p.carrousel && p.carrousel.toLowerCase() === 'oui')
+            .map(p => p.image_url);
+        
+        if (typeof initCarouselUI === "function") {
+            initCarouselUI(carImgs);
+        }
+
+    } catch (e) {
+        console.error("Erreur critique :", e);
+        const container = document.getElementById('product-list-container');
+        if (container) {
+            container.innerHTML = `<p style="color:red">Erreur lors du chargement des produits. Vérifiez le fichier data.csv.</p>`;
+        }
+    }
 }
 
 function renderProductList(products) {
     const container = document.getElementById('product-list-container');
-    container.innerHTML = products.length ? '' : '<p>Aucun produit ne correspond à votre recherche.</p>';
+    if (!container) return;
+
+    container.innerHTML = ''; // On vide tout
+
+    if (products.length === 0) {
+        container.innerHTML = '<p class="empty-list-message">Aucun produit ne correspond à votre recherche.</p>';
+        return;
+    }
+
     products.forEach(p => {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
-            <img src="${p.image_url}" alt="${p.name}">
+            <img src="${p.image_url || 'images/placeholder.jpg'}" alt="${p.name}">
             <div class="product-card-body">
                 <h4>${p.name}</h4>
-                <p class="description-snippet">${p.description.substring(0, 80)}...</p>
+                <p class="description-snippet">${p.description ? p.description.substring(0, 80) : ''}...</p>
                 <p class="product-price">${p.price} <span style="font-size:0.8em">TTC</span></p>
                 <button onclick="openModal(${p.id})">Détails et Location</button>
             </div>`;
@@ -52,16 +125,24 @@ function renderProductList(products) {
 }
 
 function searchProducts() {
-    const term = normalizeText(document.getElementById('product-search').value);
-    const filtered = allProductsData.filter(p => 
-        normalizeText(p.name).includes(term) || normalizeText(p.description).includes(term)
-    );
+    const searchInput = document.getElementById('product-search');
+    if (!searchInput) return;
+
+    const term = normalizeText(searchInput.value);
+    
+    const filtered = allProductsData.filter(p => {
+        const name = normalizeText(p.name || "");
+        const desc = normalizeText(p.description || "");
+        return name.includes(term) || desc.includes(term);
+    });
+    
     renderProductList(filtered);
 }
 
 function renderCategoryButtons() {
     const nav = document.getElementById('catalogue-nav');
     if (!nav) return;
+    
     nav.innerHTML = '';
     Object.keys(CATEGORIES).forEach(key => {
         const btn = document.createElement('button');
@@ -69,9 +150,15 @@ function renderCategoryButtons() {
         btn.onclick = () => {
             document.querySelectorAll('.cat-nav button').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            renderProductList(key === 'all' ? allProductsData : allProductsData.filter(p => p.category === key));
+            
+            if (key === 'all') {
+                renderProductList(allProductsData);
+            } else {
+                const filtered = allProductsData.filter(p => p.category === key);
+                renderProductList(filtered);
+            }
         };
-        if(key === 'all') btn.classList.add('active');
+        if (key === 'all') btn.classList.add('active');
         nav.appendChild(btn);
     });
 }
