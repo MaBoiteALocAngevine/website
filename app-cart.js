@@ -24,14 +24,14 @@ function addToCartFromModal() {
     const end = document.getElementById('modal-end-date').value;
 
     if (start && end && new Date(start) > new Date(end)) {
-        showToast("Erreur : Dates incorrectes");
+        window.showToast("Erreur : Dates incorrectes");
         return;
     }
 
-    panier.push({ id: Date.now(), product: selectedProductForModal, quantity: qty, startDate: start, endDate: end });
-    closeModal();
+    panier.push({ id: Date.now(), product: window.selectedProductForModal, quantity: qty, startDate: start, endDate: end });
+    window.closeModal();
     updateCartUI();
-    showToast(`✅ ${selectedProductForModal.name} ajouté !`);
+    window.showToast(`✅ ${window.selectedProductForModal.name} ajouté !`);
 }
 
 function updateCartUI() {
@@ -52,9 +52,11 @@ function renderCartSummary() {
     document.getElementById('cart-total-estimate').textContent = `${totalRent.toFixed(2).replace('.', ',')} € TTC`;
     document.getElementById('cart-total-caution').textContent = `${totalCaution.toFixed(2).replace('.', ',')} € TTC`;
     
-    const validateBtn = document.querySelector('#reservation-form .validate-btn');
+    // FIX : On cherche le bouton par sa classe réelle dans le HTML
+    const validateBtn = document.querySelector('#reservation-form .primary-action-btn');
     if (validateBtn) {
         const email = document.getElementById('user-email').value;
+        // Le bouton s'active si le panier n'est pas vide ET que l'email contient un @
         validateBtn.disabled = (panier.length === 0 || !email.includes('@'));
     }
 }
@@ -62,20 +64,20 @@ function renderCartSummary() {
 function renderCart() {
     const container = document.getElementById('cart-items-container');
     if (!container) return;
-    container.innerHTML = panier.length ? '' : '<p>Votre panier est vide.</p>';
+    container.innerHTML = panier.length ? '' : '<p style="text-align:center; padding:20px; color:var(--text-muted);">Votre panier est vide.</p>';
     
     panier.forEach(item => {
         const calc = calculateItemPrice(item);
         const div = document.createElement('div');
         div.className = 'cart-item';
         div.innerHTML = `
-            <div style="display:flex; align-items:center; margin-bottom:15px; background:white; padding:10px; border-radius:8px; border:1px solid #eee;">
-                <img src="${item.product.image_url}" style="width:60px; height:60px; object-fit:cover; border-radius:5px;">
+            <div style="display:flex; align-items:center; margin-bottom:15px; background:var(--surface); padding:15px; border-radius:15px; border:1px solid var(--border); box-shadow:var(--shadow);">
+                <img src="${item.product.main_image}" style="width:60px; height:60px; object-fit:cover; border-radius:10px;">
                 <div style="flex-grow:1; margin-left:15px;">
-                    <h4 style="margin:0">${item.product.name}</h4>
-                    <p style="margin:5px 0; font-size:0.9rem">Qté: ${item.quantity} | Total: ${calc.total.toFixed(2)} €</p>
+                    <h4 style="margin:0; font-size:0.95rem;">${item.product.name}</h4>
+                    <p style="margin:5px 0; font-size:0.85rem; color:var(--text-muted);">Qté: ${item.quantity} | Total: ${calc.total.toFixed(2)} €</p>
                 </div>
-                <button onclick="removeFromCart(${item.id})" style="background:#ff4757; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">X</button>
+                <button onclick="removeFromCart(${item.id})" style="background:none; border:none; color:var(--primary); font-weight:bold; cursor:pointer; padding:10px;">✕</button>
             </div>`;
         container.appendChild(div);
     });

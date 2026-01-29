@@ -103,3 +103,21 @@
     }
     .product-image-wrapper { height: 200px; }
 }
+
+/* Animation de chargement fluide pour les images */
+img {
+    opacity: 0;
+    animation: fadeInImg 0.8s forwards;
+    background-color: #f0f0f0; /* Couleur d'attente */
+}
+
+@keyframes fadeInImg {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Optimisation de la grille pour éviter les sauts de page */
+.product-image-wrapper {
+    aspect-ratio: 4 / 3; /* Réserve l'espace avant que l'image arrive */
+    background: #eee;
+}
