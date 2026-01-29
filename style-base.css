@@ -1,3 +1,7 @@
+img {
+    image-orientation: from-image; /* Utilise les données de la photo pour la remettre droite */
+}
+
 :root {
     --primary: #a44c3a;      /* Terracotta */
     --primary-light: #c46452;

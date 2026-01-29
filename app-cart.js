@@ -110,8 +110,16 @@ function handleSubmitReservation(e) {
     
     body += `\nEmail client: ${email}\nLivraison: ${delivery ? 'OUI' : 'NON'}\nAdresse: ${address}\nMessage: ${message}`;
 
-    document.getElementById('hidden-replyto').value = email;
+    // CONFIGURATION DE L'ENVOI
+    document.getElementById('hidden-replyto').value = email; // Pour que vous puissiez lui répondre directement
     document.getElementById('hidden-subject').value = `Nouvelle demande de réservation - ${email}`;
     document.getElementById('email-body-content').value = body;
+    
+    // COPIE POUR LE CLIENT : On met l'email du client dans le champ CC
+    const ccField = document.getElementById('hidden-cc');
+    if (ccField) {
+        ccField.value = email; 
+    }
+
     e.target.submit();
 }
