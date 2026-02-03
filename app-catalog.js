@@ -37,7 +37,8 @@ function renderProductList(products) {
     container.innerHTML = products.map(p => `
         <div class="product-card">
             <div class="product-image-wrapper" onclick="window.openModal(${p.id})">
-                <img src="${p.main_image}" alt="${p.name}" loading="lazy">
+                <!-- SEO : Alt tag dynamique avec le nom du produit et la localisation -->
+                <img src="${p.main_image}" alt="Location ${p.name} - Angers Maine-et-Loire 49" loading="lazy">
                 <div class="image-overlay"><span>DÉCOUVRIR</span></div>
             </div>
             <div class="product-card-body">

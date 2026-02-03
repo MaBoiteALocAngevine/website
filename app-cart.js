@@ -23,8 +23,14 @@ function addToCartFromModal() {
     const start = document.getElementById('modal-start-date').value;
     const end = document.getElementById('modal-end-date').value;
 
-    if (start && end && new Date(start) > new Date(end)) {
-        window.showToast("Erreur : Dates incorrectes");
+    // SÉCURITÉ RENFORCÉE
+    if (!start || !end) {
+        window.showToast("⚠️ Veuillez choisir les dates de location.");
+        return;
+    }
+
+    if (new Date(start) >= new Date(end)) {
+        window.showToast("⚠️ La date de fin doit être après la date de début.");
         return;
     }
 
@@ -33,7 +39,6 @@ function addToCartFromModal() {
     updateCartUI();
     window.showToast(`✅ ${window.selectedProductForModal.name} ajouté !`);
 }
-
 function updateCartUI() {
     const count = document.getElementById('cart-count');
     if (count) count.textContent = panier.length;
