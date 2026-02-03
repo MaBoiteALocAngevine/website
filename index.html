@@ -212,12 +212,14 @@
 <!-- ========================================== -->
     <!-- COMPOSANTS : MODALE PRODUIT                -->
     <!-- ========================================== -->
+    <!-- ========================================== -->
+    <!-- COMPOSANTS : MODALE PRODUIT                -->
+    <!-- ========================================== -->
     <div id="product-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="window.closeModal()">×</span>
             <h3 id="modal-title">Détails du produit</h3>
             <div class="modal-body">
-                <!-- NOUVEAU : Conteneur Slider Modale -->
                 <div class="modal-slider-container">
                     <button id="modal-prev-btn" class="modal-nav-btn" onclick="window.changeModalImage(-1)">❮</button>
                     <img id="modal-image" src="" alt="Produit">
@@ -233,19 +235,22 @@
                 </div>
 
                 <div class="modal-form">
+                    <!-- Quantité seule sur sa ligne -->
+                    <div style="margin-bottom: 15px;">
+                        <label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Quantité</label>
+                        <input type="number" id="modal-quantity" value="1" min="1" style="width:100%;">
+                    </div>
+                    
+                    <!-- Dates côte à côte -->
                     <div class="modal-form-grid">
                         <div>
-                            <label>Quantité</label>
-                            <input type="number" id="modal-quantity" value="1" min="1">
-                        </div>
-                        <div>
-                            <label>Début</label>
+                            <label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Début de location</label>
                             <input type="date" id="modal-start-date">
                         </div>
-                    </div>
-                    <div style="margin-top:15px;">
-                        <label>Fin de location</label>
-                        <input type="date" id="modal-end-date">
+                        <div>
+                            <label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Fin de location</label>
+                            <input type="date" id="modal-end-date">
+                        </div>
                     </div>
                 </div>
                 

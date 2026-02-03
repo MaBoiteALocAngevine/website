@@ -1,6 +1,18 @@
 let modalSlideIndex = 0;
 let currentModalImages = [];
+let slideIndex = 0;
+let carouselInterval;
 
+// --- NOTIFICATIONS ---
+window.showToast = function(message) {
+    const toast = document.getElementById("toast-notification");
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 3000);
+};
+
+// --- MODALE PRODUIT ---
 window.openModal = function(productId) { 
     const modal = document.getElementById('product-modal');
     if (!window.allProductsData) return;
@@ -8,7 +20,7 @@ window.openModal = function(productId) {
     const product = window.allProductsData.find(p => p.id == productId);
     if (product) {
         window.selectedProductForModal = product;
-        currentModalImages = product.images; // Liste des photos
+        currentModalImages = product.images;
         modalSlideIndex = 0;
 
         document.getElementById('modal-title').textContent = product.name;
@@ -16,7 +28,7 @@ window.openModal = function(productId) {
         document.getElementById('modal-product-price-value').innerHTML = `${product.price} <small>TTC</small>`;
         document.getElementById('modal-product-caution-value').innerHTML = `${product.caution} <small>TTC</small>`;
         
-        updateModalImage(); // Affiche la première image et les flèches
+        updateModalImage();
 
         document.getElementById('modal-quantity').value = 1;
         modal.style.display = "flex";
@@ -24,21 +36,22 @@ window.openModal = function(productId) {
     }
 };
 
-// Fonction pour changer l'image dans la modale
 function updateModalImage() {
     const imgElement = document.getElementById('modal-image');
     const prevBtn = document.getElementById('modal-prev-btn');
     const nextBtn = document.getElementById('modal-next-btn');
     const counter = document.getElementById('modal-image-counter');
 
+    if (!imgElement) return;
     imgElement.src = currentModalImages[modalSlideIndex];
 
-    // On n'affiche les flèches que s'il y a plusieurs images
     const hasMultiple = currentModalImages.length > 1;
-    prevBtn.style.display = hasMultiple ? 'flex' : 'none';
-    nextBtn.style.display = hasMultiple ? 'flex' : 'none';
-    counter.style.display = hasMultiple ? 'block' : 'none';
-    counter.textContent = `${modalSlideIndex + 1} / ${currentModalImages.length}`;
+    if (prevBtn) prevBtn.style.display = hasMultiple ? 'flex' : 'none';
+    if (nextBtn) nextBtn.style.display = hasMultiple ? 'flex' : 'none';
+    if (counter) {
+        counter.style.display = hasMultiple ? 'block' : 'none';
+        counter.textContent = `${modalSlideIndex + 1} / ${currentModalImages.length}`;
+    }
 }
 
 window.changeModalImage = function(n) {
@@ -53,21 +66,41 @@ window.closeModal = function() {
     document.body.style.overflow = 'auto';
 };
 
-// --- CARROUSEL ACCUEIL (Inchangé) ---
-let slideIndex = 0;
+// --- CARROUSEL ACCUEIL ---
 window.initCarouselUI = function(images) {
     const track = document.getElementById('carousel-track');
-    if (!track || !images.length) return;
-    track.innerHTML = images.map(img => `<div class="carousel-slide"><img src="${img}"></div>`).join('');
+    const indicators = document.getElementById('carousel-indicators');
+    if (!track || !images || images.length === 0) return;
+
+    track.innerHTML = images.map(img => `<div class="carousel-slide"><img src="${img}" alt="Illustration"></div>`).join('');
+    
+    if (indicators) {
+        indicators.innerHTML = images.map((_, i) => `<span onclick="window.showSlide(${i}, ${images.length})"></span>`).join('');
+    }
+    
+    slideIndex = 0;
     window.showSlide(0, images.length);
+    
+    clearInterval(carouselInterval);
+    carouselInterval = setInterval(() => {
+        window.moveCarousel(1);
+    }, 5000);
 };
+
 window.showSlide = function(index, total) {
     const track = document.getElementById('carousel-track');
-    if (!track) return;
+    if (!track || total === 0) return;
+    
     slideIndex = (index + total) % total;
     track.style.transform = `translateX(-${slideIndex * 100}%)`;
+    
+    const dots = document.querySelectorAll('#carousel-indicators span');
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === slideIndex));
 };
+
 window.moveCarousel = function(n) {
     const slides = document.querySelectorAll('.carousel-slide');
-    if (slides.length) window.showSlide(slideIndex + n, slides.length);
+    if (slides.length > 0) {
+        window.showSlide(slideIndex + n, slides.length);
+    }
 };
