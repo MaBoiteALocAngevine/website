@@ -18,7 +18,7 @@ function calculateItemPrice(item) {
     return { total: val * mult * item.quantity, multiplier: mult, isDaily };
 }
 
-function addToCartFromModal() {
+window.addToCartFromModal = function() {
     const qty = parseInt(document.getElementById('modal-quantity').value) || 1;
     const start = document.getElementById('modal-start-date').value;
     const end = document.getElementById('modal-end-date').value;
@@ -28,22 +28,17 @@ function addToCartFromModal() {
         return;
     }
 
-    if (new Date(start) >= new Date(end)) {
-        window.showToast("⚠️ La date de fin doit être après la date de début.");
-        return;
-    }
-
     panier.push({ id: Date.now(), product: window.selectedProductForModal, quantity: qty, startDate: start, endDate: end });
     window.closeModal();
-    updateCartUI();
+    window.updateCartUI();
     window.showToast(`✅ ${window.selectedProductForModal.name} ajouté !`);
-}
+};
 
-function updateCartUI() {
+window.updateCartUI = function() {
     const count = document.getElementById('cart-count');
     if (count) count.textContent = panier.length;
     renderCartSummary();
-}
+};
 
 function renderCartSummary() {
     let totalRent = 0, totalCaution = 0, totalQty = 0;
@@ -64,7 +59,7 @@ function renderCartSummary() {
     }
 }
 
-function renderCart() {
+window.renderCart = function() {
     const container = document.getElementById('cart-items-container');
     if (!container) return;
     container.innerHTML = panier.length ? '' : '<p style="text-align:center; padding:20px; color:var(--text-muted);">Votre panier est vide.</p>';
@@ -84,15 +79,44 @@ function renderCart() {
             </div>`;
         container.appendChild(div);
     });
-}
+};
 
-function removeFromCart(id) {
+window.removeFromCart = function(id) {
     panier = panier.filter(i => i.id !== id);
-    renderCart();
-    updateCartUI();
-}
+    window.renderCart();
+    window.updateCartUI();
+};
 
-function handleDeliveryChange() {
+window.handleDeliveryChange = function() {
     const check = document.getElementById('delivery-checkbox').checked;
     const addr = document.getElementById('delivery-address-group');
-    if (addr) addr
+    if (addr) addr.style.display = check ? 'block' : 'none';
+};
+
+window.handleSubmitReservation = function(e) {
+    e.preventDefault();
+    const email = document.getElementById('user-email').value.trim();
+    const message = document.getElementById('reservation-message').value || "Aucun message particulier.";
+    const delivery = document.getElementById('delivery-checkbox').checked;
+    const address = delivery ? document.getElementById('delivery-address').value : "Retrait par le client (Rives du Loir)";
+    
+    let totalRent = 0;
+    let totalCaution = 0;
+    let articlesList = "";
+
+    panier.forEach(i => {
+        const c = calculateItemPrice(i);
+        totalRent += c.total;
+        totalCaution += parsePrice(i.product.caution) * i.quantity;
+        articlesList += `\n■ ${i.product.name.toUpperCase()}\n  Quantité : x${i.quantity}\n  Période  : du ${i.startDate} au ${i.endDate}\n  Sous-total : ${c.total.toFixed(2)} €\n  --------------------------------------`;
+    });
+    
+    let body = `==========================================\n   NOUVELLE DEMANDE DE RÉSERVATION\n==========================================\n\nCOORDONNÉES DU CLIENT :\n------------------------------------------\n📧 Email : ${email}\n🚚 Livraison : ${delivery ? "OUI" : "NON"}\n📍 Adresse : ${address}\n\nDÉTAILS :\n------------------------------------------${articlesList}\n\nRÉCAPITULATIF :\n------------------------------------------\n💰 TOTAL LOCATION : ${totalRent.toFixed(2)} € TTC\n🛡️ TOTAL CAUTIONS : ${totalCaution.toFixed(2)} € TTC\n\nMESSAGE :\n"${message}"\n\n==========================================\nMa boîte à loc' Angevine\n==========================================`;
+
+    document.getElementById('hidden-replyto').value = email;
+    document.getElementById('hidden-cc').value = email;
+    document.getElementById('hidden-subject').value = `Demande de réservation - ${email}`;
+    document.getElementById('email-body-content').value = body;
+
+    e.target.submit();
+};
