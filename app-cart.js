@@ -100,7 +100,6 @@ function handleSubmitReservation(e) {
     const delivery = document.getElementById('delivery-checkbox').checked;
     const address = delivery ? document.getElementById('delivery-address').value : "Retrait par le client (Rives du Loir)";
     
-    // Calcul des totaux pour le mail
     let totalRent = 0;
     let totalCaution = 0;
     let articlesList = "";
@@ -118,7 +117,6 @@ function handleSubmitReservation(e) {
   --------------------------------------`;
     });
     
-    // CONSTRUCTION DU CORPS DU MAIL (Design "Pro")
     let body = `
 ==========================================
    NOUVELLE DEMANDE DE RÉSERVATION
@@ -149,7 +147,6 @@ Rives-du-Loir-en-Anjou | 06 52 98 23 48
 ==========================================
     `;
 
-    // REMPLISSAGE DES CHAMPS CACHÉS
     document.getElementById('hidden-replyto').value = email;
     document.getElementById('hidden-cc').value = email;
     document.getElementById('hidden-subject').value = `Demande de réservation - ${email}`;
