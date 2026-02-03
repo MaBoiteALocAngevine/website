@@ -52,11 +52,9 @@ function renderCartSummary() {
     document.getElementById('cart-total-estimate').textContent = `${totalRent.toFixed(2).replace('.', ',')} € TTC`;
     document.getElementById('cart-total-caution').textContent = `${totalCaution.toFixed(2).replace('.', ',')} € TTC`;
     
-    // FIX : On cherche le bouton par sa classe réelle dans le HTML
     const validateBtn = document.querySelector('#reservation-form .primary-action-btn');
     if (validateBtn) {
         const email = document.getElementById('user-email').value;
-        // Le bouton s'active si le panier n'est pas vide ET que l'email contient un @
         validateBtn.disabled = (panier.length === 0 || !email.includes('@'));
     }
 }
@@ -97,7 +95,7 @@ function handleDeliveryChange() {
 
 function handleSubmitReservation(e) {
     e.preventDefault();
-    const email = document.getElementById('user-email').value;
+    const email = document.getElementById('user-email').value.trim();
     const message = document.getElementById('reservation-message').value;
     const delivery = document.getElementById('delivery-checkbox').checked;
     const address = delivery ? document.getElementById('delivery-address').value : 'N/A';
@@ -111,15 +109,10 @@ function handleSubmitReservation(e) {
     body += `\nEmail client: ${email}\nLivraison: ${delivery ? 'OUI' : 'NON'}\nAdresse: ${address}\nMessage: ${message}`;
 
     // CONFIGURATION DE L'ENVOI
-    document.getElementById('hidden-replyto').value = email; // Pour que vous puissiez lui répondre directement
+    document.getElementById('hidden-replyto').value = email;
+    document.getElementById('hidden-cc').value = email; // On force la copie ici
     document.getElementById('hidden-subject').value = `Nouvelle demande de réservation - ${email}`;
     document.getElementById('email-body-content').value = body;
-    
-    // COPIE POUR LE CLIENT : On met l'email du client dans le champ CC
-    const ccField = document.getElementById('hidden-cc');
-    if (ccField) {
-        ccField.value = email; 
-    }
 
     e.target.submit();
 }
