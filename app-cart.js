@@ -96,22 +96,63 @@ function handleDeliveryChange() {
 function handleSubmitReservation(e) {
     e.preventDefault();
     const email = document.getElementById('user-email').value.trim();
-    const message = document.getElementById('reservation-message').value;
+    const message = document.getElementById('reservation-message').value || "Aucun message particulier.";
     const delivery = document.getElementById('delivery-checkbox').checked;
-    const address = delivery ? document.getElementById('delivery-address').value : 'N/A';
+    const address = delivery ? document.getElementById('delivery-address').value : "Retrait par le client (Rives du Loir)";
     
-    let body = "RECAPITULATIF DE LA DEMANDE :\n";
+    // Calcul des totaux pour le mail
+    let totalRent = 0;
+    let totalCaution = 0;
+    let articlesList = "";
+
     panier.forEach(i => {
         const c = calculateItemPrice(i);
-        body += `- ${i.product.name} (x${i.quantity}) | Période: ${i.startDate || 'N/A'} au ${i.endDate || 'N/A'} | Est: ${c.total.toFixed(2)}€\n`;
+        totalRent += c.total;
+        totalCaution += parsePrice(i.product.caution) * i.quantity;
+        
+        articlesList += `
+■ ${i.product.name.toUpperCase()}
+  Quantité : x${i.quantity}
+  Période  : du ${i.startDate || '?'} au ${i.endDate || '?'}
+  Sous-total : ${c.total.toFixed(2)} €
+  --------------------------------------`;
     });
     
-    body += `\nEmail client: ${email}\nLivraison: ${delivery ? 'OUI' : 'NON'}\nAdresse: ${address}\nMessage: ${message}`;
+    // CONSTRUCTION DU CORPS DU MAIL (Design "Pro")
+    let body = `
+==========================================
+   NOUVELLE DEMANDE DE RÉSERVATION
+==========================================
 
-    // CONFIGURATION DE L'ENVOI
+COORDONNÉES DU CLIENT :
+------------------------------------------
+📧 Email : ${email}
+🚚 Livraison & Montage : ${delivery ? "OUI (À chiffrer sur devis)" : "NON (Retrait dépôt)"}
+📍 Adresse : ${address}
+
+DÉTAILS DE LA COMMANDE :
+------------------------------------------
+${articlesList}
+
+RÉCAPITULATIF FINANCIER (ESTIMATION) :
+------------------------------------------
+💰 TOTAL LOCATION : ${totalRent.toFixed(2)} € TTC
+🛡️ TOTAL CAUTIONS : ${totalCaution.toFixed(2)} € TTC
+
+MESSAGE / PRÉCISIONS :
+------------------------------------------
+"${message}"
+
+==========================================
+Ma boîte à loc' Angevine
+Rives-du-Loir-en-Anjou | 06 52 98 23 48
+==========================================
+    `;
+
+    // REMPLISSAGE DES CHAMPS CACHÉS
     document.getElementById('hidden-replyto').value = email;
-    document.getElementById('hidden-cc').value = email; // On force la copie ici
-    document.getElementById('hidden-subject').value = `Nouvelle demande de réservation - ${email}`;
+    document.getElementById('hidden-cc').value = email;
+    document.getElementById('hidden-subject').value = `Demande de réservation - ${email}`;
     document.getElementById('email-body-content').value = body;
 
     e.target.submit();
