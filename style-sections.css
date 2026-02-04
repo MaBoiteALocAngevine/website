@@ -10,8 +10,45 @@
 .modality-card h4 { font-size: 1.2rem; margin-top: 0; }
 
 /* ========================================== */
-/* CATALOGUE GRID                             */
+/* CATALOGUE GRID (AVEC ONGLETS)              */
 /* ========================================== */
+
+/* --- LE NOUVEAU BLOC ONGLETS ICI --- */
+.cat-nav { 
+    display: flex; 
+    justify-content: center; 
+    gap: 5px; 
+    margin: 40px 0 30px; 
+    border-bottom: 1px solid var(--border); 
+    padding-bottom: 0;
+}
+
+.cat-nav button { 
+    background: none; 
+    border: 1px solid transparent;
+    padding: 12px 25px; 
+    border-radius: 12px 12px 0 0; 
+    cursor: pointer; 
+    font-family: 'Poppins', sans-serif; 
+    font-weight: 600; 
+    color: var(--text-muted); 
+    transition: 0.3s;
+    position: relative;
+    bottom: -1px; 
+}
+
+.cat-nav button:hover {
+    color: var(--primary);
+}
+
+.cat-nav button.active { 
+    background: var(--surface); 
+    border: 1px solid var(--border);
+    border-bottom: 1px solid var(--surface); 
+    color: var(--primary); 
+}
+/* --- FIN DU BLOC ONGLETS --- */
+
 #search-bar { 
     max-width: 500px; 
     margin: 0 auto 40px auto; 
@@ -34,7 +71,6 @@
     box-shadow: 0 8px 20px rgba(164, 76, 58, 0.1);
 }
 
-/* LA GRILLE (3 colonnes sur PC) */
 #product-list-container { 
     display: grid; 
     grid-template-columns: repeat(3, 1fr); 
@@ -42,7 +78,6 @@
     margin-top: 30px;
 }
 
-/* LES CARTES PRODUITS */
 .product-card { 
     background: var(--surface); 
     border-radius: var(--radius); 
@@ -84,14 +119,12 @@
 /* RESPONSIVITÉ (Tablette & Mobile)           */
 /* ========================================== */
 
-/* Tablettes : 2 colonnes */
 @media (max-width: 1024px) and (min-width: 769px) {
     #product-list-container { 
         grid-template-columns: repeat(2, 1fr); 
     }
 }
 
-/* Mobiles : 1 colonne */
 @media (max-width: 768px) {
     .contact-grid { grid-template-columns: 1fr; }
     .hero-content { padding: 40px 20px; }
@@ -102,13 +135,14 @@
         gap: 20px; 
     }
     .product-image-wrapper { height: 200px; }
+    .cat-nav button { padding: 10px 15px; font-size: 0.85rem; }
 }
 
 /* Animation de chargement fluide pour les images */
 img {
     opacity: 0;
     animation: fadeInImg 0.8s forwards;
-    background-color: #f0f0f0; /* Couleur d'attente */
+    background-color: #f0f0f0; 
 }
 
 @keyframes fadeInImg {
@@ -116,8 +150,7 @@ img {
     to { opacity: 1; }
 }
 
-/* Optimisation de la grille pour éviter les sauts de page */
 .product-image-wrapper {
-    aspect-ratio: 4 / 3; /* Réserve l'espace avant que l'image arrive */
+    aspect-ratio: 4 / 3; 
     background: #eee;
 }

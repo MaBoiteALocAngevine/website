@@ -99,6 +99,7 @@ window.handleSubmitReservation = function(e) {
     const message = document.getElementById('reservation-message').value || "Aucun message particulier.";
     const delivery = document.getElementById('delivery-checkbox').checked;
     const address = delivery ? document.getElementById('delivery-address').value : "Retrait par le client (Rives du Loir)";
+    const marketing = document.getElementById('marketing-consent').checked ? "OUI ✅" : "NON ❌";
     
     let totalRent = 0;
     let totalCaution = 0;
@@ -111,7 +112,7 @@ window.handleSubmitReservation = function(e) {
         articlesList += `\n■ ${i.product.name.toUpperCase()}\n  Quantité : x${i.quantity}\n  Période  : du ${i.startDate} au ${i.endDate}\n  Sous-total : ${c.total.toFixed(2)} €\n  --------------------------------------`;
     });
     
-    let body = `==========================================\n   NOUVELLE DEMANDE DE RÉSERVATION\n==========================================\n\nCOORDONNÉES DU CLIENT :\n------------------------------------------\n📧 Email : ${email}\n🚚 Livraison : ${delivery ? "OUI" : "NON"}\n📍 Adresse : ${address}\n\nDÉTAILS :\n------------------------------------------${articlesList}\n\nRÉCAPITULATIF :\n------------------------------------------\n💰 TOTAL LOCATION : ${totalRent.toFixed(2)} € TTC\n🛡️ TOTAL CAUTIONS : ${totalCaution.toFixed(2)} € TTC\n\nMESSAGE :\n"${message}"\n\n==========================================\nMa boîte à loc' Angevine\n==========================================`;
+    let body = `==========================================\n   NOUVELLE DEMANDE DE RÉSERVATION\n==========================================\n\nCOORDONNÉES DU CLIENT :\n------------------------------------------\n📧 Email : ${email}\n🚚 Livraison : ${delivery ? "OUI" : "NON"}\n📍 Adresse : ${address}\n📢 Inscription Nouveautés : ${marketing}\n\nDÉTAILS :\n------------------------------------------${articlesList}\n\nRÉCAPITULATIF :\n------------------------------------------\n💰 TOTAL LOCATION : ${totalRent.toFixed(2)} € TTC\n🛡️ TOTAL CAUTIONS : ${totalCaution.toFixed(2)} € TTC\n\nMESSAGE :\n"${message}"\n\n==========================================\nMa boîte à loc' Angevine\n==========================================`;
 
     document.getElementById('hidden-replyto').value = email;
     document.getElementById('hidden-cc').value = email;

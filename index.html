@@ -57,20 +57,44 @@
             <div id="product-list-container"><p id="loading-message">Chargement du catalogue...</p></div>
         </div>
 
+        <!-- ========================================== -->
+        <!-- SECTION PANIER / RÉSERVATION               -->
+        <!-- ========================================== -->
         <div id="panier-section" class="content-section">
-            <h2>Votre Demande de Réservation</h2>
+            <h2 style="text-align:center;">Votre Demande de Réservation</h2>
             <div id="cart-items-container"></div>
+            
             <div id="cart-summary" style="background:var(--surface); padding:25px; border-radius:20px; border:1px solid var(--border); box-shadow:var(--shadow); margin-top:20px;">
                 <form id="reservation-form" method="POST" action="https://formsubmit.co/maboitealocangevine@gmail.com">
-                    <label><input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()"> Demander livraison & montage (Sur devis)</label>
-                    <div id="delivery-address-group" style="display:none; margin:15px 0;"><textarea id="delivery-address" placeholder="Adresse complète de livraison" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border);"></textarea></div>
+                    
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label style="cursor:pointer;"><input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()"> Demander livraison & montage (Sur devis)</label>
+                    </div>
+                    
+                    <div id="delivery-address-group" style="display:none; margin:15px 0;">
+                        <textarea id="delivery-address" placeholder="Adresse complète de livraison" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border); font-family:inherit;"></textarea>
+                    </div>
+
                     <div style="margin:20px 0; padding:15px; background:var(--bg); border-radius:15px; border:1px solid var(--border);">
                         <p>Estimation Location : <strong id="cart-total-estimate">0,00 €</strong></p>
                         <p>Total Cautions : <strong id="cart-total-caution">0,00 €</strong></p>
                     </div>
-                    <input type="email" id="user-email" name="Email" required placeholder="votre@email.com" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); margin-bottom:15px;">
-                    <textarea id="reservation-message" placeholder="Précisions (horaires, accès...)" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); height:80px;"></textarea>
+
+                    <!-- Note de confidentialité -->
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px; font-style: italic;">
+                        🛡️ <strong>Confidentialité :</strong> Vos informations ne sont pas stockées sur ce site. Elles nous sont transmises directement par e-mail sécurisé pour le traitement exclusif de votre demande.
+                    </p>
+
+                    <input type="email" id="user-email" name="Email" required placeholder="votre@email.com" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); margin-bottom:15px; font-family:inherit;">
                     
+                    <textarea id="reservation-message" placeholder="Précisions (horaires, accès...)" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); height:80px; font-family:inherit; margin-bottom:15px;"></textarea>
+                    
+                    <!-- Case à cocher Marketing -->
+                    <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; cursor: pointer; margin-bottom: 20px;">
+                        <input type="checkbox" id="marketing-consent" name="Consentement_Marketing" style="margin-top: 4px;">
+                        <span>Je souhaite être informé(e) des nouveautés et des offres de Ma boîte à loc' Angevine (enregistrement de mes coordonnées).</span>
+                    </label>
+
                     <input type="hidden" name="_next" value="https://maboitealocangevine.github.io/website/merci.html">
                     <input type="hidden" name="_replyto" id="hidden-replyto">
                     <input type="hidden" name="_cc" id="hidden-cc">
@@ -79,7 +103,7 @@
                     <input type="hidden" name="_captcha" value="false">
                     <textarea name="RÉCAPITULATIF_DEMANDE" id="email-body-content" style="display:none;"></textarea>
                     
-                    <button type="submit" class="primary-action-btn" style="width:100%; margin-top:20px;" disabled>Envoyer ma demande</button>
+                    <button type="submit" class="primary-action-btn" style="width:100%;" disabled>Envoyer ma demande</button>
                 </form>
             </div>
         </div>
