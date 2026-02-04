@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <!-- Google Tag Manager (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-K1WY9LK5SS"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -8,17 +9,51 @@
       gtag('js', new Date());
       gtag('config', 'G-K1WY9LK5SS');
     </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ma boîte à loc' Angevine | Location de matériel 49</title>
+    
+    <!-- SEO & MÉTA-DONNÉES -->
+    <title>Ma boîte à loc' Angevine | Location de matériel de réception et équipements en Anjou</title>
+    <meta name="description" content="Location de matériel de réception, fête et équipements de qualité à Rives-du-Loir-en-Anjou. Service de proximité réactif pour particuliers et pros en Maine-et-Loire.">
+    <link rel="canonical" href="https://maboitealocangevine.github.io/website/">
+
+    <!-- CSS DÉCOUPÉ -->
     <link rel="stylesheet" href="style-base.css">
     <link rel="stylesheet" href="style-components.css">
     <link rel="stylesheet" href="style-sections.css">
+
+    <!-- POLICES -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- DONNÉES STRUCTURÉES -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Ma boîte à loc' Angevine",
+      "image": "https://maboitealocangevine.github.io/website/images/table.webp",
+      "url": "https://maboitealocangevine.github.io/website/",
+      "telephone": "+33652982348",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "5 impasse les Rochebruyeres",
+        "addressLocality": "Rives-du-Loir-en-Anjou",
+        "postalCode": "49140",
+        "addressRegion": "Pays de la Loire",
+        "addressCountry": "FR"
+      }
+    }
+    </script>
 </head>
 <body>
+
     <header>
-        <div class="logo-brand"><span style="font-family:'Poppins'; font-weight:700; color:var(--primary); text-transform:uppercase;">Ma boîte à loc' Angevine</span></div>
+        <div class="logo-brand">
+            <span style="font-family: 'Poppins'; font-weight: 700; color: var(--primary); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">
+                Ma boîte à loc' Angevine
+            </span>
+        </div>
         <nav class="main-nav">
             <ul>
                 <li><a href="#" onclick="showSection('accueil')" id="nav-accueil">Accueil</a></li>
@@ -26,100 +61,159 @@
                 <li><a href="#" onclick="showSection('contact')" id="nav-contact">Contact</a></li>
             </ul>
         </nav>
-        <div class="utility-icons"><a href="#" id="cart-link" onclick="showSection('panier')">Demande (<span id="cart-count">0</span>)</a></div>
+        <div class="utility-icons">
+            <a href="#" id="cart-link" onclick="showSection('panier')">
+                Demande (<span id="cart-count">0</span>) 
+            </a>
+        </div>
     </header>
 
     <main>
         <nav class="cat-nav" id="catalogue-nav" style="display: none;"></nav>
 
+        <!-- ========================================== -->
+        <!-- SECTION ACCUEIL                            -->
+        <!-- ========================================== -->
         <div id="accueil-section" class="content-section">
             <div class="hero-content">
-                <h1>Location de Matériel de Réception et Équipements dans le 49</h1>
-                <p>Basés à <strong>Rives-du-Loir-en-Anjou</strong>, nous proposons un service local de location d'équipements de qualité en <strong>Maine-et-Loire</strong>.</p>
-                <button onclick="showSection('catalogue')" class="primary-action-btn" style="margin-top:20px;">Découvrir le Catalogue</button>
+                <h1>Location de Matériel de Réception et Équipements en Maine-et-Loire</h1>
+                <p>Basés à <strong>Rives-du-Loir-en-Anjou</strong>, nous mettons à votre disposition un large choix d'équipements pour vos événements et travaux. Que vous ayez besoin d'une <strong>tonnelle</strong> pour une réception à <strong>Angers</strong>, de <strong>tables</strong> pour une fête de famille à <strong>Seiches-sur-le-Loir</strong>, ou d'<strong>outillage</strong> performant pour vos chantiers en Anjou, nous vous accompagnons avec des solutions flexibles et de qualité.</p>
+                <div style="margin-top: 30px;">
+                    <button onclick="showSection('catalogue')" class="primary-action-btn">Découvrir le Catalogue</button>
+                </div>
             </div>
+            
             <div class="carousel-container" id="carousel-container">
                 <div class="carousel-track" id="carousel-track"></div>
                 <button class="carousel-nav-btn" id="prev-btn" onclick="moveCarousel(-1)">❮</button>
                 <button class="carousel-nav-btn" id="next-btn" onclick="moveCarousel(1)">❯</button>
                 <div id="carousel-indicators"></div>
             </div>
+
             <div class="modality-cards-container">
-                <div class="modality-card"><h4>Paiement & Caution</h4><p>Le règlement s'effectue par espèces ou virement instantané. Une caution est demandée et restituée après vérification.</p></div>
-                <div class="modality-card"><h4>Livraison & Montage</h4><p>Simplifiez votre logistique ! Service optionnel de livraison et montage sur devis.</p></div>
-                <div class="modality-card"><h4>Facturation</h4><p>Professionnels ou associations ? Une facture détaillée est émise sur simple demande.</p></div>
+                <div class="modality-card">
+                    <h4>Paiement & Caution</h4>
+                    <p>Le règlement s'effectue par <strong>espèces</strong> ou <strong>virement bancaire instantané</strong>. Une caution de garantie est demandée et restituée après vérification du matériel.</p>
+                </div>
+                <div class="modality-card">
+                    <h4>Livraison & Montage</h4>
+                    <p>Simplifiez votre logistique ! Nous proposons un service optionnel de <strong>livraison</strong> et de <strong>montage</strong> directement sur le lieu de votre événement (sur devis).</p>
+                </div>
+                <div class="modality-card">
+                    <h4>Facturation</h4>
+                    <p>Professionnels ou associations ? Une <strong>facture détaillée</strong> est émise pour chaque location sur simple demande.</p>
+                </div>
             </div>
+
             <div class="seo-text-block" style="margin-top: 50px; padding: 30px; background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); font-size: 0.95rem;">
-                <h2 style="font-size: 1.3rem; margin-top: 0;">Votre partenaire de confiance pour la location en Anjou</h2>
-                <p>Ma boîte à loc' Angevine est spécialisée dans la <strong>location de matériel dans le 49</strong>. Nous couvrons une large zone d'intervention autour d'<strong>Angers</strong>.</p>
+                <h2 style="font-size: 1.3rem; margin-top: 0;">La qualité et la réactivité au cœur de notre service</h2>
+                <p>Chez <strong>Ma boîte à loc' Angevine</strong>, nous sélectionnons rigoureusement chaque équipement pour garantir votre entière satisfaction. Notre matériel est entretenu, nettoyé et vérifié avant chaque mise à disposition.</p>
+                <p>Conscients des impératifs de vos projets, nous nous engageons à traiter vos demandes avec la plus grande <strong>réactivité</strong> pour vous offrir une expérience de location sereine, professionnelle et de proximité en Anjou.</p>
             </div>
         </div>
 
+        <!-- SECTION CATALOGUE -->
         <div id="catalogue-section" class="content-section">
-            <h2 style="text-align:center;">Notre Catalogue</h2>
-            <div id="search-bar"><input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Rechercher un équipement..."></div>
-            <div id="product-list-container"><p id="loading-message">Chargement du catalogue...</p></div>
+            <h2 style="text-align:center;">Notre Catalogue de Location</h2>
+            <div id="search-bar">
+                <input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Rechercher un équipement...">
+            </div>
+            <div id="product-list-container">
+                <p id="loading-message">Chargement du catalogue...</p>
+            </div>
         </div>
 
+        <!-- SECTION PANIER -->
         <div id="panier-section" class="content-section">
             <h2 style="text-align:center;">Votre Demande de Réservation</h2>
             <div id="cart-items-container"></div>
-            <div id="cart-summary" style="background:var(--surface); padding:25px; border-radius:20px; border:1px solid var(--border); box-shadow:var(--shadow); margin-top:20px;">
+            
+            <div id="cart-summary" style="background: var(--surface); padding: 25px; border-radius: 20px; margin-top: 20px; border: 1px solid var(--border); box-shadow: var(--shadow);">
                 <form id="reservation-form" method="POST" action="https://formsubmit.co/maboitealocangevine@gmail.com">
-                    <label style="cursor:pointer;"><input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()"> Demander livraison & montage (Sur devis)</label>
-                    <div id="delivery-address-group" style="display:none; margin:15px 0;"><textarea id="delivery-address" placeholder="Adresse complète de livraison" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border); font-family:inherit;"></textarea></div>
-                    <div style="margin:20px 0; padding:15px; background:var(--bg); border-radius:15px; border:1px solid var(--border);">
-                        <p>Estimation Location : <strong id="cart-total-estimate">0,00 €</strong></p>
-                        <p>Total Cautions : <strong id="cart-total-caution">0,00 €</strong></p>
-                    </div>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px; font-style: italic;">🛡️ Confidentialité : Vos informations ne sont pas stockées sur ce site.</p>
-                    <input type="email" id="user-email" name="Email" required placeholder="votre@email.com" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); margin-bottom:15px; font-family:inherit;">
-                    <textarea id="reservation-message" placeholder="Précisions (horaires, accès...)" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); height:80px; font-family:inherit; margin-bottom:15px;"></textarea>
-                    <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; cursor: pointer; margin-bottom: 20px;"><input type="checkbox" id="marketing-consent" name="Consentement_Marketing"><span>Je souhaite être informé(e) des nouveautés et des offres.</span></label>
                     
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label style="cursor:pointer;"><input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()" name="Livraison"> Demander livraison & montage (Sur devis)</label>
+                    </div>
+                    
+                    <div id="delivery-address-group" style="display:none; margin-bottom: 20px;">
+                        <textarea id="delivery-address" name="Adresse de livraison" placeholder="Indiquez l'adresse complète pour la livraison" style="width:100%; padding:15px; border-radius:10px; border: 1px solid var(--border); font-family:inherit;"></textarea>
+                    </div>
+                    
+                    <div class="price-summary-box" style="margin: 20px 0; padding: 20px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg); border-radius: 15px;">
+                        <p style="margin: 0 0 10px 0;">Estimation Location : <strong id="cart-total-estimate">0,00 € TTC</strong></p>
+                        <p style="margin: 0;">Total Cautions : <strong id="cart-total-caution">0,00 € TTC</strong></p>
+                    </div>
+
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px; font-style: italic;">
+                        🛡️ <strong>Confidentialité :</strong> Vos informations ne sont pas stockées sur ce site. Elles nous sont transmises directement par e-mail sécurisé.
+                    </p>
+
+                    <input type="email" id="user-email" name="Email" required placeholder="votre@email.com" style="width:100%; padding:15px; border-radius:10px; border: 1px solid var(--border); box-sizing: border-box; margin-bottom:15px;">
+                    
+                    <textarea id="reservation-message" name="Message" placeholder="Précisions (horaires, accès...)" style="width:100%; padding:15px; border-radius:10px; border: 1px solid var(--border); height: 100px; box-sizing: border-box; margin-bottom:15px;"></textarea>
+                    
+                    <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; cursor: pointer; margin-bottom: 20px;">
+                        <input type="checkbox" id="marketing-consent" name="Consentement_Marketing">
+                        <span>Je souhaite être informé(e) des nouveautés et des offres.</span>
+                    </label>
+
+                    <!-- Config FormSubmit -->
                     <input type="hidden" name="_next" value="https://maboitealocangevine.github.io/website/merci.html">
                     <input type="hidden" name="_replyto" id="hidden-replyto">
                     <input type="hidden" name="_cc" id="hidden-cc">
                     <input type="hidden" name="_subject" id="hidden-subject">
                     <input type="hidden" name="_template" value="table">
                     <input type="hidden" name="_captcha" value="false">
-                    <textarea name="RÉCAPITULATIF_DEMANDE" id="email-body-content" style="display:none;"></textarea>
+                    <textarea name="RÉCAPITULATIF_DEMANDE" id="email-body-content" style="display: none;"></textarea>
                     
                     <button type="submit" class="primary-action-btn" style="width:100%;" disabled>Envoyer ma demande</button>
                 </form>
             </div>
         </div>
 
+        <!-- SECTION CONTACT -->
         <div id="contact-section" class="content-section">
             <h2 style="text-align:center; margin-bottom:40px;">Contact & Localisation</h2>
-            <div class="disclaimer-box pro-alert">
+            
+            <div class="disclaimer-box pro-alert" style="background-color: #fff5f2; border: 1px solid var(--primary); border-left: 5px solid var(--primary); padding: 20px 25px; border-radius: 15px; margin-bottom: 30px;">
                 <p><strong>📍 Information importante :</strong> Notre adresse à Rives-du-Loir est un dépôt logistique. La prise de rendez-vous est impérative.</p>
             </div>
+            
             <div class="contact-grid">
                 <div class="contact-details">
                     <p><strong>📞 Téléphone :</strong> <a href="tel:+33652982348" style="color:var(--primary); font-weight:700;">06 52 98 23 48</a></p>
                     <p><strong>📧 Email :</strong> <a href="mailto:maboitealocangevine@gmail.com" style="color:var(--primary); font-weight:700;">maboitealocangevine@gmail.com</a></p>
                     <p><strong>📍 Adresse :</strong> 5 impasse les Rochebruyeres, 49140 RIVES DU LOIR EN ANJOU</p>
-                    <div style="margin-top: 30px;">
-                        <a href="https://www.facebook.com/maboitealocangevine" target="_blank" class="social-btn fb" style="background-color: #1877F2; color: white; padding: 10px 20px; border-radius: 50px; display: inline-block; margin-right: 10px;">Facebook</a>
-                        <a href="https://www.instagram.com/maboitealocangevine" target="_blank" class="social-btn insta" style="background-color: #E4405F; color: white; padding: 10px 20px; border-radius: 50px; display: inline-block;">Instagram</a>
+                    
+                    <div class="social-links-box" style="margin-top: 30px; display: flex; gap: 15px; align-items: center;">
+                        <p style="font-weight:700; margin:0;">Suivez-nous :</p>
+                        <!-- Facebook Logo SVG -->
+                        <a href="https://www.facebook.com/maboitealocangevine" target="_blank" class="social-icon-link" title="Facebook">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--primary)"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <!-- Instagram Logo SVG -->
+                        <a href="https://www.instagram.com/maboitealocangevine" target="_blank" class="social-icon-link" title="Instagram">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--primary)"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
                     </div>
                 </div>
                 <div class="map-container">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2703.189447190117!2d-0.456637887199464!3d47.530365825316325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48087fc7674e2d27%3A0xf635031b26c2718e!2s5%20Imp.%20les%20Rochebruy%C3%A8res%2C%2049140%20Rives-du-Loir-en-Anjou!5e0!3m2!1sfr!2sfr!4v1702130000000!5m2!1sfr!2sfr" width="100%" height="300" style="border:0; border-radius:20px;" allowfullscreen="" loading="lazy"></iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2703.189447190117!2d-0.456637887199464!3d47.530365825316325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48087fc7674e2d27%3A0xf635031b26c2718e!2s5%20Imp.%20les%20Rochebruy%C3%A8res%2C%2049140%20Rives-du-Loir-en-Anjou!5e0!3m2!1sfr!2sfr!4v1702130000000!5m2!1sfr!2sfr" width="100%" height="350" style="border:0; border-radius:20px; box-shadow: var(--shadow);" allowfullscreen="" loading="lazy"></iframe>
                 </div>
             </div>
         </div>
     </main>
 
+    <!-- BOUTON WHATSAPP FLOTTANT -->
     <a href="https://wa.me/33652982348" class="whatsapp-fixed" target="_blank" title="Contactez-nous sur WhatsApp">
         <svg viewBox="0 0 32 32" style="width: 35px; height: 35px; fill: white;"><path d="M16 0c-8.837 0-16 7.163-16 16 0 2.825.737 5.48 2.025 7.787l-2.025 7.387 7.563-1.987c2.237 1.187 4.787 1.813 7.437 1.813 8.837 0 16-7.163 16-16s-7.163-16-16-16zM16 29.333c-2.413 0-4.737-.633-6.763-1.833l-.487-.287-4.507 1.18 1.2-4.393-.313-.5c-1.313-2.087-2.013-4.513-2.013-7.013 0-7.36 5.987-13.347 13.347-13.347s13.347 5.987 13.347 13.347c0 7.36-5.987 13.347-13.347 13.347zM22.547 19.173c-.36-.18-2.127-1.047-2.46-1.167-.327-.12-.567-.18-.807.18s-.927 1.167-1.14 1.407c-.207.24-.42.267-.78.087-.36-.18-1.52-.56-2.893-1.787-1.067-.953-1.787-2.133-2-2.5-.207-.367-.02-.567.16-.747.16-.16.36-.42.54-.627.18-.207.24-.353.36-.587.12-.233.06-.44-.03-.627-.087-.18-.807-1.947-1.107-2.673-.293-.707-.593-.613-.807-.627-.207-.013-.447-.013-.687-.013s-.627.093-.953.447c-.327.353-1.247 1.22-1.247 2.973s1.273 3.44 1.453 3.687c.18.247 2.507 3.827 6.073 5.367.847.367 1.507.587 2.027.753.853.267 1.627.227 2.24.14.687-.1 2.127-.867 2.427-1.7s.3-1.553.207-1.7c-.087-.147-.327-.227-.687-.407z"/></svg>
     </a>
 
+    <!-- MODALE PRODUIT -->
     <div id="product-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="window.closeModal()">×</span>
-            <h3 id="modal-title" style="margin-top:0;">Détails</h3>
+            <h3 id="modal-title" style="margin-top:0; padding-right:30px;">Détails du produit</h3>
             <div class="modal-body">
                 <div class="modal-slider-container">
                     <button id="modal-prev-btn" class="modal-nav-btn" onclick="window.changeModalImage(-1)">❮</button>
@@ -127,21 +221,40 @@
                     <button id="modal-next-btn" class="modal-nav-btn" onclick="window.changeModalImage(1)">❯</button>
                     <div id="modal-image-counter"></div>
                 </div>
-                <p id="modal-description"></p>
-                <div class="modal-price-box"><p>Prix : <strong id="modal-product-price-value"></strong></p><p>Caution : <strong id="modal-product-caution-value"></strong></p></div>
+
+                <p id="modal-description" style="font-size: 0.95rem; color: var(--text-muted);"></p>
+                
+                <div class="modal-price-box">
+                    <p style="margin:0;">Prix : <strong id="modal-product-price-value" style="color:var(--primary);"></strong></p>
+                    <p style="margin:0;">Caution : <strong id="modal-product-caution-value"></strong></p>
+                </div>
+
                 <div class="modal-form">
-                    <div style="margin-bottom:15px;"><label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Quantité</label><input type="number" id="modal-quantity" value="1" min="1" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border);"></div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Quantité</label>
+                        <input type="number" id="modal-quantity" value="1" min="1" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); box-sizing:border-box; font-family:inherit;">
+                    </div>
+                    
                     <div class="modal-form-grid">
-                        <div><label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Début de location</label><input type="date" id="modal-start-date" onchange="window.updateEndDateMin()" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border);"></div>
-                        <div><label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Fin de location</label><input type="date" id="modal-end-date" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border);"></div>
+                        <div>
+                            <label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Début de location</label>
+                            <input type="date" id="modal-start-date" onchange="window.updateEndDateMin()" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); box-sizing:border-box; font-family:inherit;">
+                        </div>
+                        <div>
+                            <label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Fin de location</label>
+                            <input type="date" id="modal-end-date" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); box-sizing:border-box; font-family:inherit;">
+                        </div>
                     </div>
                 </div>
+                
                 <button onclick="addToCartFromModal()" class="primary-action-btn" style="width:100%; margin-top:25px;">Ajouter à ma demande</button>
             </div>
         </div>
     </div>
 
     <div id="toast-notification"></div>
+
+    <!-- SCRIPTS JS -->
     <script src="app-ui.js"></script>
     <script src="app-catalog.js"></script>
     <script src="app-cart.js"></script>
