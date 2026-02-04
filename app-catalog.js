@@ -1,4 +1,5 @@
 window.allProductsData = [];
+const CATEGORIES = { 'all': 'Tous les produits', 'evenementiel': 'Événementiel', 'outillage': 'Outillage' };
 
 async function loadProductsFromCSVFile() {
     try {
@@ -12,15 +13,12 @@ async function loadProductsFromCSVFile() {
             let p = {};
             headers.forEach((h, i) => p[h] = values[i]);
             p.id = parseInt(p.id);
-            
-            // GESTION MULTI-PHOTOS : On transforme la chaîne en liste
-            p.images = p.image_url ? p.image_url.split(';') : ['images/placeholder.jpg'];
-            // L'image principale reste la première de la liste
+            p.images = p.image_url ? p.image_url.split(';').map(img => img.trim()) : ['images/placeholder.jpg'];
             p.main_image = p.images[0]; 
-            
             return p;
         }).filter(p => p.publication?.toLowerCase() !== 'non');
 
+        renderCategoryButtons(); // Crée les onglets Evenementiel / Outillage
         renderProductList(window.allProductsData);
         
         if (window.initCarouselUI) {
@@ -34,20 +32,41 @@ async function loadProductsFromCSVFile() {
 function renderProductList(products) {
     const container = document.getElementById('product-list-container');
     if (!container) return;
-    container.innerHTML = products.map(p => `
-        <div class="product-card">
+    container.innerHTML = products.length ? '' : '<div class="empty-state">Aucun produit trouvé.</div>';
+    
+    products.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
             <div class="product-image-wrapper" onclick="window.openModal(${p.id})">
-                <!-- SEO : Alt tag dynamique avec le nom du produit et la localisation -->
-                <img src="${p.main_image}" alt="Location ${p.name} - Angers Maine-et-Loire 49" loading="lazy">
+                <img src="${p.main_image}" alt="Location ${p.name} - Angers 49" loading="lazy">
                 <div class="image-overlay"><span>DÉCOUVRIR</span></div>
             </div>
             <div class="product-card-body">
                 <h4 onclick="window.openModal(${p.id})">${p.name}</h4>
                 <p class="product-price">${p.price}</p>
                 <button class="primary-action-btn card-btn" onclick="window.openModal(${p.id})">Détails & Réservation</button>
-            </div>
-        </div>
-    `).join('');
+            </div>`;
+        container.appendChild(card);
+    });
+}
+
+function renderCategoryButtons() {
+    const nav = document.getElementById('catalogue-nav');
+    if (!nav) return;
+    nav.innerHTML = '';
+    Object.keys(CATEGORIES).forEach(key => {
+        const btn = document.createElement('button');
+        btn.textContent = CATEGORIES[key];
+        btn.onclick = () => {
+            document.querySelectorAll('.cat-nav button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const filtered = (key === 'all') ? window.allProductsData : window.allProductsData.filter(p => p.category === key);
+            renderProductList(filtered);
+        };
+        if(key === 'all') btn.classList.add('active');
+        nav.appendChild(btn);
+    });
 }
 
 window.searchProducts = function() {

@@ -3,7 +3,6 @@ let currentModalImages = [];
 let slideIndex = 0;
 let carouselInterval;
 
-// --- NOTIFICATIONS ---
 window.showToast = function(message) {
     const toast = document.getElementById("toast-notification");
     if (!toast) return;
@@ -12,7 +11,6 @@ window.showToast = function(message) {
     setTimeout(() => toast.classList.remove("show"), 3000);
 };
 
-// --- MODALE PRODUIT ---
 window.openModal = function(productId) { 
     const modal = document.getElementById('product-modal');
     if (!window.allProductsData) return;
@@ -30,15 +28,11 @@ window.openModal = function(productId) {
         
         updateModalImage();
 
-        // SÉCURITÉ DATES : Bloquer les dates passées
         const today = new Date().toISOString().split('T')[0];
         const startInput = document.getElementById('modal-start-date');
         const endInput = document.getElementById('modal-end-date');
-        
-        startInput.value = "";
-        endInput.value = "";
-        startInput.min = today;
-        endInput.min = today;
+        startInput.value = ""; endInput.value = "";
+        startInput.min = today; endInput.min = today;
 
         document.getElementById('modal-quantity').value = 1;
         modal.style.display = "flex";
@@ -51,10 +45,8 @@ function updateModalImage() {
     const prevBtn = document.getElementById('modal-prev-btn');
     const nextBtn = document.getElementById('modal-next-btn');
     const counter = document.getElementById('modal-image-counter');
-
     if (!imgElement) return;
     imgElement.src = currentModalImages[modalSlideIndex];
-
     const hasMultiple = currentModalImages.length > 1;
     if (prevBtn) prevBtn.style.display = hasMultiple ? 'flex' : 'none';
     if (nextBtn) nextBtn.style.display = hasMultiple ? 'flex' : 'none';
@@ -88,24 +80,16 @@ window.updateEndDateMin = function() {
     }
 };
 
-// --- CARROUSEL ACCUEIL ---
 window.initCarouselUI = function(images) {
     const track = document.getElementById('carousel-track');
     const indicators = document.getElementById('carousel-indicators');
     if (!track || !images || images.length === 0) return;
-
     track.innerHTML = images.map(img => `<div class="carousel-slide"><img src="${img}" alt="Illustration"></div>`).join('');
-    if (indicators) {
-        indicators.innerHTML = images.map((_, i) => `<span onclick="window.showSlide(${i}, ${images.length})"></span>`).join('');
-    }
-    
+    if (indicators) indicators.innerHTML = images.map((_, i) => `<span onclick="window.showSlide(${i}, ${images.length})"></span>`).join('');
     slideIndex = 0;
     window.showSlide(0, images.length);
-    
     clearInterval(carouselInterval);
-    carouselInterval = setInterval(() => {
-        window.moveCarousel(1);
-    }, 5000);
+    carouselInterval = setInterval(() => window.moveCarousel(1), 5000);
 };
 
 window.showSlide = function(index, total) {
