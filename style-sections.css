@@ -154,3 +154,43 @@ img {
     aspect-ratio: 4 / 3; 
     background: #eee;
 }
+
+/* --- CONTACT ENRICHIE --- */
+.pro-alert {
+    background-color: #fff5f2;
+    border: 1px solid var(--primary);
+    border-left: 5px solid var(--primary);
+    padding: 20px 25px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+@media (prefers-color-scheme: dark) {
+    .pro-alert {
+        background-color: #3d2c29;
+    }
+}
+
+.social-links {
+    margin-top: 30px;
+}
+
+.social-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 50px;
+    color: white !important;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-right: 10px;
+    transition: opacity 0.3s;
+}
+
+.social-btn.fb { background-color: #1877F2; }
+.social-btn.insta { background-color: #E4405F; }
+
+.social-btn:hover {
+    opacity: 0.8;
+}

@@ -3,6 +3,7 @@ let currentModalImages = [];
 let slideIndex = 0;
 let carouselInterval;
 
+// --- NOTIFICATIONS ---
 window.showToast = function(message) {
     const toast = document.getElementById("toast-notification");
     if (!toast) return;
@@ -11,6 +12,7 @@ window.showToast = function(message) {
     setTimeout(() => toast.classList.remove("show"), 3000);
 };
 
+// --- MODALE PRODUIT ---
 window.openModal = function(productId) { 
     const modal = document.getElementById('product-modal');
     if (!window.allProductsData) return;
@@ -28,6 +30,7 @@ window.openModal = function(productId) {
         
         updateModalImage();
 
+        // SÉCURITÉ DATES
         const today = new Date().toISOString().split('T')[0];
         const startInput = document.getElementById('modal-start-date');
         const endInput = document.getElementById('modal-end-date');
@@ -80,6 +83,7 @@ window.updateEndDateMin = function() {
     }
 };
 
+// --- CARROUSEL ACCUEIL ---
 window.initCarouselUI = function(images) {
     const track = document.getElementById('carousel-track');
     const indicators = document.getElementById('carousel-indicators');
