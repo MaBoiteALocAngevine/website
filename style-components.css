@@ -22,7 +22,6 @@
 
 /* SLIDER MODALE */
 .modal-slider-container { position: relative; width: 100%; margin-bottom: 25px; background: #f9f9f9; border-radius: 20px; overflow: hidden; display: flex; align-items: center; justify-content: center; height: 320px; border: 1px solid var(--border); }
-@media (prefers-color-scheme: dark) { .modal-slider-container { background: #2d2827; } }
 .modal-slider-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
 .modal-nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(164, 76, 58, 0.8); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 5; transition: 0.3s; }
 #modal-prev-btn { left: 15px; } #modal-next-btn { right: 15px; }

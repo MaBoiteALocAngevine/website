@@ -137,10 +137,6 @@
     line-height: 1.5;
 }
 
-@media (prefers-color-scheme: dark) {
-    .pro-alert { background-color: #3d2c29; }
-}
-
 /* Réseaux Sociaux */
 .social-icon-link {
     transition: transform 0.3s ease, opacity 0.3s ease;

@@ -15,17 +15,6 @@ img {
     --radius: 20px;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg: #2d2827;
-        --surface: #3d3535;
-        --text: #fcfaf9;
-        --border: #4d4341;
-        --text-muted: #b3a7a5;
-        --shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    }
-}
-
 body { 
     font-family: 'Lora', serif; 
     margin: 0; padding-top: 90px; 
@@ -60,11 +49,12 @@ header {
 }
 
 @media (max-width: 768px) {
-    header { padding: 0 15px; height: 65px; }
-    body { padding-top: 75px; }
-    .logo-brand h1 { font-size: 0.85rem; }
-    .main-nav ul { gap: 15px; }
-    .main-nav a { font-size: 0.75rem; }
+    body { 
+        font-size: 16px; /* Taille standard recommandée par Google */
+    }
+    header { height: 60px; padding: 0 10px; }
+    .logo-brand h1 { font-size: 0.9rem; }
+    .main-nav a { font-size: 0.85rem; } /* Un peu plus grand pour le clic tactile */
 }
 
 a { color: inherit; text-decoration: none; }
