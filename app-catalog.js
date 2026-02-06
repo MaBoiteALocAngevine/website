@@ -18,7 +18,7 @@ async function loadProductsFromCSVFile() {
             return p;
         }).filter(p => p.publication?.toLowerCase() !== 'non');
 
-        renderCategoryButtons(); // Crée les onglets Evenementiel / Outillage
+        renderCategoryButtons();
         renderProductList(window.allProductsData);
         
         if (window.initCarouselUI) {
@@ -32,24 +32,19 @@ async function loadProductsFromCSVFile() {
 function renderProductList(products) {
     const container = document.getElementById('product-list-container');
     if (!container) return;
-    container.innerHTML = products.length ? '' : '<div class="empty-state">Aucun produit trouvé.</div>';
-    
-    products.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        card.innerHTML = `
+    container.innerHTML = products.map(p => `
+        <div class="product-card">
             <div class="product-image-wrapper" onclick="window.openModal(${p.id})">
-                // Remplacez la ligne <img src=... par celle-ci :
-<img src="${p.main_image}" alt="Location ${p.name} - Angers 49" loading="lazy" width="300" height="200">
+                <img src="${p.main_image}" alt="Location ${p.name} - Angers 49" loading="lazy" width="350" height="233">
                 <div class="image-overlay"><span>DÉCOUVRIR</span></div>
             </div>
             <div class="product-card-body">
                 <h4 onclick="window.openModal(${p.id})">${p.name}</h4>
                 <p class="product-price">${p.price}</p>
                 <button class="primary-action-btn card-btn" onclick="window.openModal(${p.id})">Détails & Réservation</button>
-            </div>`;
-        container.appendChild(card);
-    });
+            </div>
+        </div>
+    `).join('');
 }
 
 function renderCategoryButtons() {
