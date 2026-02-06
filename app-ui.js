@@ -3,7 +3,6 @@ let currentModalImages = [];
 let slideIndex = 0;
 let carouselInterval;
 
-// --- NOTIFICATIONS ---
 window.showToast = function(message) {
     const toast = document.getElementById("toast-notification");
     if (!toast) return;
@@ -12,31 +11,24 @@ window.showToast = function(message) {
     setTimeout(() => toast.classList.remove("show"), 3000);
 };
 
-// --- MODALE PRODUIT ---
 window.openModal = function(productId) { 
     const modal = document.getElementById('product-modal');
     if (!window.allProductsData) return;
-
     const product = window.allProductsData.find(p => p.id == productId);
     if (product) {
         window.selectedProductForModal = product;
         currentModalImages = product.images;
         modalSlideIndex = 0;
-
         document.getElementById('modal-title').textContent = product.name;
         document.getElementById('modal-description').innerHTML = product.description; 
         document.getElementById('modal-product-price-value').innerHTML = `${product.price} <small>TTC</small>`;
         document.getElementById('modal-product-caution-value').innerHTML = `${product.caution} <small>TTC</small>`;
-        
         updateModalImage();
-
-        // SÉCURITÉ DATES
         const today = new Date().toISOString().split('T')[0];
         const startInput = document.getElementById('modal-start-date');
         const endInput = document.getElementById('modal-end-date');
         startInput.value = ""; endInput.value = "";
         startInput.min = today; endInput.min = today;
-
         document.getElementById('modal-quantity').value = 1;
         modal.style.display = "flex";
         document.body.style.overflow = 'hidden';
@@ -83,7 +75,6 @@ window.updateEndDateMin = function() {
     }
 };
 
-// --- CARROUSEL ACCUEIL ---
 window.initCarouselUI = function(images) {
     const track = document.getElementById('carousel-track');
     const indicators = document.getElementById('carousel-indicators');
