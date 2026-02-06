@@ -18,25 +18,6 @@
     <link rel="stylesheet" href="style-components.css">
     <link rel="stylesheet" href="style-sections.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "Ma boîte à loc' Angevine",
-      "image": "https://maboitealocangevine.github.io/website/images/table.webp",
-      "url": "https://maboitealocangevine.github.io/website/",
-      "telephone": "+33652982348",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "5 impasse les Rochebruyeres",
-        "addressLocality": "Rives-du-Loir-en-Anjou",
-        "postalCode": "49140",
-        "addressRegion": "Pays de la Loire",
-        "addressCountry": "FR"
-      }
-    }
-    </script>
 </head>
 <body>
 
@@ -63,7 +44,7 @@
         <div id="accueil-section" class="content-section">
             <div class="hero-content">
                 <h1>Location de Matériel de Réception et Équipements en Maine-et-Loire</h1>
-                <p>Basés à <strong>Rives-du-Loir-en-Anjou</strong>, nous mettons à votre disposition un large choix d'équipements pour vos événements et travaux. Que vous ayez besoin d'une tonnelle, de tables ou d'outillage performant, nous vous accompagnons avec des solutions flexibles et de qualité.</p>
+                <p>Basés à <strong>Rives-du-Loir-en-Anjou</strong>, nous mettons à votre disposition un large choix d'équipements de qualité pour vos événements et travaux.</p>
                 <button onclick="showSection('catalogue')" class="primary-action-btn" style="margin-top:20px;">Consulter le Catalogue</button>
             </div>
 
@@ -74,60 +55,18 @@
                 <div id="carousel-indicators"></div>
             </div>
 
-            <div style="text-align:center; margin: 60px 0 40px;">
-                <h2 style="font-size: 1.8rem;">Pourquoi choisir Ma boîte à loc' ?</h2>
-            </div>
             <div class="modality-cards-container">
                 <div class="modality-card">
-                    <div style="font-size: 2rem; margin-bottom:10px;">🤝</div>
-                    <h4>Proximité & Réactivité</h4>
-                    <p>Basés au cœur de l'Anjou, nous répondons à vos demandes sous 48h pour une organisation sans stress.</p>
+                    <h4 style="display:flex; align-items:center; gap:10px;">🤝 Proximité</h4>
+                    <p>Basés en Anjou, nous répondons à vos demandes sous 48h pour une organisation sans stress.</p>
                 </div>
                 <div class="modality-card">
-                    <div style="font-size: 2rem; margin-bottom:10px;">✨</div>
-                    <h4>Qualité Garantie</h4>
-                    <p>Notre matériel est rigoureusement sélectionné, entretenu et nettoyé après chaque utilisation.</p>
+                    <h4 style="display:flex; align-items:center; gap:10px;">✨ Qualité</h4>
+                    <p>Matériel rigoureusement sélectionné, entretenu et nettoyé après chaque utilisation.</p>
                 </div>
                 <div class="modality-card">
-                    <div style="font-size: 2rem; margin-bottom:10px;">💰</div>
-                    <h4>Tarifs Compétitifs</h4>
-                    <p>Des solutions de location accessibles pour les particuliers, les pros et les associations du 49.</p>
-                </div>
-            </div>
-
-            <div class="how-it-works">
-                <h2 style="text-align:center; margin-bottom: 40px;">Comment réserver votre matériel ?</h2>
-                <div class="steps-grid">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <h4>Choisissez</h4>
-                        <p>Explorez notre catalogue et ajoutez vos articles à votre demande.</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <h4>Validez</h4>
-                        <p>Envoyez votre demande. Nous vérifions la disponibilité sous 48h.</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <h4>Profitez</h4>
-                        <p>Récupérez votre matériel ou faites-vous livrer sur le lieu de votre choix.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modality-cards-container" style="margin-top:60px;">
-                <div class="modality-card">
-                    <h4>Paiement & Caution</h4>
-                    <p>Règlement par espèces ou virement instantané. Une caution est demandée et restituée après vérification.</p>
-                </div>
-                <div class="modality-card">
-                    <h4>Livraison & Montage</h4>
-                    <p>Service optionnel de livraison et de montage directement sur le lieu de votre événement (sur devis).</p>
-                </div>
-                <div class="modality-card">
-                    <h4>Facturation</h4>
-                    <p>Professionnels ou associations ? Une facture détaillée est émise pour chaque location sur demande.</p>
+                    <h4 style="display:flex; align-items:center; gap:10px;">💰 Service</h4>
+                    <p>Solutions de location accessibles avec option livraison et montage sur devis.</p>
                 </div>
             </div>
 
@@ -139,9 +78,13 @@
 
         <!-- SECTION CATALOGUE -->
         <div id="catalogue-section" class="content-section">
-            <h2 style="text-align:center; margin-bottom:40px;">Notre Catalogue</h2>
-            <div id="search-bar"><input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Rechercher un équipement..."></div>
-            <div id="product-list-container"><p id="loading-message">Chargement du catalogue...</p></div>
+            <h2 style="text-align:center; margin-bottom:30px;">Notre Catalogue</h2>
+            <div id="search-bar">
+                <input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Effectuer une recherche...">
+            </div>
+            <div id="product-list-container">
+                <p id="loading-message">Chargement du catalogue...</p>
+            </div>
         </div>
 
         <!-- SECTION PANIER -->
@@ -182,8 +125,8 @@
                     <p>📞 <strong>Téléphone</strong><br><a href="tel:+33652982348" style="color:var(--primary); font-weight:700;">06 52 98 23 48</a></p>
                     <p>📧 <strong>Email</strong><br><a href="mailto:maboitealocangevine@gmail.com" style="color:var(--primary); font-weight:700;">maboitealocangevine@gmail.com</a></p>
                     <p>📍 <strong>Adresse</strong><br>5 impasse les Rochebruyeres, 49140 RIVES DU LOIR</p>
-                    <div class="social-links-box">
-                        <p style="font-weight:700; margin-bottom:15px;">Suivez-nous :</p>
+                    <div class="social-links-box" style="margin-top: 30px; display: flex; gap: 20px; align-items: center;">
+                        <p style="font-weight:700; margin:0;">Suivez-nous :</p>
                         <a href="https://www.facebook.com/maboitealocangevine" target="_blank" class="social-icon-link">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--primary)"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                         </a>
@@ -213,7 +156,7 @@
     <div id="product-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="window.closeModal()">×</span>
-            <h3 id="modal-title" style="margin-top:0;">Détails</h3>
+            <h3 id="modal-title" style="margin-top:0; padding-right:30px;">Détails du produit</h3>
             <div class="modal-body">
                 <div class="modal-slider-container">
                     <button id="modal-prev-btn" class="modal-nav-btn" onclick="window.changeModalImage(-1)">❮</button>
@@ -221,8 +164,8 @@
                     <button id="modal-next-btn" class="modal-nav-btn" onclick="window.changeModalImage(1)">❯</button>
                     <div id="modal-image-counter"></div>
                 </div>
-                <p id="modal-description"></p>
-                <div class="modal-price-box"><p>Prix : <strong id="modal-product-price-value"></strong></p><p>Caution : <strong id="modal-product-caution-value"></strong></p></div>
+                <p id="modal-description" style="font-size: 0.95rem; color: var(--text-muted);"></p>
+                <div class="modal-price-box"><p style="margin:0;">Prix : <strong id="modal-product-price-value" style="color:var(--primary);"></strong></p><p style="margin:0;">Caution : <strong id="modal-product-caution-value"></strong></p></div>
                 <div class="modal-form">
                     <div style="margin-bottom: 15px;"><label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Quantité</label><input type="number" id="modal-quantity" value="1" min="1" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); box-sizing:border-box; font-family:inherit;"></div>
                     <div class="modal-form-grid">
@@ -236,9 +179,9 @@
     </div>
 
     <div id="toast-notification"></div>
-    <script src="app-ui.js"></script>
-    <script src="app-catalog.js"></script>
-    <script src="app-cart.js"></script>
-    <script src="app-main.js"></script>
+    <script src="app-ui.js" defer></script>
+    <script src="app-catalog.js" defer></script>
+    <script src="app-cart.js" defer></script>
+    <script src="app-main.js" defer></script>
 </body>
 </html>
