@@ -1,16 +1,16 @@
 img { image-orientation: from-image; }
 
 :root {
-    --primary: #4f6a5b;      /* Vert Sauge */
-    --primary-light: #638271;
-    --secondary: #c97a63;    /* Terracotta */
-    --bg: #e6d9c9;           /* Beige Sable (Fond du site) */
-    --surface: #f2e8dc;      /* Beige Moyen (Fond des encadrés) */
-    --surface-light: #f9f4ee; /* Beige très clair */
-    --text: #2d3531;         
-    --text-muted: #6b7570;
+    --primary: #3a4f43;      /* Vert Sauge plus foncé pour le contraste */
+    --primary-light: #4f6a5b;
+    --secondary: #b05b45;    /* Terracotta plus soutenu */
+    --secondary-light: #c97a63;
+    --bg: #e6d9c9;           
+    --surface: #f2e8dc;      
+    --text: #1e2421;         /* Texte presque noir pour la lecture */
+    --text-muted: #545d59;
     --border: #d1c4b5;
-    --shadow: 0 10px 30px rgba(79, 106, 91, 0.05); 
+    --shadow: 0 10px 30px rgba(58, 79, 67, 0.1); 
     --radius: 24px;
 }
 

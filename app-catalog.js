@@ -39,7 +39,8 @@ function renderProductList(products) {
         card.className = 'product-card';
         card.innerHTML = `
             <div class="product-image-wrapper" onclick="window.openModal(${p.id})">
-                <img src="${p.main_image}" alt="Location ${p.name} - Angers 49" loading="lazy">
+                // Remplacez la ligne <img src=... par celle-ci :
+<img src="${p.main_image}" alt="Location ${p.name} - Angers 49" loading="lazy" width="300" height="200">
                 <div class="image-overlay"><span>DÉCOUVRIR</span></div>
             </div>
             <div class="product-card-body">
