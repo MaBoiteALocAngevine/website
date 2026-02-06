@@ -23,9 +23,12 @@
     background: var(--surface); 
     padding: 40px; 
     border-radius: var(--radius); 
-    border-bottom: 5px solid var(--primary); 
+    border-bottom: 5px solid var(--secondary); /* Soulignement Rouge Terracotta */
     box-shadow: var(--shadow); 
     transition: transform 0.3s ease; 
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    border-top: 1px solid var(--border);
 }
 .modality-card:hover { transform: translateY(-10px); }
 .modality-card h4 { font-size: 1.2rem; margin-top: 0; color: var(--primary); }
@@ -64,13 +67,13 @@
     bottom: -1px; 
 }
 
-.cat-nav button:hover { color: var(--primary); }
+.cat-nav button:hover { color: var(--secondary); }
 
 .cat-nav button.active { 
     background: var(--surface); 
     border: 1px solid var(--border);
     border-bottom: 1px solid var(--surface); 
-    color: var(--primary); 
+    color: var(--primary); /* Texte Vert pour l'onglet actif */
 }
 
 /* Barre de recherche */
@@ -81,7 +84,7 @@
     font-size: 1rem; color: var(--text); outline: none; 
     box-shadow: var(--shadow); transition: 0.3s;
 }
-#product-search:focus { border-color: var(--primary); box-shadow: 0 8px 20px rgba(164, 76, 58, 0.1); }
+#product-search:focus { border-color: var(--secondary); box-shadow: 0 8px 20px rgba(201, 122, 99, 0.1); }
 
 /* Grille de produits (3 colonnes) */
 #product-list-container { 
@@ -101,13 +104,18 @@
     transition: 0.4s; 
     border: 1px solid var(--border); 
 }
-.product-card:hover { transform: translateY(-12px); box-shadow: 0 20px 40px rgba(164, 76, 58, 0.1); }
+.product-card:hover { 
+    transform: translateY(-12px); 
+    box-shadow: 0 20px 40px rgba(79, 106, 91, 0.1); 
+    border-color: var(--secondary); /* Bordure Rouge au survol */
+}
 
 .product-image-wrapper { position: relative; height: 240px; overflow: hidden; cursor: pointer; background: #eee; }
 .product-image-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
 .image-overlay { 
     position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(164, 76, 58, 0.3); display: flex; align-items: center; 
+    background: rgba(79, 106, 91, 0.4); /* Overlay Vert */
+    display: flex; align-items: center; 
     justify-content: center; opacity: 0; transition: 0.3s; color: white; 
     font-weight: 700; font-size: 0.9rem; letter-spacing: 2px; 
 }
@@ -115,7 +123,7 @@
 .product-image-wrapper:hover img { transform: scale(1.1); }
 
 .product-card-body { padding: 30px; flex-grow: 1; display: flex; flex-direction: column; text-align: center; }
-.product-card-body h4 { margin: 0 0 10px 0; font-size: 1.15rem; cursor: pointer; transition: 0.3s; }
+.product-card-body h4 { margin: 0 0 10px 0; font-size: 1.15rem; cursor: pointer; transition: 0.3s; color: var(--primary); }
 .product-card-body h4:hover { color: var(--secondary); }
 .product-price { font-weight: 800; font-size: 1.2rem; color: var(--text); margin-bottom: 25px; }
 .card-btn { width: 100%; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
@@ -127,7 +135,7 @@
 .contact-details p { margin-bottom: 20px; font-size: 1.05rem; }
 
 .pro-alert {
-    background-color: #fff5f2;
+    background-color: #f0e6da; /* Beige un peu plus soutenu */
     border: 1px solid var(--primary);
     border-left: 5px solid var(--primary);
     padding: 20px 25px;
@@ -138,6 +146,22 @@
 }
 
 /* Réseaux Sociaux */
+.social-links { margin-top: 30px; }
+.social-btn {
+    display: inline-block;
+    padding: 10px 25px;
+    border-radius: 50px;
+    color: white !important;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-right: 10px;
+    transition: 0.3s;
+    text-decoration: none;
+}
+.social-btn.fb { background-color: var(--primary); } /* Vert */
+.social-btn.insta { background-color: var(--secondary); } /* Rouge */
+.social-btn:hover { opacity: 0.8; transform: translateY(-2px); }
+
 .social-icon-link {
     transition: transform 0.3s ease, opacity 0.3s ease;
     display: flex;
@@ -145,19 +169,17 @@
     text-decoration: none;
 }
 .social-icon-link:hover { transform: translateY(-3px); opacity: 0.8; }
-.social-icon-link svg { transition: fill 0.3s ease; }
+.social-icon-link svg { transition: fill 0.3s ease; fill: var(--primary); }
 .social-icon-link:hover svg { fill: var(--secondary); }
 
 /* ========================================== */
 /* RESPONSIVITÉ                               */
 /* ========================================== */
 
-/* Tablettes : 2 colonnes */
 @media (max-width: 1024px) and (min-width: 769px) {
     #product-list-container { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* Mobiles : 1 colonne */
 @media (max-width: 768px) {
     .contact-grid { grid-template-columns: 1fr; }
     .hero-content { padding: 40px 20px; }
@@ -168,9 +190,7 @@
     .cat-nav button { padding: 10px 15px; font-size: 0.85rem; }
 }
 
-/* ========================================== */
-/* ANIMATIONS & UTILS                         */
-/* ========================================== */
+/* Animation de chargement fluide pour les images */
 img {
     opacity: 0;
     animation: fadeInImg 0.8s forwards;
