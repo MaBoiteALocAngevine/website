@@ -3,24 +3,24 @@ img {
 }
 
 :root {
-    --primary: #4f6a5b;      /* Vert Sauge - Dominant */
+    --primary: #4f6a5b;      /* Vert Sauge - Professionnel */
     --primary-light: #638271;
-    --secondary: #c97a63;    /* Terracotta - Accent */
+    --secondary: #c97a63;    /* Terracotta - Chaleureux */
     --secondary-light: #d69583;
-    --bg: #e6d9c9;           /* Beige Sable */
-    --surface: #f2e8dc;      /* Beige clair */
+    --bg: #e6d9c9;           /* Beige Sable (Couleur exacte du logo) */
+    --surface: #f2e8dc;      /* Beige clair pour les cartes */
     --text: #2d3531;         
     --text-muted: #6b7570;
     --border: #d1c4b5;
     --shadow: 0 10px 30px rgba(79, 106, 91, 0.08); 
-    --radius: 20px;
+    --radius: 24px;
 }
 
 body { 
     font-family: 'Lora', serif; 
     margin: 0; padding-top: 100px; 
     background-color: var(--bg); color: var(--text); 
-    line-height: 1.7; transition: 0.3s;
+    line-height: 1.7;
 }
 
 main { max-width: 1100px; margin: 0 auto; padding: 20px; }
@@ -33,13 +33,14 @@ h1, h2, h3, h4 {
     letter-spacing: -0.5px; 
 }
 
+/* HEADER FONDU : Même couleur que le fond du logo */
 header { 
     display: flex; justify-content: space-between; align-items: center; 
-    padding: 10px 40px; background-color: var(--bg); 
+    padding: 10px 40px; 
+    background-color: var(--bg); 
     position: fixed; top: 0; width: 100%; box-sizing: border-box; 
     z-index: 1000; height: 90px;
     border-bottom: 1px solid rgba(79, 106, 91, 0.1);
-    backdrop-filter: blur(5px);
 }
 
 .main-nav ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 30px; }
@@ -52,7 +53,7 @@ header {
 
 /* Bouton demande en Vert Sauge */
 #cart-link { 
-    background: var(--primary); color: white; padding: 10px 22px; 
+    background: var(--primary); color: white !important; padding: 10px 22px; 
     border-radius: 50px; font-weight: 600; font-size: 0.85rem; text-decoration: none;
     transition: 0.3s; box-shadow: 0 4px 12px rgba(79, 106, 91, 0.2);
 }

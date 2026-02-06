@@ -1,4 +1,4 @@
-/* BOUTONS - Vert Sauge pour l'action principale */
+/* BOUTONS - Vert Sauge pour l'action */
 .primary-action-btn { 
     background: var(--primary); 
     color: white; 
@@ -38,7 +38,7 @@
 .carousel-nav-btn:hover { background: var(--primary); }
 #prev-btn { left: 20px; } #next-btn { right: 20px; }
 
-#carousel-indicators span.active { background: var(--primary); width: 25px; }
+#carousel-indicators span.active { background: var(--secondary); width: 25px; }
 
 /* MODALE */
 .modal-content { background: var(--surface); border-radius: 30px; border: 1px solid var(--border); box-shadow: 0 25px 60px rgba(0,0,0,0.1); }
