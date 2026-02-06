@@ -10,8 +10,6 @@
     box-shadow: var(--shadow); 
     margin-bottom: 50px; 
 }
-.hero-content h1 { font-size: 2.2rem; line-height: 1.2; margin-top: 0; color: var(--primary); }
-.hero-content p { max-width: 800px; margin: 0 auto; color: var(--text-muted); }
 
 .modality-cards-container { 
     display: grid; 
@@ -23,7 +21,7 @@
     background: var(--surface); 
     padding: 40px; 
     border-radius: var(--radius); 
-    border-bottom: 5px solid var(--secondary); /* Soulignement Rouge Terracotta */
+    border-bottom: 6px solid var(--secondary); /* Soulignement Terracotta */
     box-shadow: var(--shadow); 
     transition: transform 0.3s ease; 
     border-left: 1px solid var(--border);
@@ -31,28 +29,18 @@
     border-top: 1px solid var(--border);
 }
 .modality-card:hover { transform: translateY(-10px); }
-.modality-card h4 { font-size: 1.2rem; margin-top: 0; color: var(--primary); }
-.modality-card p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0; }
-
-.seo-text-block {
-    line-height: 1.8;
-}
-.seo-text-block h2 { color: var(--primary); margin-bottom: 20px; }
+.modality-card h4 { font-size: 1.2rem; margin-top: 0; color: var(--secondary); }
 
 /* ========================================== */
-/* CATALOGUE (ONGLETS & GRILLE)               */
+/* CATALOGUE                                  */
 /* ========================================== */
-
-/* Design des onglets */
 .cat-nav { 
     display: flex; 
     justify-content: center; 
     gap: 5px; 
     margin: 40px 0 30px; 
     border-bottom: 1px solid var(--border); 
-    padding-bottom: 0;
 }
-
 .cat-nav button { 
     background: none; 
     border: 1px solid transparent;
@@ -66,34 +54,19 @@
     position: relative;
     bottom: -1px; 
 }
-
 .cat-nav button:hover { color: var(--secondary); }
-
 .cat-nav button.active { 
     background: var(--surface); 
     border: 1px solid var(--border);
     border-bottom: 1px solid var(--surface); 
-    color: var(--primary); /* Texte Vert pour l'onglet actif */
+    color: var(--secondary); 
 }
 
-/* Barre de recherche */
-#search-bar { max-width: 500px; margin: 0 auto 40px auto; text-align: center; }
-#product-search { 
-    width: 100%; padding: 16px 25px; border-radius: 50px; 
-    border: 1.5px solid var(--border); background: var(--surface); 
-    font-size: 1rem; color: var(--text); outline: none; 
-    box-shadow: var(--shadow); transition: 0.3s;
-}
-#product-search:focus { border-color: var(--secondary); box-shadow: 0 8px 20px rgba(201, 122, 99, 0.1); }
-
-/* Grille de produits (3 colonnes) */
 #product-list-container { 
     display: grid; 
     grid-template-columns: repeat(3, 1fr); 
     gap: 35px; 
-    margin-top: 30px;
 }
-
 .product-card { 
     background: var(--surface); 
     border-radius: var(--radius); 
@@ -105,104 +78,40 @@
     border: 1px solid var(--border); 
 }
 .product-card:hover { 
-    transform: translateY(-12px); 
-    box-shadow: 0 20px 40px rgba(79, 106, 91, 0.1); 
-    border-color: var(--secondary); /* Bordure Rouge au survol */
+    transform: translateY(-10px); 
+    border-color: var(--secondary); 
 }
 
-.product-image-wrapper { position: relative; height: 240px; overflow: hidden; cursor: pointer; background: #eee; }
-.product-image-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
 .image-overlay { 
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(79, 106, 91, 0.4); /* Overlay Vert */
-    display: flex; align-items: center; 
-    justify-content: center; opacity: 0; transition: 0.3s; color: white; 
-    font-weight: 700; font-size: 0.9rem; letter-spacing: 2px; 
+    background: rgba(201, 122, 99, 0.4); /* Overlay Terracotta */
 }
-.product-image-wrapper:hover .image-overlay { opacity: 1; }
-.product-image-wrapper:hover img { transform: scale(1.1); }
 
-.product-card-body { padding: 30px; flex-grow: 1; display: flex; flex-direction: column; text-align: center; }
-.product-card-body h4 { margin: 0 0 10px 0; font-size: 1.15rem; cursor: pointer; transition: 0.3s; color: var(--primary); }
+.product-card-body h4 { color: var(--primary); transition: 0.3s; }
 .product-card-body h4:hover { color: var(--secondary); }
-.product-price { font-weight: 800; font-size: 1.2rem; color: var(--text); margin-bottom: 25px; }
-.card-btn { width: 100%; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+.product-price { font-weight: 800; font-size: 1.3rem; color: var(--secondary); margin-bottom: 25px; }
 
 /* ========================================== */
 /* CONTACT                                    */
 /* ========================================== */
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 40px; }
-.contact-details p { margin-bottom: 20px; font-size: 1.05rem; }
-
-.pro-alert {
-    background-color: #f0e6da; /* Beige un peu plus soutenu */
-    border: 1px solid var(--primary);
-    border-left: 5px solid var(--primary);
-    padding: 20px 25px;
-    border-radius: 15px;
-    margin-bottom: 30px;
-    font-size: 0.95rem;
-    line-height: 1.5;
+.pro-alert { 
+    background-color: #f2e8dc; 
+    border: 1px solid var(--secondary); 
+    border-left: 8px solid var(--secondary); 
+    padding: 20px 25px; 
+    border-radius: 15px; 
 }
 
-/* Réseaux Sociaux */
-.social-links { margin-top: 30px; }
-.social-btn {
-    display: inline-block;
-    padding: 10px 25px;
-    border-radius: 50px;
-    color: white !important;
-    font-weight: 600;
-    font-size: 0.9rem;
-    margin-right: 10px;
-    transition: 0.3s;
-    text-decoration: none;
-}
-.social-btn.fb { background-color: var(--primary); } /* Vert */
-.social-btn.insta { background-color: var(--secondary); } /* Rouge */
-.social-btn:hover { opacity: 0.8; transform: translateY(-2px); }
+.social-btn.fb { background-color: var(--primary); }
+.social-btn.insta { background-color: var(--secondary); }
 
-.social-icon-link {
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-}
-.social-icon-link:hover { transform: translateY(-3px); opacity: 0.8; }
-.social-icon-link svg { transition: fill 0.3s ease; fill: var(--primary); }
-.social-icon-link:hover svg { fill: var(--secondary); }
-
-/* ========================================== */
-/* RESPONSIVITÉ                               */
-/* ========================================== */
-
-@media (max-width: 1024px) and (min-width: 769px) {
-    #product-list-container { grid-template-columns: repeat(2, 1fr); }
-}
+.social-icon-link svg { fill: var(--secondary); transition: 0.3s; }
+.social-icon-link:hover svg { fill: var(--primary); }
 
 @media (max-width: 768px) {
-    .contact-grid { grid-template-columns: 1fr; }
-    .hero-content { padding: 40px 20px; }
-    .hero-content h1 { font-size: 1.6rem; }
-    
+    .hero-content h1 { font-size: 1.7rem; }
     #product-list-container { grid-template-columns: 1fr; gap: 20px; }
-    .product-image-wrapper { height: 200px; }
-    .cat-nav button { padding: 10px 15px; font-size: 0.85rem; }
 }
 
-/* Animation de chargement fluide pour les images */
-img {
-    opacity: 0;
-    animation: fadeInImg 0.8s forwards;
-    background-color: #f0f0f0; 
-}
-
-@keyframes fadeInImg {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.product-image-wrapper {
-    aspect-ratio: 4 / 3; 
-    background: #eee;
-}
+img { opacity: 0; animation: fadeInImg 0.8s forwards; background-color: #f0f0f0; }
+@keyframes fadeInImg { from { opacity: 0; } to { opacity: 1; } }
+.product-image-wrapper { aspect-ratio: 4 / 3; background: #eee; }

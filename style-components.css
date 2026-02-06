@@ -2,42 +2,39 @@
 /* BOUTONS                                    */
 /* ========================================== */
 .primary-action-btn { 
-    background: var(--primary); /* Vert Sauge */
+    background: var(--secondary); /* Terracotta par défaut */
     color: white; 
     border: none; 
-    padding: 14px 28px; 
+    padding: 14px 32px; 
     border-radius: 50px; 
     cursor: pointer; 
     font-family: 'Poppins', sans-serif; 
     font-weight: 600; 
     font-size: 0.9rem; 
     transition: 0.3s; 
-    box-shadow: 0 6px 15px rgba(79, 106, 91, 0.2);
-    border: 1px solid var(--primary);
+    box-shadow: 0 6px 15px rgba(201, 122, 99, 0.2);
 }
 .primary-action-btn:hover { 
-    background: var(--secondary); /* Passage au Rouge Terracotta au survol */
-    border-color: var(--secondary);
+    background: var(--primary); /* Vert Sauge au survol */
     transform: translateY(-3px); 
-    box-shadow: 0 8px 20px rgba(201, 122, 99, 0.3);
+    box-shadow: 0 8px 20px rgba(79, 106, 91, 0.2);
 }
 .primary-action-btn:disabled { 
-    background: #b8c2bc; 
-    border-color: #b8c2bc;
+    background: #d1c4b5; 
     cursor: not-allowed; 
     box-shadow: none; 
     transform: none; 
 }
 
 /* ========================================== */
-/* CARROUSEL (PAGE D'ACCUEIL)                 */
+/* CARROUSEL                                  */
 /* ========================================== */
 .carousel-container { 
     position: relative; 
     overflow: hidden; 
     border-radius: var(--radius); 
     margin: 30px 0; 
-    background: #2d3531; /* Fond sombre verdâtre pour faire ressortir les photos */
+    background: #2d3531; 
     height: 450px; 
     box-shadow: var(--shadow); 
 }
@@ -61,7 +58,7 @@
     position: absolute; 
     top: 50%; 
     transform: translateY(-50%); 
-    background: rgba(255,255,255,0.15); 
+    background: rgba(255,255,255,0.2); 
     color: white; 
     border: none; 
     width: 50px; 
@@ -69,13 +66,10 @@
     border-radius: 50%; 
     cursor: pointer; 
     backdrop-filter: blur(10px); 
-    transition: 0.3s; 
-    font-size: 1.2rem;
+    transition: 0.3s;
     z-index: 10;
 }
-.carousel-nav-btn:hover { 
-    background: var(--secondary); /* Rouge Terracotta au survol */
-}
+.carousel-nav-btn:hover { background: var(--secondary); }
 #prev-btn { left: 20px; } 
 #next-btn { right: 20px; }
 
@@ -96,13 +90,13 @@
     transition: 0.3s; 
 }
 #carousel-indicators span.active { 
-    background: var(--secondary); /* Indicateur Rouge */
+    background: var(--secondary); 
     width: 25px; 
     border-radius: 10px; 
 }
 
 /* ========================================== */
-/* MODALE PRODUIT                             */
+/* MODALE                                     */
 /* ========================================== */
 .modal { 
     display: none; 
@@ -112,7 +106,7 @@
     left: 0; 
     width: 100%; 
     height: 100%; 
-    background: rgba(45, 53, 49, 0.7); /* Overlay teinté vert */
+    background: rgba(45, 53, 49, 0.7); 
     backdrop-filter: blur(8px); 
     align-items: center; 
     justify-content: center; 
@@ -120,21 +114,16 @@
     box-sizing: border-box; 
 }
 .modal-content { 
-    background: var(--surface); /* Beige clair */
+    background: var(--surface); 
     padding: 40px; 
-    border-radius: 25px; 
+    border-radius: 30px; 
     width: 100%; 
     max-width: 600px; 
     position: relative; 
     max-height: 95vh; 
     overflow-y: auto;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.15); 
+    box-shadow: 0 25px 60px rgba(201, 122, 99, 0.15); 
     border: 1px solid var(--border);
-    animation: modalIn 0.4s ease-out;
-}
-@keyframes modalIn { 
-    from { opacity: 0; transform: translateY(30px); } 
-    to { opacity: 1; transform: translateY(0); } 
 }
 .close-btn { 
     position: absolute; 
@@ -143,104 +132,19 @@
     font-size: 2rem; 
     cursor: pointer; 
     color: var(--text-muted); 
-    z-index: 100;
-}
-
-/* SLIDER INTERNE DE LA MODALE */
-.modal-slider-container { 
-    position: relative; 
-    width: 100%; 
-    margin-bottom: 25px; 
-    background: #fdfaf7; 
-    border-radius: 20px; 
-    overflow: hidden; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    height: 320px; 
-    border: 1px solid var(--border);
-}
-
-.modal-slider-container img { 
-    max-width: 100%; 
-    max-height: 100%; 
-    object-fit: contain; 
 }
 
 .modal-nav-btn { 
-    position: absolute; 
-    top: 50%; 
-    transform: translateY(-50%); 
-    background: rgba(79, 106, 91, 0.8); /* Vert Sauge */
-    color: white; 
-    border: none; 
-    width: 40px; 
-    height: 40px; 
-    border-radius: 50%; 
-    cursor: pointer; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    z-index: 5; 
-    transition: 0.3s; 
+    background: rgba(201, 122, 99, 0.8); /* Terracotta */
 }
 .modal-nav-btn:hover { 
-    background: var(--secondary); /* Rouge Terracotta */
-    transform: translateY(-50%) scale(1.1); 
+    background: var(--primary); 
 }
-#modal-prev-btn { left: 15px; }
-#modal-next-btn { right: 15px; }
 
 #modal-image-counter { 
-    position: absolute; 
-    bottom: 15px; 
-    right: 20px; 
-    background: rgba(79, 106, 91, 0.6); 
-    color: white; 
-    padding: 4px 12px; 
-    border-radius: 20px; 
-    font-size: 0.75rem; 
-    font-family: 'Poppins', sans-serif; 
-    font-weight: 600;
+    background: rgba(201, 122, 99, 0.7); 
 }
 
-/* PRIX ET FORMULAIRE DANS LA MODALE */
-.modal-price-box { 
-    background: var(--bg); 
-    padding: 18px; 
-    border-radius: 18px; 
-    margin: 25px 0; 
-    display: flex; 
-    justify-content: space-around; 
-    border: 1px solid var(--border); 
-    font-size: 0.95rem; 
-}
-.modal-form-grid { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 20px; 
-}
-.modal-form label { 
-    display: block; 
-    margin-bottom: 8px; 
-    font-size: 0.75rem; 
-    font-weight: 700; 
-    text-transform: uppercase; 
-    color: var(--primary); 
-    letter-spacing: 0.5px;
-}
-.modal-form input { 
-    width: 100%; 
-    padding: 14px; 
-    border: 1.5px solid var(--border); 
-    border-radius: 15px; 
-    background: #fdfaf7; 
-    color: var(--text); 
-    outline: none; 
-    box-sizing: border-box; 
-    font-family: 'Poppins', sans-serif;
-    transition: 0.3s;
-}
 .modal-form input:focus {
     border-color: var(--secondary);
     box-shadow: 0 0 0 4px rgba(201, 122, 99, 0.1);
@@ -260,11 +164,9 @@
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
     z-index: 2000; 
-    transition: transform 0.3s ease; 
 }
-.whatsapp-fixed:hover { transform: scale(1.1); }
 .whatsapp-svg { width: 35px; height: 35px; fill: white; }
 
 #toast-notification { 
@@ -272,24 +174,16 @@
     bottom: 100px; 
     left: 50%; 
     transform: translateX(-50%); 
-    background: var(--primary); 
+    background: var(--secondary); 
     color: white; 
     padding: 14px 30px; 
     border-radius: 20px; 
     display: none; 
     z-index: 4000; 
-    box-shadow: var(--shadow); 
-    font-family: 'Poppins', sans-serif; 
-    font-size: 0.9rem; 
-    font-weight: 500;
 }
-#toast-notification.show { display: block; animation: modalIn 0.3s ease-out; }
+#toast-notification.show { display: block; }
 
 @media (max-width: 768px) {
     .carousel-container { height: 280px; }
-    .modal-content { padding: 25px; }
-    .modal-slider-container { height: 240px; }
-    .modal-form-grid { grid-template-columns: 1fr; gap: 15px; }
     .whatsapp-fixed { bottom: 20px; right: 20px; width: 50px; height: 50px; }
-    .whatsapp-svg { width: 28px; height: 28px; }
 }
