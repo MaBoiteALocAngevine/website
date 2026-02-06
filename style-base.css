@@ -3,83 +3,60 @@ img {
 }
 
 :root {
-    --primary: #4f6a5b;      /* Vert Sauge */
+    --primary: #4f6a5b;      /* Vert Sauge - Dominant */
     --primary-light: #638271;
-    --secondary: #c97a63;    /* Rouge Terracotta */
+    --secondary: #c97a63;    /* Terracotta - Accent */
     --secondary-light: #d69583;
-    --bg: #e6d9c9;           /* Beige Sable (Couleur de fond du logo) */
-    --surface: #f2e8dc;      /* Beige très clair pour les cartes */
+    --bg: #e6d9c9;           /* Beige Sable */
+    --surface: #f2e8dc;      /* Beige clair */
     --text: #2d3531;         
     --text-muted: #6b7570;
     --border: #d1c4b5;
-    --shadow: 0 10px 30px rgba(201, 122, 99, 0.1); 
-    --radius: 24px;
+    --shadow: 0 10px 30px rgba(79, 106, 91, 0.08); 
+    --radius: 20px;
 }
 
 body { 
     font-family: 'Lora', serif; 
-    margin: 0; 
-    padding-top: 100px; 
-    background-color: var(--bg); 
-    color: var(--text); 
-    line-height: 1.7; 
-    transition: 0.3s;
+    margin: 0; padding-top: 100px; 
+    background-color: var(--bg); color: var(--text); 
+    line-height: 1.7; transition: 0.3s;
 }
 
 main { max-width: 1100px; margin: 0 auto; padding: 20px; }
 
-/* Titres en Terracotta pour une ambiance chaleureuse */
+/* Titres en Vert Sauge pour le sérieux */
 h1, h2, h3, h4 { 
     font-family: 'Poppins', sans-serif; 
     font-weight: 700; 
-    color: var(--secondary); 
+    color: var(--primary); 
     letter-spacing: -0.5px; 
 }
 
-/* HEADER FONDU (Même couleur que le logo) */
 header { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 10px 40px; 
-    background-color: var(--bg); 
-    position: fixed; 
-    top: 0; 
-    width: 100%; 
-    box-sizing: border-box; 
-    z-index: 1000; 
-    height: 90px;
-    border-bottom: 1px solid rgba(201, 122, 99, 0.1);
+    display: flex; justify-content: space-between; align-items: center; 
+    padding: 10px 40px; background-color: var(--bg); 
+    position: fixed; top: 0; width: 100%; box-sizing: border-box; 
+    z-index: 1000; height: 90px;
+    border-bottom: 1px solid rgba(79, 106, 91, 0.1);
     backdrop-filter: blur(5px);
 }
 
 .main-nav ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 30px; }
 .main-nav a { 
-    font-family: 'Poppins', sans-serif; 
-    font-size: 0.95rem; 
-    font-weight: 600; 
-    color: var(--primary); 
-    text-decoration: none; 
-    padding: 5px 0; 
-    border-bottom: 2px solid transparent; 
-    transition: 0.3s;
+    font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; 
+    color: var(--primary); text-decoration: none; padding: 5px 0; border-bottom: 2px solid transparent; transition: 0.3s;
 }
 .main-nav a:hover { color: var(--secondary); }
 .main-nav a.active { color: var(--secondary); border-bottom-color: var(--secondary); }
 
-/* Bouton demande en Terracotta */
+/* Bouton demande en Vert Sauge */
 #cart-link { 
-    background: var(--secondary); 
-    color: white; 
-    padding: 10px 22px; 
-    border-radius: 50px; 
-    font-weight: 600; 
-    font-size: 0.85rem; 
-    text-decoration: none;
-    transition: 0.3s; 
-    box-shadow: 0 4px 12px rgba(201, 122, 99, 0.2);
+    background: var(--primary); color: white; padding: 10px 22px; 
+    border-radius: 50px; font-weight: 600; font-size: 0.85rem; text-decoration: none;
+    transition: 0.3s; box-shadow: 0 4px 12px rgba(79, 106, 91, 0.2);
 }
-#cart-link:hover { background: var(--primary); transform: translateY(-2px); }
+#cart-link:hover { background: var(--secondary); transform: translateY(-2px); }
 
 @media (max-width: 768px) {
     header { padding: 0 15px; height: 80px; }

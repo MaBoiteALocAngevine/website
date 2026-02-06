@@ -1,8 +1,6 @@
-/* ========================================== */
-/* BOUTONS                                    */
-/* ========================================== */
+/* BOUTONS - Vert Sauge pour l'action principale */
 .primary-action-btn { 
-    background: var(--secondary); /* Terracotta par défaut */
+    background: var(--primary); 
     color: white; 
     border: none; 
     padding: 14px 32px; 
@@ -12,176 +10,52 @@
     font-weight: 600; 
     font-size: 0.9rem; 
     transition: 0.3s; 
-    box-shadow: 0 6px 15px rgba(201, 122, 99, 0.2);
+    box-shadow: 0 6px 15px rgba(79, 106, 91, 0.2);
 }
 .primary-action-btn:hover { 
-    background: var(--primary); /* Vert Sauge au survol */
+    background: var(--secondary); 
     transform: translateY(-3px); 
-    box-shadow: 0 8px 20px rgba(79, 106, 91, 0.2);
+    box-shadow: 0 8px 20px rgba(201, 122, 99, 0.2);
 }
 .primary-action-btn:disabled { 
-    background: #d1c4b5; 
+    background: #b8c2bc; 
     cursor: not-allowed; 
     box-shadow: none; 
     transform: none; 
 }
 
-/* ========================================== */
-/* CARROUSEL                                  */
-/* ========================================== */
-.carousel-container { 
-    position: relative; 
-    overflow: hidden; 
-    border-radius: var(--radius); 
-    margin: 30px 0; 
-    background: #2d3531; 
-    height: 450px; 
-    box-shadow: var(--shadow); 
-}
-.carousel-track { 
-    display: flex; 
-    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1); 
-    height: 100%; 
-}
-.carousel-slide { 
-    min-width: 100%; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-}
-.carousel-slide img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: contain; 
-}
+/* CARROUSEL */
+.carousel-container { border-radius: var(--radius); background: #2d3531; height: 450px; box-shadow: var(--shadow); }
+.carousel-track { display: flex; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
+.carousel-slide { min-width: 100%; display: flex; justify-content: center; align-items: center; }
+.carousel-slide img { width: 100%; height: 100%; object-fit: contain; }
 .carousel-nav-btn { 
-    position: absolute; 
-    top: 50%; 
-    transform: translateY(-50%); 
-    background: rgba(255,255,255,0.2); 
-    color: white; 
-    border: none; 
-    width: 50px; 
-    height: 50px; 
-    border-radius: 50%; 
-    cursor: pointer; 
-    backdrop-filter: blur(10px); 
-    transition: 0.3s;
+    position: absolute; top: 50%; transform: translateY(-50%); 
+    background: rgba(255,255,255,0.2); color: white; border: none; 
+    width: 50px; height: 50px; border-radius: 50%; cursor: pointer; backdrop-filter: blur(10px); transition: 0.3s;
     z-index: 10;
 }
-.carousel-nav-btn:hover { background: var(--secondary); }
-#prev-btn { left: 20px; } 
-#next-btn { right: 20px; }
+.carousel-nav-btn:hover { background: var(--primary); }
+#prev-btn { left: 20px; } #next-btn { right: 20px; }
 
-#carousel-indicators { 
-    position: absolute; 
-    bottom: 20px; 
-    width: 100%; 
-    display: flex; 
-    justify-content: center; 
-    gap: 10px; 
-}
-#carousel-indicators span { 
-    width: 8px; 
-    height: 8px; 
-    background: rgba(255,255,255,0.3); 
-    border-radius: 50%; 
-    cursor: pointer; 
-    transition: 0.3s; 
-}
-#carousel-indicators span.active { 
-    background: var(--secondary); 
-    width: 25px; 
-    border-radius: 10px; 
-}
+#carousel-indicators span.active { background: var(--primary); width: 25px; }
 
-/* ========================================== */
-/* MODALE                                     */
-/* ========================================== */
-.modal { 
-    display: none; 
-    position: fixed; 
-    z-index: 3000; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    background: rgba(45, 53, 49, 0.7); 
-    backdrop-filter: blur(8px); 
-    align-items: center; 
-    justify-content: center; 
-    padding: 20px; 
-    box-sizing: border-box; 
-}
-.modal-content { 
-    background: var(--surface); 
-    padding: 40px; 
-    border-radius: 30px; 
-    width: 100%; 
-    max-width: 600px; 
-    position: relative; 
-    max-height: 95vh; 
-    overflow-y: auto;
-    box-shadow: 0 25px 60px rgba(201, 122, 99, 0.15); 
-    border: 1px solid var(--border);
-}
-.close-btn { 
-    position: absolute; 
-    right: 25px; 
-    top: 20px; 
-    font-size: 2rem; 
-    cursor: pointer; 
-    color: var(--text-muted); 
-}
-
-.modal-nav-btn { 
-    background: rgba(201, 122, 99, 0.8); /* Terracotta */
-}
-.modal-nav-btn:hover { 
-    background: var(--primary); 
-}
-
-#modal-image-counter { 
-    background: rgba(201, 122, 99, 0.7); 
-}
+/* MODALE */
+.modal-content { background: var(--surface); border-radius: 30px; border: 1px solid var(--border); box-shadow: 0 25px 60px rgba(0,0,0,0.1); }
+.modal-nav-btn { background: rgba(79, 106, 91, 0.8); }
+.modal-nav-btn:hover { background: var(--secondary); }
+#modal-image-counter { background: rgba(79, 106, 91, 0.7); }
 
 .modal-form input:focus {
-    border-color: var(--secondary);
-    box-shadow: 0 0 0 4px rgba(201, 122, 99, 0.1);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(79, 106, 91, 0.1);
 }
 
-/* ========================================== */
-/* WHATSAPP & TOAST                           */
-/* ========================================== */
-.whatsapp-fixed { 
-    position: fixed; 
-    bottom: 30px; 
-    right: 30px; 
-    width: 60px; 
-    height: 60px; 
-    background-color: #25D366; 
-    border-radius: 50%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
-    z-index: 2000; 
-}
-.whatsapp-svg { width: 35px; height: 35px; fill: white; }
+/* WHATSAPP */
+.whatsapp-fixed { background-color: #25D366; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
 
-#toast-notification { 
-    position: fixed; 
-    bottom: 100px; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    background: var(--secondary); 
-    color: white; 
-    padding: 14px 30px; 
-    border-radius: 20px; 
-    display: none; 
-    z-index: 4000; 
-}
-#toast-notification.show { display: block; }
+/* TOAST */
+#toast-notification { background: var(--primary); color: white; }
 
 @media (max-width: 768px) {
     .carousel-container { height: 280px; }
