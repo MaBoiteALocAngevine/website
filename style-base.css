@@ -4,18 +4,19 @@ img { image-orientation: from-image; }
     --primary: #4f6a5b;      /* Vert Sauge */
     --primary-light: #638271;
     --secondary: #c97a63;    /* Terracotta */
-    --bg: #f9f7f2;           /* Beige Crème très clair (plus lumineux) */
-    --surface: #ffffff;      /* Blanc pur pour les éléments */
+    --bg: #e6d9c9;           /* Beige Sable (Fond du site) */
+    --surface: #f2e8dc;      /* Beige Moyen (Fond des encadrés) */
+    --surface-light: #f9f4ee; /* Beige très clair */
     --text: #2d3531;         
     --text-muted: #6b7570;
-    --border: #e8e2da;
+    --border: #d1c4b5;
     --shadow: 0 10px 30px rgba(79, 106, 91, 0.05); 
     --radius: 24px;
 }
 
 body { 
     font-family: 'Lora', serif; 
-    margin: 0; padding-top: 100px; 
+    margin: 0; padding-top: 130px; /* Ajusté pour le gros logo */
     background-color: var(--bg); color: var(--text); 
     line-height: 1.7;
 }
@@ -28,7 +29,8 @@ header {
     display: flex; justify-content: space-between; align-items: center; 
     padding: 10px 40px; background-color: var(--bg); 
     position: fixed; top: 0; width: 100%; box-sizing: border-box; 
-    z-index: 1000; height: 90px; border-bottom: 1px solid var(--border);
+    z-index: 1000; height: 120px; /* Hauteur augmentée */
+    border-bottom: 1px solid var(--border);
 }
 
 .main-nav ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 30px; }
@@ -36,12 +38,13 @@ header {
 .main-nav a:hover { color: var(--secondary); }
 .main-nav a.active { color: var(--secondary); border-bottom-color: var(--secondary); }
 
-#cart-link { background: var(--primary); color: white !important; padding: 10px 22px; border-radius: 50px; font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: 0.3s; }
-#cart-link:hover { background: var(--secondary); }
+#cart-link { background: var(--primary); color: white !important; padding: 10px 22px; border-radius: 50px; font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: 0.3s; box-shadow: 0 4px 12px rgba(79, 106, 91, 0.2); }
+#cart-link:hover { background: var(--secondary); transform: translateY(-2px); }
 
 @media (max-width: 768px) {
-    header { padding: 0 15px; height: 80px; }
-    body { padding-top: 90px; }
+    header { padding: 0 15px; height: 100px; }
+    header img { height: 80px !important; }
+    body { padding-top: 110px; }
     .main-nav ul { gap: 15px; }
     .main-nav a { font-size: 0.8rem; }
 }
