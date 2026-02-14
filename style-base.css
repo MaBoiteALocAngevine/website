@@ -29,8 +29,15 @@ header {
     display: flex; justify-content: space-between; align-items: center; 
     padding: 10px 40px; background-color: var(--bg); 
     position: fixed; top: 0; width: 100%; box-sizing: border-box; 
-    z-index: 1000; height: 120px;
-    border-bottom: 1px solid var(--border);
+    z-index: 1000; height: 120px; /* Hauteur augmentée */
+    border-bottom: 1px solid rgba(79, 106, 91, 0.1);
+}
+
+body { 
+    font-family: 'Lora', serif; 
+    margin: 0; padding-top: 130px; /* Espace pour le header */
+    background-color: var(--bg); color: var(--text); 
+    line-height: 1.7;
 }
 
 .main-nav ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 30px; }
