@@ -1,13 +1,13 @@
 img { image-orientation: from-image; }
 
 :root {
-    --primary: #3a4f43;      /* Vert Sauge Foncé (Meilleur contraste) */
+    --primary: #3a4f43;      /* Vert Sauge Foncé */
     --primary-light: #4f6a5b;
-    --secondary: #b05b45;    /* Terracotta Foncé (Meilleur contraste) */
+    --secondary: #b05b45;    /* Terracotta Foncé */
     --secondary-light: #c97a63;
     --bg: #e6d9c9;           
     --surface: #f2e8dc;      
-    --text: #1e2421;         /* Texte plus sombre pour lisibilité */
+    --text: #1e2421;         
     --text-muted: #545d59;
     --border: #d1c4b5;
     --shadow: 0 10px 30px rgba(58, 79, 67, 0.1); 
@@ -29,15 +29,8 @@ header {
     display: flex; justify-content: space-between; align-items: center; 
     padding: 10px 40px; background-color: var(--bg); 
     position: fixed; top: 0; width: 100%; box-sizing: border-box; 
-    z-index: 1000; height: 120px; /* Hauteur augmentée */
-    border-bottom: 1px solid rgba(79, 106, 91, 0.1);
-}
-
-body { 
-    font-family: 'Lora', serif; 
-    margin: 0; padding-top: 130px; /* Espace pour le header */
-    background-color: var(--bg); color: var(--text); 
-    line-height: 1.7;
+    z-index: 1000; height: 120px;
+    border-bottom: 1px solid var(--border);
 }
 
 .main-nav ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 30px; }
@@ -45,15 +38,28 @@ body {
 .main-nav a:hover { color: var(--secondary); }
 .main-nav a.active { color: var(--secondary); border-bottom-color: var(--secondary); }
 
-#cart-link { background: var(--primary); color: white !important; padding: 10px 22px; border-radius: 50px; font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: 0.3s; box-shadow: 0 4px 12px rgba(79, 106, 91, 0.2); }
+#cart-link { 
+    background: var(--primary); 
+    color: white !important; 
+    padding: 10px 22px; 
+    border-radius: 50px; 
+    font-weight: 600; 
+    font-size: 0.85rem; 
+    text-decoration: none; 
+    transition: 0.3s; 
+    box-shadow: 0 4px 12px rgba(79, 106, 91, 0.2);
+    white-space: nowrap; /* Empêche le retour à la ligne sur mobile */
+    display: inline-block;
+}
 #cart-link:hover { background: var(--secondary); transform: translateY(-2px); }
 
 @media (max-width: 768px) {
-    header { padding: 0 15px; height: 100px; }
+    header { padding: 0 10px; height: 100px; }
     header img { height: 80px !important; }
     body { padding-top: 110px; font-size: 16px; }
-    .main-nav ul { gap: 15px; }
-    .main-nav a { font-size: 0.85rem; }
+    .main-nav ul { gap: 10px; }
+    .main-nav a { font-size: 0.8rem; }
+    #cart-link { padding: 8px 12px; font-size: 0.75rem; }
 }
 
 a { color: inherit; text-decoration: none; }
