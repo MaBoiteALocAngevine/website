@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO : TITRE OPTIMISÉ -->
+    <!-- SEO & MÉTA-DONNÉES STRATÉGIQUES -->
     <title>Location matériel événementiel Angers - Ma boîte à loc'</title>
     <meta name="description" content="Location de matériel de réception, fête et équipements de qualité à Rives-du-Loir-en-Anjou. Service de proximité réactif pour particuliers et pros en Maine-et-Loire (49).">
     <link rel="canonical" href="https://maboitealocangevine.github.io/website/">
@@ -70,7 +70,7 @@
     <!-- ========================================== -->
     <header style="height: 120px;">
         <div class="logo-brand" onclick="showSection('accueil')" style="cursor:pointer; display: flex; align-items: center;">
-            <img src="images/logo.png" alt="Ma boîte à loc' Angevine - Location matériel événementiel Angers" style="height: 110px; width: auto;">
+            <img src="images/logo.png" alt="Ma boîte à loc' Angevine - Location matériel événementiel Angers" id="main-logo" style="height: 110px; width: auto;">
         </div>
         <nav class="main-nav">
             <ul>
@@ -86,6 +86,7 @@
     </header>
 
     <main>
+        <!-- Barre de catégories (Visible uniquement dans le catalogue) -->
         <nav class="cat-nav" id="catalogue-nav" style="display: none;"></nav>
 
         <!-- ========================================== -->
@@ -93,10 +94,10 @@
         <!-- ========================================== -->
         <div id="accueil-section" class="content-section">
             <div class="hero-content">
-                <h1>Location de matériel événementiel à Angers et en Anjou</h1>
-                <p>Pour votre <strong>location de matériel événementiel à Angers</strong>, Ma boîte à loc' Angevine est votre partenaire de proximité à Rives-du-Loir-en-Anjou. Que vous organisiez un mariage élégant, un anniversaire ou un vide-grenier, nous proposons des solutions adaptées au meilleur prix en Maine-et-Loire (49).</p>
+                <h1>Location de matériel événementiel et outillage en Maine-et-Loire</h1>
+                <p>Pour votre <strong>location de matériel événementiel à Angers</strong>, Ma boîte à loc' Angevine est votre partenaire de proximité à Rives-du-Loir-en-Anjou. Que vous organisiez un mariage élégant, un anniversaire, une réception associative ou un vide-grenier, nous proposons des solutions adaptées au meilleur prix en Maine-et-Loire (49).</p>
                 <div style="margin-top: 20px;">
-                    <a href="#catalogue" onclick="showSection('catalogue')" class="primary-action-btn">Consulter notre catalogue de location</a>
+                    <button onclick="showSection('catalogue')" class="primary-action-btn">Consulter notre catalogue de location</button>
                 </div>
             </div>
             
@@ -109,33 +110,54 @@
 
             <div class="presentation-box">
                 <h2>L'esprit Ma boîte à loc' Angevine : Souplesse et Qualité</h2>
-                <p>Notre structure à taille humaine repose sur la <strong>proximité</strong> et la <strong>réactivité</strong>. Contrairement aux grandes enseignes, vous bénéficiez ici d'un contact direct et personnalisé. Nous nous engageons à vous accompagner dans la réussite de vos projets festifs ou techniques partout dans le 49.</p>
-                <p>Cette organisation agile nous permet de nous adapter totalement à vos besoins : flexibilité sur les créneaux de retrait, conseils sur le choix de votre mobilier de réception ou de votre outillage, et tarifs très compétitifs.</p>
+                <p>Notre structure à taille humaine repose sur la <strong>proximité</strong> et la <strong>réactivité</strong>. Contrairement aux grandes enseignes de location de matériel, vous bénéficiez ici d'un contact direct et personnalisé. Nous nous engageons à vous accompagner dans la réussite de vos projets festifs ou techniques partout dans le 49.</p>
+                <p>Cette organisation agile nous permet de nous adapter totalement à vos besoins : flexibilité sur les créneaux de retrait, conseils sur le choix de votre mobilier de réception ou de votre outillage, et tarifs très compétitifs. Notre objectif est de vous offrir une solution de location simple, humaine et efficace pour vos événements à Angers, Villevêque et ses environs.</p>
             </div>
 
             <div class="modality-cards-container">
-                <div class="modality-card"><h3>Proximité</h3><p>Basés en Anjou, nous répondons à vos demandes sous 48h pour une organisation sans stress.</p></div>
-                <div class="modality-card"><h3>Qualité</h3><p>Matériel rigoureusement sélectionné, entretenu et nettoyé après chaque utilisation.</p></div>
-                <div class="modality-card"><h3>Service</h3><p>Solutions de location accessibles avec option livraison et montage sur devis.</p></div>
+                <div class="modality-card">
+                    <h3>Proximité</h3>
+                    <p>Basés en Anjou, nous répondons à vos demandes sous 48h pour une organisation sans stress.</p>
+                </div>
+                <div class="modality-card">
+                    <h3>Qualité</h3>
+                    <p>Matériel rigoureusement sélectionné, entretenu et nettoyé après chaque utilisation.</p>
+                </div>
+                <div class="modality-card">
+                    <h3>Service</h3>
+                    <p>Solutions de location accessibles avec option livraison et montage sur devis.</p>
+                </div>
             </div>
 
             <div style="text-align:center; margin: 60px 0 20px;">
                 <h2 style="font-size: 1.5rem;">Nos Modalités de Service</h2>
             </div>
             <div class="modality-cards-container" style="margin-top:0;">
-                <div class="modality-card secondary-border"><h3>Paiement & Caution</h3><p>Règlement par espèces ou virement instantané. Une caution de garantie est demandée et restituée après vérification.</p></div>
-                <div class="modality-card secondary-border"><h3>Livraison & Montage</h3><p>Simplifiez votre logistique ! Nous proposons un service optionnel de livraison et de montage sur votre lieu d'événement.</p></div>
-                <div class="modality-card secondary-border"><h3>Facturation</h3><p>Professionnels ou associations ? Une facture détaillée est émise pour chaque location sur simple demande.</p></div>
+                <div class="modality-card secondary-border">
+                    <h3>Paiement & Caution</h3>
+                    <p>Le règlement s'effectue par espèces ou virement instantané. Une caution de garantie (montant indiqué sur chaque fiche) est demandée et restituée après vérification du bon état du matériel au retour.</p>
+                </div>
+                <div class="modality-card secondary-border">
+                    <h3>Livraison & Montage</h3>
+                    <p>Simplifiez votre logistique ! Nous proposons un service optionnel de livraison et de montage directement sur le lieu de votre événement (sur devis).</p>
+                </div>
+                <div class="modality-card secondary-border">
+                    <h3>Facturation</h3>
+                    <p>Professionnels ou associations ? Une facture détaillée est émise pour chaque location sur simple demande pour faciliter votre gestion.</p>
+                </div>
             </div>
 
             <div class="seo-text-block">
                 <h2 style="font-size: 1.5rem; margin-top: 0;">La qualité et la réactivité au cœur de notre service</h2>
-                <p>Chez Ma boîte à loc' Angevine, nous plaçons la satisfaction de nos clients au centre de notre démarche. Chaque équipement de notre catalogue est rigoureusement sélectionné pour sa fiabilité et sa performance. Nous assurons un entretien méticuleux pour vous garantir un matériel impeccable.</p>
-                <p>Nous desservons <strong>Angers</strong>, <strong>Rives-du-Loir-en-Anjou</strong>, <strong>Villevêque</strong> et l'ensemble du département du <strong>Maine-et-Loire (49)</strong>.</p>
+                <p>Chez <strong>Ma boîte à loc' Angevine</strong>, nous plaçons la satisfaction de nos clients au centre de notre démarche. Chaque équipement de notre catalogue est rigoureusement sélectionné pour sa fiabilité et sa performance. Nous assurons un entretien méticuleux et un nettoyage systématique entre chaque location pour vous garantir un matériel impeccable, prêt à l'emploi.</p>
+                <p>Notre implantation locale nous permet d'offrir une flexibilité totale et une grande <strong>réactivité</strong>. Que vous soyez un particulier organisant une fête ou un professionnel sur un chantier, nous adaptons nos services à vos contraintes horaires. Nous desservons avec fierté <strong>Angers</strong>, <strong>Rives-du-Loir-en-Anjou</strong>, <strong>Villevêque</strong>, Seiches-sur-le-Loir et l'ensemble du département du <strong>Maine-et-Loire (49)</strong>.</p>
             </div>
         </div>
 
-        <!-- SECTION CATALOGUE -->
+
+        <!-- ========================================== -->
+        <!-- SECTION CATALOGUE                          -->
+        <!-- ========================================== -->
         <div id="catalogue-section" class="content-section">
             <h2 style="text-align:center; margin-bottom:30px;">Notre Catalogue de Location</h2>
             <div id="search-bar">
@@ -146,54 +168,87 @@
             </div>
         </div>
 
-        <!-- SECTION PANIER -->
+
+        <!-- ========================================== -->
+        <!-- SECTION PANIER / RÉSERVATION               -->
+        <!-- ========================================== -->
         <div id="panier-section" class="content-section">
             <h2 style="text-align:center; margin-bottom:40px;">Votre Demande de Réservation</h2>
             <div id="cart-items-container"></div>
+            
             <div id="cart-summary">
                 <form id="reservation-form" method="POST" action="https://formsubmit.co/maboitealocangevine@gmail.com">
-                    <label style="font-weight:600; cursor:pointer;"><input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()"> Demander la livraison & montage (Sur devis)</label>
-                    <div id="delivery-address-group" style="display:none; margin:15px 0;"><textarea id="delivery-address" placeholder="Adresse complète de livraison"></textarea></div>
-                    <div class="price-summary-box">
-                        <p>Estimation Location : <strong id="cart-total-estimate">0,00 €</strong></p>
-                        <p>Total Cautions : <strong id="cart-total-caution">0,00 €</strong></p>
-                    </div>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px; font-style: italic;">🛡️ Confidentialité : Vos informations ne sont pas stockées sur ce site.</p>
-                    <input type="email" id="user-email" name="Email" required placeholder="votre@email.com" class="form-input">
-                    <textarea id="reservation-message" placeholder="Précisions (horaires, accès...)" class="form-input" style="height:80px;"></textarea>
-                    <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; cursor: pointer; margin-bottom: 20px;"><input type="checkbox" id="marketing-consent" name="Consentement_Marketing"><span>Je souhaite être informé(e) des nouveautés et des offres.</span></label>
                     
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label style="cursor:pointer;"><input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()" name="Livraison"> Demander livraison & montage (Sur devis)</label>
+                    </div>
+                    
+                    <div id="delivery-address-group" style="display:none; margin-bottom: 20px;">
+                        <textarea id="delivery-address" name="Adresse de livraison" placeholder="Indiquez l'adresse complète pour la livraison" style="width:100%; padding:15px; border-radius:10px; border: 1px solid var(--border); font-family:inherit;"></textarea>
+                    </div>
+                    
+                    <div class="price-summary-box">
+                        <p style="margin: 0 0 10px 0;">Estimation Location : <strong id="cart-total-estimate">0,00 € TTC</strong></p>
+                        <p style="margin: 0;">Total Cautions : <strong id="cart-total-caution">0,00 € TTC</strong></p>
+                    </div>
+
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px; font-style: italic;">
+                        🛡️ <strong>Confidentialité :</strong> Vos informations ne sont pas stockées sur ce site. Elles nous sont transmises directement par e-mail sécurisé.
+                    </p>
+
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label style="display:block; margin-bottom: 8px; font-weight:600;">Votre Email (obligatoire) :</label>
+                        <input type="email" id="user-email" name="Email" required placeholder="votre@email.com" style="width:100%; padding:15px; border-radius:10px; border: 1px solid var(--border); box-sizing: border-box;">
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: 30px;">
+                        <label style="display:block; margin-bottom: 8px; font-weight:600;">Précisions (horaires, accès...) :</label>
+                        <textarea id="reservation-message" name="Message" placeholder="Informations complémentaires..." style="width:100%; padding:15px; border-radius:10px; border: 1px solid var(--border); height: 100px; box-sizing: border-box;"></textarea>
+                    </div>
+
+                    <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; cursor: pointer; margin-bottom: 20px;">
+                        <input type="checkbox" id="marketing-consent" name="Consentement_Marketing">
+                        <span>Je souhaite être informé(e) des nouveautés et des offres de Ma boîte à loc' Angevine.</span>
+                    </label>
+
+                    <!-- Config FormSubmit -->
                     <input type="hidden" name="_next" value="https://maboitealocangevine.github.io/website/merci.html">
                     <input type="hidden" name="_replyto" id="hidden-replyto">
                     <input type="hidden" name="_cc" id="hidden-cc">
                     <input type="hidden" name="_subject" id="hidden-subject">
                     <input type="hidden" name="_template" value="table">
                     <input type="hidden" name="_captcha" value="false">
-                    <textarea name="RÉCAPITULATIF_DEMANDE" id="email-body-content" style="display:none;"></textarea>
+                    <textarea name="RÉCAPITULATIF_DEMANDE" id="email-body-content" style="display: none;"></textarea>
                     
-                    <button type="submit" class="primary-action-btn" style="width:100%;" disabled>Envoyer ma demande</button>
+                    <button type="submit" class="primary-action-btn" style="width:100%;" disabled>Envoyer ma demande de réservation</button>
                 </form>
             </div>
         </div>
 
-        <!-- SECTION CONTACT -->
+
+        <!-- ========================================== -->
+        <!-- SECTION CONTACT                            -->
+        <!-- ========================================== -->
         <div id="contact-section" class="content-section">
             <h2 style="text-align:center; margin-bottom:40px;">Contact & Localisation</h2>
-            <div class="pro-alert">
-                <p><strong>📍 Note importante :</strong> Notre adresse à Rives-du-Loir est un dépôt logistique. L'accès se fait exclusivement sur rendez-vous confirmé.</p>
+            
+            <div class="disclaimer-box pro-alert">
+                <p><strong>📍 Note importante :</strong> Notre adresse à Rives-du-Loir est un dépôt logistique destiné uniquement au retrait et au retour du matériel. Pour garantir la disponibilité de notre équipe, l'accès au dépôt se fait <strong>exclusivement sur rendez-vous confirmé</strong> au préalable par téléphone ou par e-mail.</p>
             </div>
+            
             <div class="contact-grid">
                 <div class="contact-details">
-                    <p>📞 <strong>Téléphone</strong><br><a href="tel:+33652982348" style="color:var(--primary); font-weight:700;">06 52 98 23 48</a></p>
-                    <p>📧 <strong>Email</strong><br><a href="mailto:maboitealocangevine@gmail.com" style="color:var(--primary); font-weight:700;">maboitealocangevine@gmail.com</a></p>
-                    <p>📍 <strong>Adresse</strong><br>5 impasse les Rochebruyeres, 49140 RIVES DU LOIR</p>
-                    <p>⭐ <strong>Avis & Infos</strong><br><a href="https://share.google/NBw9YA7puoIqx3ipT" target="_blank" style="color:var(--primary); font-weight:700;">Ma boîte à loc' Angevine sur Google</a></p>
+                    <p><strong>📞 Téléphone :</strong> <a href="tel:+33652982348" style="color:var(--primary); font-weight:700;">06 52 98 23 48</a></p>
+                    <p><strong>📧 Email :</strong> <a href="mailto:maboitealocangevine@gmail.com" style="color:var(--primary); font-weight:700;">maboitealocangevine@gmail.com</a></p>
+                    <p><strong>📍 Adresse :</strong> 5 impasse les Rochebruyeres, 49140 RIVES DU LOIR EN ANJOU</p>
+                    <p><strong>⭐ Avis & Infos :</strong> <a href="https://share.google/NBw9YA7puoIqx3ipT" target="_blank" style="color:var(--primary); font-weight:700;">Ma boîte à loc' Angevine sur Google</a></p>
+                    
                     <div class="social-links-box" style="margin-top: 30px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
                         <p style="font-weight:700; margin:0;">Suivez-nous :</p>
-                        <a href="https://www.facebook.com/maboitealocangevine" target="_blank" class="social-icon-link">
+                        <a href="https://www.facebook.com/maboitealocangevine" target="_blank" class="social-icon-link" title="Facebook">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--primary)"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                         </a>
-                        <a href="https://www.instagram.com/maboitealocangevine" target="_blank" class="social-icon-link">
+                        <a href="https://www.instagram.com/maboitealocangevine" target="_blank" class="social-icon-link" title="Instagram">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--primary)"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                         </a>
                     </div>
@@ -204,10 +259,14 @@
             </div>
         </div>
 
-        <!-- SECTION INFOS PRATIQUES -->
+        <!-- ========================================== -->
+        <!-- SECTION INFOS PRATIQUES                    -->
+        <!-- ========================================== -->
         <div id="infos-section" class="content-section">
             <h2 style="text-align:center; margin-bottom:40px;">Informations Pratiques</h2>
+
             <div class="infos-grid">
+                <!-- FAQ -->
                 <div class="infos-block">
                     <h3>Questions fréquentes</h3>
                     <div class="faq-item">
@@ -230,6 +289,8 @@
                     </div>
                     <button id="faq-toggle-btn" onclick="window.toggleFAQ()" class="primary-action-btn" style="background:none; border:1px solid var(--secondary); color:var(--secondary); padding:8px 20px; margin-top:10px;">Afficher plus</button>
                 </div>
+
+                <!-- RETOURS & CHECKLIST -->
                 <div class="infos-block">
                     <h3>Retours et échanges</h3>
                     <ul class="infos-list">
@@ -250,25 +311,46 @@
         </div>
     </main>
 
+    <!-- ========================================== -->
+    <!-- PIED DE PAGE (FOOTER)                      -->
+    <!-- ========================================== -->
     <footer style="background: var(--surface); padding: 60px 20px 30px; border-top: 1px solid var(--border); margin-top: 80px;">
         <div style="max-width:1100px; margin:0 auto; display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:40px;">
-            <div><h4>Ma boîte à loc' Angevine</h4><p style="font-size:0.9rem; color:var(--text-muted);">Votre partenaire de confiance pour la <strong>location de matériel événementiel à Angers</strong> et en Maine-et-Loire (49).</p></div>
-            <div><h4>Navigation</h4><ul style="list-style:none; padding:0; font-size:0.9rem; line-height:2;">
-                <li><a href="#accueil" onclick="showSection('accueil')">Accueil</a></li>
-                <li><a href="#catalogue" onclick="showSection('catalogue')">Catalogue</a></li>
-                <li><a href="#contact" onclick="showSection('contact')">Contact & Accès</a></li>
-                <li><a href="#infos" onclick="showSection('infos')">Infos pratiques</a></li>
-            </ul></div>
-            <div><h4>Contact</h4><p style="font-size:0.9rem; color:var(--text-muted);">Rives-du-Loir-en-Anjou (49)<br>06 52 98 23 48<br>maboitealocangevine@gmail.com</p></div>
+            <div>
+                <h4 style="margin-top:0;">Ma boîte à loc' Angevine</h4>
+                <p style="font-size:0.9rem; color:var(--text-muted);">Votre partenaire de confiance pour la <strong>location de matériel événementiel à Angers</strong> et en Maine-et-Loire (49).</p>
+            </div>
+            <div>
+                <h4 style="margin-top:0;">Navigation</h4>
+                <ul style="list-style:none; padding:0; font-size:0.9rem; line-height:2;">
+                    <li><a href="#accueil" onclick="showSection('accueil')">Accueil</a></li>
+                    <li><a href="#catalogue" onclick="showSection('catalogue')">Catalogue</a></li>
+                    <li><a href="#contact" onclick="showSection('contact')">Contact & Accès</a></li>
+                    <li><a href="#infos" onclick="showSection('infos')">Infos pratiques</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="margin-top:0;">Contact</h4>
+                <p style="font-size:0.9rem; color:var(--text-muted);">
+                    Rives-du-Loir-en-Anjou (49)<br>
+                    06 52 98 23 48<br>
+                    maboitealocangevine@gmail.com
+                </p>
+            </div>
         </div>
-        <div style="text-align:center; margin-top:50px; padding-top:20px; border-top:1px solid var(--border); font-size:0.8rem; color:var(--text-muted);">&copy; 2026 Ma boîte à loc' Angevine. | <a href="mentions-legales.html" style="text-decoration:underline; color:inherit;">Mentions Légales</a></div>
+        <div style="text-align:center; margin-top:50px; padding-top:20px; border-top:1px solid var(--border); font-size:0.8rem; color:var(--text-muted);">
+            &copy; 2026 Ma boîte à loc' Angevine. | <a href="mentions-legales.html" style="text-decoration:underline; color:inherit;">Mentions Légales</a>
+        </div>
     </footer>
 
+    <!-- BOUTON WHATSAPP FLOTTANT -->
     <a href="https://wa.me/33652982348" class="whatsapp-fixed" target="_blank" title="Contactez-nous sur WhatsApp">
         <svg viewBox="0 0 32 32" style="width: 35px; height: 35px; fill: white;"><path d="M16 0c-8.837 0-16 7.163-16 16 0 2.825.737 5.48 2.025 7.787l-2.025 7.387 7.563-1.987c2.237 1.187 4.787 1.813 7.437 1.813 8.837 0 16-7.163 16-16s-7.163-16-16-16zM16 29.333c-2.413 0-4.737-.633-6.763-1.833l-.487-.287-4.507 1.18 1.2-4.393-.313-.5c-1.313-2.087-2.013-4.513-2.013-7.013 0-7.36 5.987-13.347 13.347-13.347s13.347 5.987 13.347 13.347c0 7.36-5.987 13.347-13.347 13.347zM22.547 19.173c-.36-.18-2.127-1.047-2.46-1.167-.327-.12-.567-.18-.807.18s-.927 1.167-1.14 1.407c-.207.24-.42.267-.78.087-.36-.18-1.52-.56-2.893-1.787-1.067-.953-1.787-2.133-2-2.5-.207-.367-.02-.567.16-.747.16-.16.36-.42.54-.627.18-.207.24-.353.36-.587.12-.233.06-.44-.03-.627-.087-.18-.807-1.947-1.107-2.673-.293-.707-.593-.613-.807-.627-.207-.013-.447-.013-.687-.013s-.627.093-.953.447c-.327.353-1.247 1.22-1.247 2.973s1.273 3.44 1.453 3.687c.18.247 2.507 3.827 6.073 5.367.847.367 1.507.587 2.027.753.853.267 1.627.227 2.24.14.687-.1 2.127-.867 2.427-1.7s.3-1.553.207-1.7c-.087-.147-.327-.227-.687-.407z"/></svg>
     </a>
 
-    <!-- MODALE PRODUIT -->
+    <!-- ========================================== -->
+    <!-- COMPOSANTS : MODALE PRODUIT                -->
+    <!-- ========================================== -->
     <div id="product-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="window.closeModal()">×</span>
@@ -280,16 +362,21 @@
                     <button id="modal-next-btn" class="modal-nav-btn" onclick="window.changeModalImage(1)">❯</button>
                     <div id="modal-image-counter"></div>
                 </div>
+
                 <p id="modal-description" style="font-size: 0.95rem; color: var(--text-muted);"></p>
+                
                 <div class="modal-price-box">
                     <p style="margin:0;">Prix : <strong id="modal-product-price-value" style="color:var(--primary);"></strong></p>
                     <p style="margin:0;">Caution : <strong id="modal-product-caution-value"></strong></p>
                 </div>
+
                 <div class="modal-form">
+                    <p id="modal-max-info" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; font-style: italic;"></p>
                     <div style="margin-bottom: 15px;">
                         <label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Quantité</label>
                         <input type="number" id="modal-quantity" value="1" min="1" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); box-sizing:border-box; font-family:inherit;">
                     </div>
+                    
                     <div class="modal-form-grid">
                         <div>
                             <label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Début de location</label>
@@ -301,12 +388,15 @@
                         </div>
                     </div>
                 </div>
+                
                 <button onclick="addToCartFromModal()" class="primary-action-btn" style="width:100%; margin-top:25px;">Ajouter à ma demande</button>
             </div>
         </div>
     </div>
 
     <div id="toast-notification"></div>
+
+    <!-- SCRIPTS JS -->
     <script src="app-ui.js" defer></script>
     <script src="app-catalog.js" defer></script>
     <script src="app-cart.js" defer></script>
