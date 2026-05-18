@@ -328,21 +328,26 @@
                     <p style="margin:0;">Caution : <strong id="modal-product-caution-value"></strong></p>
                 </div>
                 <div class="modal-form">
+    <!-- Information de stock dynamique -->
     <p id="modal-max-info" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; font-style: italic;"></p>
     
+    <!-- UN SEUL CHAMP QUANTITÉ ICI -->
     <div style="margin-bottom: 15px;">
         <label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Quantité</label>
-        <input type="number" id="modal-quantity" value="1" min="1" ...>
+        <input type="number" id="modal-quantity" value="1" min="1" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); box-sizing:border-box; font-family:inherit;">
     </div>
-                    <div style="margin-bottom: 15px;">
-                        <label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Quantité</label>
-                        <input type="number" id="modal-quantity" value="1" min="1" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); box-sizing:border-box; font-family:inherit;">
-                    </div>
-                    <div class="modal-form-grid">
-                        <div>
-                            <label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Début de location</label>
-                            <input type="date" id="modal-start-date" onchange="window.updateEndDateMin()" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); box-sizing:border-box; font-family:inherit;">
-                        </div>
+    
+    <div class="modal-form-grid">
+        <div>
+            <label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Début de location</label>
+            <input type="date" id="modal-start-date" onchange="window.updateEndDateMin()" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); box-sizing:border-box; font-family:inherit;">
+        </div>
+        <div>
+            <label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Fin de location</label>
+            <input type="date" id="modal-end-date" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); box-sizing:border-box; font-family:inherit;">
+        </div>
+    </div>
+</div>
                         <div>
                             <label style="display:block; margin-bottom:8px; font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary);">Fin de location</label>
                             <input type="date" id="modal-end-date" style="width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); box-sizing:border-box; font-family:inherit;">
