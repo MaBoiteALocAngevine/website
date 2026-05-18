@@ -22,6 +22,12 @@ window.addToCartFromModal = function() {
     const qty = parseInt(document.getElementById('modal-quantity').value) || 1;
     const start = document.getElementById('modal-start-date').value;
     const end = document.getElementById('modal-end-date').value;
+    const maxAllowed = parseInt(window.selectedProductForModal.max_quantity);
+    if (qty > maxAllowed) {
+        window.showToast(`⚠️ Quantité limitée : seulement ${maxAllowed} disponible(s).`);
+        document.getElementById('modal-quantity').value = maxAllowed;
+        return;
+    }
 
     if (!start || !end) {
         window.showToast("⚠️ Veuillez choisir les dates de location.");

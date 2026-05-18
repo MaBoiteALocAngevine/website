@@ -23,6 +23,9 @@ window.openModal = function(productId) {
         document.getElementById('modal-description').innerHTML = product.description; 
         document.getElementById('modal-product-price-value').innerHTML = `${product.price} <small>TTC</small>`;
         document.getElementById('modal-product-caution-value').innerHTML = `${product.caution} <small>TTC</small>`;
+	const qtyInput = document.getElementById('modal-quantity');
+	qtyInput.max = product.max_quantity; // Définit la limite pour les flèches du champ
+	document.getElementById('modal-max-info').textContent = `Stock disponible : ${product.max_quantity}`;
         updateModalImage();
         const today = new Date().toISOString().split('T')[0];
         const startInput = document.getElementById('modal-start-date');
