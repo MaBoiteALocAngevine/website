@@ -100,3 +100,18 @@ window.moveCarousel = function(n) {
     const slides = document.querySelectorAll('.carousel-slide');
     if (slides.length > 0) window.showSlide(slideIndex + n, slides.length);
 };
+// --- GESTION DU BOUTON AFFICHER PLUS (FAQ) ---
+window.toggleFAQ = function() {
+    const extra = document.getElementById('faq-extra');
+    const btn = document.getElementById('faq-toggle-btn');
+    
+    if (extra.style.display === 'none') {
+        extra.style.display = 'block';
+        btn.textContent = 'Afficher moins';
+    } else {
+        extra.style.display = 'none';
+        btn.textContent = 'Afficher plus';
+        // Optionnel : remonter un peu la page pour ne pas perdre le fil
+        document.getElementById('infos-section').scrollIntoView({ behavior: 'smooth' });
+    }
+};

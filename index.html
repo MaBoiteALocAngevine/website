@@ -224,38 +224,67 @@
             </div>
         </div>
 
-        <!-- SECTION INFOS PRATIQUES -->
+        <!-- ========================================== -->
+        <!-- SECTION INFOS PRATIQUES                    -->
+        <!-- ========================================== -->
         <div id="infos-section" class="content-section">
             <h2 style="text-align:center; margin-bottom:40px;">Informations Pratiques</h2>
+
             <div class="infos-grid">
+                <!-- SOUS MODULE 1 : FAQ -->
                 <div class="infos-block">
                     <h3>Questions fréquentes</h3>
+                    
+                    <!-- Questions toujours visibles -->
                     <div class="faq-item">
                         <p class="question">Le matériel doit-il être nettoyé avant le retour ?</p>
-                        <p class="answer">Oui, nous vous remercions de restituer le matériel propre et sec, prêt pour la location suivante.</p>
+                        <p class="answer">Oui, nous vous remercions de restituer le matériel propre et sec, prêt pour la location suivante, sauf si une option de nettoyage a été convenue.</p>
                     </div>
                     <div class="faq-item">
                         <p class="question">Que se passe-t-il en cas de retard ?</p>
-                        <p class="answer">Ma boîte à loc' Angevine est une entreprise humaine. Un léger retard qui ne gêne pas l'organisation suivante ne sera pas facturé.</p>
+                        <p class="answer">Ma boîte à loc' Angevine est une entreprise humaine. Un léger retard ne provoquant pas de désagrément pour l'organisation suivante ne sera pas facturé. Si le retard cause un préjudice logistique, une retenue sur caution pourra être effectuée.</p>
                     </div>
-                    <div class="faq-item">
-                        <p class="question">Puis-je restituer le matériel le dimanche ?</p>
-                        <p class="answer">La souplesse est notre force. Si convenu lors de la réservation, la restitution le dimanche est possible.</p>
+
+                    <!-- Questions cachées (déroulantes) -->
+                    <div id="faq-extra" style="display:none;">
+                        <div class="faq-item">
+                            <p class="question">Puis-je restituer le matériel le dimanche ?</p>
+                            <p class="answer">La souplesse est notre force. Si cela a été convenu lors de votre réservation, la restitution le dimanche ou en dehors des horaires classiques est tout à fait possible.</p>
+                        </div>
+                        <div class="faq-item">
+                            <p class="question">Et si le matériel est endommagé ou cassé ?</p>
+                            <p class="answer">Un accident peut arriver. Dans ce cas, la part de la caution équivalente à la valeur du produit cassé ou détérioré sera conservée. Le reste de la caution vous sera intégralement restitué.</p>
+                        </div>
+                        <div class="faq-item">
+                            <p class="question">Proposez-vous une aide au montage ou la livraison ?</p>
+                            <p class="answer">Oui, nous pouvons assurer la livraison et l'assistance au montage (tonnelle, sonorisation...). Ces services sont optionnels et font l'objet d'une facturation supplémentaire sur devis.</p>
+                        </div>
+                        <div class="faq-item">
+                            <p class="question">Le matériel de sonorisation est-il simple à installer ?</p>
+                            <p class="answer">Oui, nous sélectionnons du matériel intuitif pour que vous puissiez l'installer vous-même facilement. Des guides vidéos sont également disponibles pour vous accompagner.</p>
+                        </div>
                     </div>
+
+                    <button id="faq-toggle-btn" onclick="window.toggleFAQ()" class="secondary-action-btn" style="margin-top:10px; background:none; border:1px solid var(--secondary); color:var(--secondary); padding:8px 20px; border-radius:50px; cursor:pointer; font-weight:600;">Afficher plus</button>
                 </div>
+
+                <!-- SOUS MODULE 2 : RETOURS & ÉCHANGES -->
                 <div class="infos-block">
                     <h3>Retours et échanges</h3>
+                    <p>Nous privilégions une relation de confiance et de transparence avec nos clients :</p>
                     <ul class="infos-list">
-                        <li><strong>Matériel défectueux :</strong> Échange immédiat ou remboursement total.</li>
-                        <li><strong>Détérioration :</strong> Si le matériel est cassé par le client, la caution correspondante sera conservée.</li>
-                        <li><strong>Propreté :</strong> Le matériel doit être rendu propre et trié.</li>
+                        <li><strong>Matériel défectueux :</strong> Si un équipement présente un défaut au retrait, nous procédons à un échange immédiat ou à un remboursement.</li>
+                        <li><strong>Casse ou dégradation :</strong> Si le matériel est cassé par le client, aucun remboursement ne sera effectué et la caution correspondante sera conservée.</li>
+                        <li><strong>État de propreté :</strong> Le matériel doit être rendu propre, sec et trié pour respecter le client suivant.</li>
+                        <li><strong>État des lieux :</strong> Un contrôle contradictoire du matériel est effectué systématiquement sur place lors du retrait et du retour.</li>
                     </ul>
+
                     <h3 style="margin-top:40px;">Checklist pour votre retrait</h3>
                     <div class="checklist-box" style="background: var(--bg); border: 1px solid var(--border); padding: 20px; border-radius: 15px;">
                         <ul class="infos-list">
                             <li>✅ Votre pièce d'identité</li>
-                            <li>✅ Le règlement de la caution</li>
-                            <li>✅ Un véhicule adapté au volume</li>
+                            <li>✅ Le règlement de la caution (espèces ou virement)</li>
+                            <li>✅ Un véhicule adapté au volume du matériel</li>
                         </ul>
                     </div>
                 </div>
