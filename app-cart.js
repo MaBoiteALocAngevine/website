@@ -3,13 +3,13 @@ const BUSINESS_EMAIL = "maboitealocangevine@gmail.com";
 
 function parsePrice(str) {
     if (!str) return 0;
-    const match = str.replace(/\s/g, '').match(/(\d+([,\.]\d+)?)/);
+    const match = str.toString().replace(/\s/g, '').match(/(\d+([,\.]\d+)?)/);
     return match ? parseFloat(match[0].replace(',', '.')) : 0;
 }
 
 function calculateItemPrice(item) {
     const val = parsePrice(item.product.price);
-    const isDaily = item.product.price.toLowerCase().includes('jour');
+    const isDaily = item.product.price.toLowerCase().includes('jour') || !item.product.title.toLowerCase().includes('forfait');
     let mult = 1;
     if (isDaily && item.startDate && item.endDate) {
         const diff = Math.abs(new Date(item.endDate) - new Date(item.startDate));
@@ -19,18 +19,20 @@ function calculateItemPrice(item) {
 }
 
 window.addToCartFromModal = function() {
-    const qty = parseInt(document.getElementById('modal-quantity').value) || 1;
+    const qtyInput = document.getElementById('modal-quantity');
+    const qty = parseInt(qtyInput.value) || 1;
     const start = document.getElementById('modal-start-date').value;
     const end = document.getElementById('modal-end-date').value;
-    const maxAllowed = parseInt(window.selectedProductForModal.max_quantity);
-    if (qty > maxAllowed) {
-        window.showToast(`⚠️ Quantité limitée : seulement ${maxAllowed} disponible(s).`);
-        document.getElementById('modal-quantity').value = maxAllowed;
-        return;
-    }
 
     if (!start || !end) {
         window.showToast("⚠️ Veuillez choisir les dates de location.");
+        return;
+    }
+
+    const maxAllowed = parseInt(window.selectedProductForModal.inventory);
+    if (qty > maxAllowed) {
+        window.showToast(`⚠️ Quantité limitée : seulement ${maxAllowed} disponible(s).`);
+        qtyInput.value = maxAllowed;
         return;
     }
 

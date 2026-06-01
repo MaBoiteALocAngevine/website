@@ -14,25 +14,31 @@ window.showToast = function(message) {
 window.openModal = function(productId) { 
     const modal = document.getElementById('product-modal');
     if (!window.allProductsData) return;
+
     const product = window.allProductsData.find(p => p.id == productId);
     if (product) {
         window.selectedProductForModal = product;
         currentModalImages = product.images;
         modalSlideIndex = 0;
+
         document.getElementById('modal-title').textContent = product.name;
         document.getElementById('modal-description').innerHTML = product.description; 
-        document.getElementById('modal-product-price-value').innerHTML = `${product.price} <small>TTC</small>`;
-        document.getElementById('modal-product-caution-value').innerHTML = `${product.caution} <small>TTC</small>`;
-	const qtyInput = document.getElementById('modal-quantity');
-	qtyInput.max = product.max_quantity; // Définit la limite pour les flèches du champ
-	document.getElementById('modal-max-info').textContent = `Stock disponible : ${product.max_quantity}`;
+        document.getElementById('modal-product-price-value').innerHTML = `${product.price.replace('.00 EUR', ' €').replace(' EUR', ' €')} <small>TTC</small>`;
+        document.getElementById('modal-product-caution-value').innerHTML = `${product.caution} € <small>TTC</small>`;
+        
         updateModalImage();
+
         const today = new Date().toISOString().split('T')[0];
         const startInput = document.getElementById('modal-start-date');
         const endInput = document.getElementById('modal-end-date');
         startInput.value = ""; endInput.value = "";
         startInput.min = today; endInput.min = today;
-        document.getElementById('modal-quantity').value = 1;
+
+        const qtyInput = document.getElementById('modal-quantity');
+        qtyInput.value = 1;
+        qtyInput.max = product.inventory; // Utilisation de la nouvelle colonne inventory
+        document.getElementById('modal-max-info').textContent = `Stock disponible : ${product.inventory}`;
+
         modal.style.display = "flex";
         document.body.style.overflow = 'hidden';
     }
@@ -103,18 +109,15 @@ window.moveCarousel = function(n) {
     const slides = document.querySelectorAll('.carousel-slide');
     if (slides.length > 0) window.showSlide(slideIndex + n, slides.length);
 };
-// --- GESTION DU BOUTON AFFICHER PLUS (FAQ) ---
+
 window.toggleFAQ = function() {
     const extra = document.getElementById('faq-extra');
     const btn = document.getElementById('faq-toggle-btn');
-    
     if (extra.style.display === 'none') {
         extra.style.display = 'block';
         btn.textContent = 'Afficher moins';
     } else {
         extra.style.display = 'none';
         btn.textContent = 'Afficher plus';
-        // Optionnel : remonter un peu la page pour ne pas perdre le fil
-        document.getElementById('infos-section').scrollIntoView({ behavior: 'smooth' });
     }
 };
