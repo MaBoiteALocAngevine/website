@@ -120,12 +120,46 @@ window.handleSubmitReservation = function(e) {
         articlesList += `\n■ ${i.product.name.toUpperCase()}\n  Quantité : x${i.quantity}\n  Période  : du ${i.startDate} au ${i.endDate}\n  Sous-total : ${c.total.toFixed(2)} €\n  --------------------------------------`;
     });
     
-    let body = `==========================================\n   NOUVELLE DEMANDE DE RÉSERVATION\n==========================================\n\nCOORDONNÉES DU CLIENT :\n------------------------------------------\n📧 Email : ${email}\n🚚 Livraison : ${delivery ? "OUI" : "NON"}\n📍 Adresse : ${address}\n📢 Inscription Nouveautés : ${marketing}\n\nDÉTAILS :\n------------------------------------------${articlesList}\n\nRÉCAPITULATIF :\n------------------------------------------\n💰 TOTAL LOCATION : ${totalRent.toFixed(2)} € TTC\n🛡️ TOTAL CAUTIONS : ${totalCaution.toFixed(2)} € TTC\n\nMESSAGE :\n"${message}"\n\n==========================================\nMa boîte à loc' Angevine\n==========================================`;
+    let body = `
+==========================================
+   NOUVELLE DEMANDE DE RÉSERVATION
+==========================================
 
-    document.getElementById('hidden-replyto').value = email;
-    document.getElementById('hidden-cc').value = email;
+COORDONNÉES DU CLIENT :
+------------------------------------------
+📧 Email : ${email}
+🚚 Livraison : ${delivery ? "OUI" : "NON"}
+📍 Adresse : ${address}
+📢 Inscription Nouveautés : ${marketing}
+
+DÉTAILS DE LA COMMANDE :
+------------------------------------------
+${articlesList}
+
+RÉCAPITULATIF FINANCIER :
+------------------------------------------
+💰 TOTAL LOCATION : ${totalRent.toFixed(2)} € TTC
+🛡️ TOTAL CAUTIONS : ${totalCaution.toFixed(2)} € TTC
+
+MESSAGE DU CLIENT :
+------------------------------------------
+"${message}"
+
+==========================================
+Ma boîte à loc' Angevine
+Rives-du-Loir-en-Anjou | 06 52 98 23 48
+==========================================`;
+
+    // Remplissage des champs pour Web3Forms
     document.getElementById('hidden-subject').value = `Demande de réservation - ${email}`;
+    
+    const ccField = document.getElementById('hidden-cc');
+    if (ccField) {
+        ccField.value = email; // Envoi de la copie au client
+    }
+
     document.getElementById('email-body-content').value = body;
 
+    // Envoi final
     e.target.submit();
 };

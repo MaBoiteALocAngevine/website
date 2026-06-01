@@ -177,7 +177,7 @@
             <div id="cart-items-container"></div>
             
             <div id="cart-summary">
-                <form id="reservation-form" method="POST" action="https://formsubmit.co/maboitealocangevine@gmail.com">
+                <form id="reservation-form" method="POST" action="https://api.web3forms.com/submit">
                     
                     <div class="form-group" style="margin-bottom: 20px;">
                         <label style="cursor:pointer;"><input type="checkbox" id="delivery-checkbox" onchange="handleDeliveryChange()" name="Livraison"> Demander livraison & montage (Sur devis)</label>
@@ -212,15 +212,14 @@
                     </label>
 
                     <!-- Config FormSubmit -->
-                    <input type="hidden" name="_next" value="https://maboitealocangevine.github.io/website/merci.html">
-                    <input type="hidden" name="_replyto" id="hidden-replyto">
-                    <input type="hidden" name="_cc" id="hidden-cc">
-                    <input type="hidden" name="_subject" id="hidden-subject">
-                    <input type="hidden" name="_template" value="table">
-                    <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="access_key" value="59136172-ccf4-455f-8687-04ff78b76287">
+    			<input type="hidden" name="from_name" value="Ma boîte à loc' Angevine">
+   			<input type="hidden" name="subject" id="hidden-subject" value="Nouvelle demande de réservation">
+    			<input type="hidden" name="redirect" value="https://maboitealocangevine.github.io/website/merci.html">
+    			<input type="hidden" name="cc" id="hidden-cc">
                     <textarea name="RÉCAPITULATIF_DEMANDE" id="email-body-content" style="display: none;"></textarea>
                     
-                    <button type="submit" class="primary-action-btn" style="width:100%;" disabled>Envoyer ma demande de réservation</button>
+                    <button type="submit" class="primary-action-btn" style="width:100%;" disabled>Envoyer ma demande</button>
                 </form>
             </div>
         </div>
