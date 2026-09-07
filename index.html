@@ -74,7 +74,7 @@
         </div>
         <nav class="main-nav">
             <ul>
-                <li><a href="#accueil" onclick="showSection('accueil')" id="nav-accueil">Accueil</a></li>
+                <li><a href="#accueil" onclick="showSection('accueil')" id="nav-accueil" class="active">Accueil</a></li>
                 <li><a href="#catalogue" onclick="showSection('catalogue')" id="nav-catalogue">Catalogue</a></li>
                 <li><a href="#contact" onclick="showSection('contact')" id="nav-contact">Contact</a></li>
                 <li><a href="#infos" onclick="showSection('infos')" id="nav-infos">Infos</a></li>
@@ -92,7 +92,7 @@
         <!-- ========================================== -->
         <!-- SECTION ACCUEIL                            -->
         <!-- ========================================== -->
-        <div id="accueil-section" class="content-section">
+        <div id="accueil-section" class="content-section active">
             <div class="hero-content">
                 <h1>Location de matériel événementiel et outillage en Maine-et-Loire</h1>
                 <p>Pour votre <strong>location de matériel événementiel à Angers</strong>, Ma boîte à loc' Angevine est votre partenaire de proximité à Rives-du-Loir-en-Anjou. Que vous organisiez un mariage élégant, un anniversaire, une réception associative ou un vide-grenier, nous proposons des solutions adaptées au meilleur prix en Maine-et-Loire (49).</p>
@@ -396,9 +396,9 @@
     <div id="toast-notification"></div>
 
     <!-- SCRIPTS JS -->
-    <script src="/app-ui.js" defer></script>
-    <script src="/app-catalog.js" defer></script>
-    <script src="/app-cart.js" defer></script>
-    <script src="/app-main.js" defer></script>
+    <script src="app-cart.js"></script>
+    <script src="app-catalog.js"></script>
+    <script src="app-ui.js"></script>
+    <script src="app-main.js"></script>
 </body>
 </html>

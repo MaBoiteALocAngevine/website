@@ -24,7 +24,10 @@ function parseCSVLine(line) {
 
 async function loadProductsFromCSVFile() {
     try {
-        const response = await fetch('data.csv');
+        let response = await fetch('data.csv');
+        if (!response.ok) {
+            response = await fetch('/data.csv');
+        }
         const csvData = await response.text();
         const lines = csvData.split(/\r?\n/);
         const headers = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
@@ -62,14 +65,22 @@ async function loadProductsFromCSVFile() {
             const imgs = window.allProductsData.filter(p => p.carrousel?.toLowerCase() === 'oui').map(p => p.main_image);
             window.initCarouselUI(imgs);
         }
-        document.getElementById('loading-message').style.display = 'none';
-    } catch (e) { console.error("Erreur Catalogue:", e); }
+        const loadingEl = document.getElementById('loading-message');
+        if (loadingEl) loadingEl.style.display = 'none';
+    } catch (e) { 
+        console.error("Erreur Catalogue:", e); 
+        const loadingEl = document.getElementById('loading-message');
+        if (loadingEl) {
+            loadingEl.textContent = "Erreur lors du chargement du catalogue.";
+            loadingEl.style.color = '#b05b45';
+        }
+    }
 }
 
 function renderProductList(products) {
     const container = document.getElementById('product-list-container');
     if (!container) return;
-    container.innerHTML = products.length ? '' : '<div class="empty-state">Aucun produit trouvé.</div>';
+    container.innerHTML = products.length ? '' : '<div class="empty-state" style="grid-column: 1/-1; text-align:center; padding:30px; color:var(--text-muted);">Aucun produit trouvé.</div>';
     
     products.forEach(p => {
         const card = document.createElement('div');
@@ -107,7 +118,15 @@ function renderCategoryButtons() {
 }
 
 window.searchProducts = function() {
-    const term = document.getElementById('product-search').value.toLowerCase();
-    const filtered = window.allProductsData.filter(p => p.name.toLowerCase().includes(term) || p.description.toLowerCase().includes(term));
+    const searchInput = document.getElementById('product-search');
+    if (!searchInput) return;
+    const term = searchInput.value.toLowerCase();
+    const filtered = window.allProductsData.filter(p => p.name.toLowerCase().includes(term) || (p.description && p.description.toLowerCase().includes(term)));
     renderProductList(filtered);
 };
+
+// Exposer globalement pour interopérabilité
+window.loadProductsFromCSVFile = loadProductsFromCSVFile;
+window.renderProductList = renderProductList;
+window.renderCategoryButtons = renderCategoryButtons;
+

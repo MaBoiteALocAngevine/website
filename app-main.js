@@ -1,33 +1,14 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // 1. Charger les données du catalogue (depuis app-catalog.js)
-    if (typeof loadProductsFromCSVFile === 'function') {
-        loadProductsFromCSVFile();
-    }
-
-    // 2. Configurer les écouteurs du formulaire de réservation
-    const form = document.getElementById('reservation-form');
-    if (form && typeof handleSubmitReservation === 'function') {
-        form.addEventListener('submit', handleSubmitReservation);
-    }
-
-    // 3. Configurer la validation en temps réel de l'email
-    const emailInput = document.getElementById('user-email');
-    if (emailInput && typeof updateCartUI === 'function') {
-        emailInput.addEventListener('input', updateCartUI);
-    }
-
-    // 4. Forcer l'affichage de l'accueil immédiatement au lancement
-    showSection('accueil');
-});
-
 /**
  * Gère le changement de page (sections) sur le site
  */
 function showSection(id) {
+    if (!id) id = 'accueil';
+
     // A. Gérer la visibilité des sections
-    document.querySelectorAll('.content-section').forEach(s => {
+    const sections = document.querySelectorAll('.content-section');
+    sections.forEach(s => {
         s.classList.remove('active');
-        s.style.display = 'none'; // Sécurité pour garantir que les autres pages sont cachées
+        s.style.display = 'none'; // Cache les autres pages
     });
     
     const target = document.getElementById(id + '-section');
@@ -50,10 +31,56 @@ function showSection(id) {
     }
 
     // D. Cas particulier : Rafraîchir le rendu du panier quand on l'ouvre
-    if (id === 'panier' && typeof renderCart === 'function') {
-        renderCart();
+    if (id === 'panier' && typeof window.renderCart === 'function') {
+        window.renderCart();
     }
 
     // E. Retour fluide en haut de page
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// Rendre accessible globalement
+window.showSection = showSection;
+
+function initApp() {
+    // 1. Charger les données du catalogue (depuis app-catalog.js)
+    if (typeof window.loadProductsFromCSVFile === 'function') {
+        window.loadProductsFromCSVFile();
+    } else if (typeof loadProductsFromCSVFile === 'function') {
+        loadProductsFromCSVFile();
+    }
+
+    // 2. Configurer les écouteurs du formulaire de réservation
+    const form = document.getElementById('reservation-form');
+    if (form) {
+        const handler = window.handleSubmitReservation || (typeof handleSubmitReservation === 'function' ? handleSubmitReservation : null);
+        if (handler) {
+            form.addEventListener('submit', handler);
+        }
+    }
+
+    // 3. Configurer la validation en temps réel de l'email
+    const emailInput = document.getElementById('user-email');
+    if (emailInput) {
+        const updater = window.updateCartUI || (typeof updateCartUI === 'function' ? updateCartUI : null);
+        if (updater) {
+            emailInput.addEventListener('input', updater);
+        }
+    }
+
+    // 4. Afficher la section demandée (hash dans l'URL ou accueil par défaut)
+    const hash = window.location.hash ? window.location.hash.replace('#', '') : 'accueil';
+    if (hash && document.getElementById(hash + '-section')) {
+        showSection(hash);
+    } else {
+        showSection('accueil');
+    }
+}
+
+// Initialisation immédiate ou sur événement
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
+

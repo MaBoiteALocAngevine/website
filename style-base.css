@@ -51,6 +51,7 @@ header {
     z-index: 1000; 
     height: 125px; 
     border-bottom: 1px solid var(--border);
+    gap: 20px;
 }
 
 #main-logo {
@@ -63,6 +64,13 @@ header {
 .logo-brand {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .main-nav ul { 
@@ -91,6 +99,7 @@ header {
 .utility-icons {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 
 #cart-link { 
@@ -107,6 +116,30 @@ header {
     display: inline-block; 
 }
 #cart-link:hover { background: var(--secondary); transform: translateY(-2px); }
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    header {
+        padding: 10px 24px;
+        height: 110px;
+        gap: 15px;
+    }
+    #main-logo {
+        height: 75px;
+    }
+    .main-nav ul {
+        gap: 16px;
+    }
+    .main-nav a {
+        font-size: 0.9rem;
+    }
+    #cart-link {
+        padding: 8px 16px;
+        font-size: 0.82rem;
+    }
+    body {
+        padding-top: 125px;
+    }
+}
 
 @media (max-width: 768px) {
     header { 
