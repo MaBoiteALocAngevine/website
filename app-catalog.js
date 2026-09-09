@@ -12,14 +12,62 @@ function parseCSVLine(line) {
     let inQuotes = false;
     for (let i = 0; i < line.length; i++) {
         const char = line[i];
-        if (char === '"') inQuotes = !inQuotes;
-        else if (char === ',' && !inQuotes) {
+        const nextChar = line[i + 1];
+        if (char === '"') {
+            if (inQuotes && nextChar === '"') {
+                current += '"';
+                i++;
+            } else {
+                inQuotes = !inQuotes;
+            }
+        } else if (char === ',' && !inQuotes) {
             values.push(current.trim().replace(/^"|"$/g, ''));
             current = '';
         } else current += char;
     }
     values.push(current.trim().replace(/^"|"$/g, ''));
     return values;
+}
+
+function parseCSV(text) {
+    const lines = [];
+    let row = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const nextChar = text[i + 1];
+
+        if (char === '"') {
+            if (inQuotes && nextChar === '"') {
+                current += '"';
+                i++;
+            } else {
+                inQuotes = !inQuotes;
+            }
+        } else if (char === ',' && !inQuotes) {
+            row.push(current.trim().replace(/^"|"$/g, ''));
+            current = '';
+        } else if ((char === '\r' || char === '\n') && !inQuotes) {
+            if (char === '\r' && nextChar === '\n') i++;
+            row.push(current.trim().replace(/^"|"$/g, ''));
+            if (row.length > 1 || (row.length === 1 && row[0] !== '')) {
+                lines.push(row);
+            }
+            row = [];
+            current = '';
+        } else {
+            current += char;
+        }
+    }
+    if (current || row.length > 0) {
+        row.push(current.trim().replace(/^"|"$/g, ''));
+        if (row.length > 1 || (row.length === 1 && row[0] !== '')) {
+            lines.push(row);
+        }
+    }
+    return lines;
 }
 
 async function loadProductsFromCSVFile() {
@@ -29,34 +77,46 @@ async function loadProductsFromCSVFile() {
             response = await fetch('/data.csv');
         }
         const csvData = await response.text();
-        const lines = csvData.split(/\r?\n/);
-        const headers = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
+        const parsedRows = parseCSV(csvData);
+        if (!parsedRows || parsedRows.length === 0) return;
+
+        const headers = parsedRows[0].map(h => h.trim().toLowerCase());
         
-        window.allProductsData = lines.slice(1).filter(l => l.trim()).map(line => {
-            const values = parseCSVLine(line);
+        window.allProductsData = parsedRows.slice(1).map(values => {
             let p = {};
-            headers.forEach((h, i) => p[h] = values[i]);
+            headers.forEach((h, i) => p[h] = values[i] !== undefined ? values[i] : '');
             
-            // --- MAPPING FORMAT GOOGLE MERCHANT ---
+            // --- MAPPING PRODUIT ---
             p.id = parseInt(p.id);
-            p.name = p.title; // title -> name
+            p.name = p.title || ''; // title -> name
             p.inventory = parseInt(p.inventory) || 1;
             
-            // Gestion des images (principale + additionnelles)
-            let imgList = [p.image_link];
-            if (p.additional_image_link) {
-                const extras = p.additional_image_link.split(';').map(img => img.trim());
+            // Gestion des images pour le site web :
+            // Priorité absolue aux chemins relatifs pour le site (image_site, additional_image_site).
+            // Les URLs absolues (image_link, additional_image_link) sont réservées à Google Merchant.
+            const mainImg = (p.image_site && p.image_site.trim()) 
+                ? p.image_site.trim() 
+                : (p.image_link ? p.image_link.trim() : '');
+                
+            let imgList = mainImg ? [mainImg] : [];
+            
+            const extraImgsField = (p.additional_image_site && p.additional_image_site.trim())
+                ? p.additional_image_site.trim()
+                : (p.additional_image_link ? p.additional_image_link.trim() : '');
+
+            if (extraImgsField) {
+                const extras = extraImgsField.split(/[;,]/).map(img => img.trim()).filter(img => img !== "");
                 imgList = imgList.concat(extras);
             }
             p.images = imgList.filter(img => img !== "");
-            p.main_image = p.images[0]; 
+            p.main_image = p.images[0] || 'images/logo.png'; 
 
             // Sécurité Catégorie (car absente du CSV)
             // On définit 'outillage' si l'ID commence par 2, sinon 'evenementiel'
             p.category = (p.id >= 200 && p.id < 300) ? 'outillage' : 'evenementiel';
 
             return p;
-        }).filter(p => p.publication?.toLowerCase() !== 'non');
+        }).filter(p => p.id && p.publication?.toLowerCase() !== 'non');
 
         renderCategoryButtons();
         renderProductList(window.allProductsData);

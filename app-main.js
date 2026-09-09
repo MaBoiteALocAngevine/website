@@ -50,6 +50,11 @@ function initApp() {
         loadProductsFromCSVFile();
     }
 
+    // 1b. Initialiser le sélecteur global de dates de location
+    if (typeof window.initGlobalDates === 'function') {
+        window.initGlobalDates();
+    }
+
     // 2. Configurer les écouteurs du formulaire de réservation
     const form = document.getElementById('reservation-form');
     if (form) {

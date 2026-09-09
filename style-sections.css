@@ -62,6 +62,188 @@
 /* ========================================== */
 /* CATALOGUE                                  */
 /* ========================================== */
+/* Sélecteur global de dates de location */
+.global-dates-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 22px;
+    padding: 20px 24px;
+    margin: 0 auto 30px auto;
+    max-width: 820px;
+    box-shadow: var(--shadow);
+    box-sizing: border-box;
+}
+
+.global-dates-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.global-dates-title-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.global-dates-icon {
+    font-size: 1.6rem;
+    line-height: 1;
+}
+
+.global-dates-title {
+    display: block;
+    font-size: 1.05rem;
+    font-family: 'Poppins', sans-serif;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.global-dates-subtitle {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.global-dates-badge {
+    background: var(--primary);
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 10px rgba(79, 106, 91, 0.2);
+}
+
+.global-dates-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 16px;
+    align-items: flex-end;
+}
+
+.global-date-input-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.global-date-input-wrap label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.global-date-input-wrap input[type="date"] {
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.92rem;
+    outline: none;
+    transition: 0.25s;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.global-date-input-wrap input[type="date"]:focus {
+    border-color: var(--secondary);
+    background: #ffffff;
+}
+
+.global-date-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.global-dates-btn {
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+    white-space: nowrap;
+    border: none;
+}
+
+.global-dates-btn.primary {
+    background: var(--secondary);
+    color: #ffffff;
+}
+.global-dates-btn.primary:hover {
+    background: var(--secondary-light);
+}
+
+.global-dates-btn.secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+}
+.global-dates-btn.secondary:hover {
+    color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+/* Bannière Dates Globales dans le Panier */
+.cart-dates-banner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 14px 20px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-shadow: var(--shadow);
+}
+
+.cart-dates-info {
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+.cart-dates-edit-btn {
+    background: none;
+    border: 1.5px solid var(--primary);
+    color: var(--primary);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+}
+.cart-dates-edit-btn:hover {
+    background: var(--primary);
+    color: #ffffff;
+}
+
+.modal-dates-hint {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--primary);
+    font-weight: 600;
+    margin-top: 6px;
+}
+
 .cat-nav { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; margin: 30px 0 25px; border-bottom: 1px solid var(--border); padding-bottom: 0; box-sizing: border-box; }
 .cat-nav button { background: none; border: 1px solid transparent; padding: 12px 22px; border-radius: 12px 12px 0 0; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--text-muted); transition: 0.3s; position: relative; bottom: -1px; white-space: nowrap; }
 .cat-nav button:hover { color: var(--secondary); }
@@ -136,6 +318,33 @@
     .infos-grid { grid-template-columns: 1fr; gap: 20px; }
     #cart-summary { padding: 25px 16px; border-radius: 20px; }
     .pro-alert { padding: 20px 16px; }
+
+    /* Responsive Sélecteur global de dates */
+    .global-dates-card {
+        padding: 16px 14px;
+        margin-bottom: 20px;
+        border-radius: 18px;
+    }
+    .global-dates-controls {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    .global-date-buttons {
+        grid-column: 1 / -1;
+        width: 100%;
+        display: flex;
+        gap: 8px;
+    }
+    .global-dates-btn {
+        flex: 1;
+        text-align: center;
+        padding: 9px 12px;
+        font-size: 0.82rem;
+    }
+    .cart-dates-banner {
+        padding: 12px 14px;
+        border-radius: 14px;
+    }
 }
 
 img { opacity: 0; animation: fadeInImg 0.8s forwards; background-color: #f0f0f0; }

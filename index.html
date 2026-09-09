@@ -159,7 +159,40 @@
         <!-- SECTION CATALOGUE                          -->
         <!-- ========================================== -->
         <div id="catalogue-section" class="content-section">
-            <h2 style="text-align:center; margin-bottom:30px;">Notre Catalogue de Location</h2>
+            <h2 style="text-align:center; margin-bottom:25px;">Notre Catalogue de Location</h2>
+
+            <!-- Sélecteur Global des Dates de Location -->
+            <div id="global-dates-card" class="global-dates-card">
+                <div class="global-dates-header">
+                    <div class="global-dates-title-group">
+                        <span class="global-dates-icon">📅</span>
+                        <div>
+                            <strong class="global-dates-title">Dates globales de votre événement</strong>
+                            <span class="global-dates-subtitle">Sélectionnez vos dates une seule fois : elles s'appliqueront à tout votre panier</span>
+                        </div>
+                    </div>
+                    <div id="global-dates-badge" class="global-dates-badge" style="display:none;"></div>
+                </div>
+                <div class="global-dates-controls">
+                    <div class="global-date-input-wrap">
+                        <label for="global-start-date">Début de location</label>
+                        <input type="date" id="global-start-date" onchange="window.handleGlobalStartDateChange()">
+                    </div>
+                    <div class="global-date-input-wrap">
+                        <label for="global-end-date">Fin de location</label>
+                        <input type="date" id="global-end-date" onchange="window.handleGlobalEndDateChange()">
+                    </div>
+                    <div class="global-date-buttons">
+                        <button type="button" id="apply-to-cart-btn" class="global-dates-btn primary" onclick="window.applyGlobalDatesToCart()" style="display:none;">
+                            Appliquer au panier
+                        </button>
+                        <button type="button" id="reset-global-dates-btn" class="global-dates-btn secondary" onclick="window.resetGlobalDates()" style="display:none;" title="Effacer ces dates">
+                            Effacer
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div id="search-bar">
                 <input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Effectuer une recherche...">
             </div>
@@ -173,7 +206,18 @@
         <!-- SECTION PANIER / RÉSERVATION               -->
         <!-- ========================================== -->
         <div id="panier-section" class="content-section">
-            <h2 style="text-align:center; margin-bottom:40px;">Votre Demande de Réservation</h2>
+            <h2 style="text-align:center; margin-bottom:30px;">Votre Demande de Réservation</h2>
+            
+            <!-- Bannière récapitulative des dates globales dans le panier -->
+            <div id="cart-dates-banner" class="cart-dates-banner">
+                <div class="cart-dates-info">
+                    <span>📅 <strong>Période globale :</strong> <span id="cart-dates-text">Non définie</span></span>
+                </div>
+                <button type="button" class="cart-dates-edit-btn" onclick="window.showSection('catalogue'); setTimeout(() => { const el = document.getElementById('global-dates-card'); if (el) el.scrollIntoView({behavior:'smooth'}); }, 100);">
+                    Modifier les dates
+                </button>
+            </div>
+
             <div id="cart-items-container"></div>
             
             <div id="cart-summary">
@@ -386,6 +430,7 @@
                             <input type="date" id="modal-end-date">
                         </div>
                     </div>
+                    <p id="modal-dates-hint" class="modal-dates-hint" style="display:none;"></p>
                 </div>
                 
                 <button onclick="addToCartFromModal()" class="primary-action-btn" style="width:100%; margin-top:25px;">Ajouter à ma demande</button>

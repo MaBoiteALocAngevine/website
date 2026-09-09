@@ -31,12 +31,28 @@ window.openModal = function(productId) {
         const today = new Date().toISOString().split('T')[0];
         const startInput = document.getElementById('modal-start-date');
         const endInput = document.getElementById('modal-end-date');
-        startInput.value = ""; endInput.value = "";
-        startInput.min = today; endInput.min = today;
+        const hintEl = document.getElementById('modal-dates-hint');
+
+        startInput.min = today;
+        endInput.min = today;
+
+        if (window.globalRentalDates && window.globalRentalDates.start && window.globalRentalDates.end) {
+            startInput.value = window.globalRentalDates.start;
+            endInput.value = window.globalRentalDates.end;
+            endInput.min = window.globalRentalDates.start;
+            if (hintEl) {
+                hintEl.style.display = 'block';
+                hintEl.textContent = '✓ Dates globales pré-remplies';
+            }
+        } else {
+            startInput.value = "";
+            endInput.value = "";
+            if (hintEl) hintEl.style.display = 'none';
+        }
 
         const qtyInput = document.getElementById('modal-quantity');
         qtyInput.value = 1;
-        qtyInput.max = product.inventory; // Utilisation de la nouvelle colonne inventory
+        qtyInput.max = product.inventory;
         document.getElementById('modal-max-info').textContent = `Stock disponible : ${product.inventory}`;
 
         modal.style.display = "flex";
@@ -68,19 +84,19 @@ window.changeModalImage = function(n) {
 };
 
 window.closeModal = function() {
-    document.getElementById('product-modal').style.display = "none";
+    const modal = document.getElementById('product-modal');
+    if (modal) modal.style.display = "none";
     document.body.style.overflow = 'auto';
 };
 
 window.updateEndDateMin = function() {
     const startDate = document.getElementById('modal-start-date').value;
     const endInput = document.getElementById('modal-end-date');
-    if (startDate) {
-        let minEnd = new Date(startDate);
-        minEnd.setDate(minEnd.getDate() + 1);
-        const minEndStr = minEnd.toISOString().split('T')[0];
-        endInput.min = minEndStr;
-        if (endInput.value && endInput.value < minEndStr) endInput.value = "";
+    if (startDate && endInput) {
+        endInput.min = startDate;
+        if (endInput.value && endInput.value < startDate) {
+            endInput.value = startDate;
+        }
     }
 };
 
@@ -113,6 +129,7 @@ window.moveCarousel = function(n) {
 window.toggleFAQ = function() {
     const extra = document.getElementById('faq-extra');
     const btn = document.getElementById('faq-toggle-btn');
+    if (!extra || !btn) return;
     if (extra.style.display === 'none') {
         extra.style.display = 'block';
         btn.textContent = 'Afficher moins';
@@ -121,3 +138,10 @@ window.toggleFAQ = function() {
         btn.textContent = 'Afficher plus';
     }
 };
+
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('product-modal');
+    if (modal && event.target === modal) {
+        window.closeModal();
+    }
+});
